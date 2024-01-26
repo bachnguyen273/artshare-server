@@ -1,4 +1,3 @@
-
 using artshare_server.Infrastructure.ServiceExtension;
 using artshare_server.Services.Interfaces;
 using artshare_server.Services.Services;
@@ -37,7 +36,6 @@ namespace artshare_server
             }
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

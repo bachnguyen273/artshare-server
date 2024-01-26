@@ -6,10 +6,12 @@ namespace artshare_server.Infrastructure.Repositories
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         protected readonly AppDbContext _dbContext;
+
         protected GenericRepository(AppDbContext dbContext)
         {
             _dbContext = dbContext;
         }
+
         public async Task<T> GetByIdAsync(int id)
         {
             return await _dbContext.Set<T>().FindAsync(id);

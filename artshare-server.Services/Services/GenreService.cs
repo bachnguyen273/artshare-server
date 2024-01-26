@@ -1,11 +1,6 @@
 ﻿using artshare_server.Core.Interfaces;
 using artshare_server.Core.Models;
 using artshare_server.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace artshare_server.Services.Services
 {
