@@ -37,21 +37,6 @@ namespace artshare_server.Infrastructure.Migrations
                     b.ToTable("ArtworkGenre", (string)null);
                 });
 
-            modelBuilder.Entity("ArtworkOrder", b =>
-                {
-                    b.Property<int>("ArtworksArtworkId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrdersOrderId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ArtworksArtworkId", "OrdersOrderId");
-
-                    b.HasIndex("OrdersOrderId");
-
-                    b.ToTable("OrderDetails", (string)null);
-                });
-
             modelBuilder.Entity("artshare_server.Core.Models.Account", b =>
                 {
                     b.Property<int>("AccountId")
@@ -61,7 +46,6 @@ namespace artshare_server.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountId"));
 
                     b.Property<string>("AvatarUrl")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -283,6 +267,25 @@ namespace artshare_server.Infrastructure.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("artshare_server.Core.Models.OrderDetails", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ArtworkId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasPrecision(19, 4)
+                        .HasColumnType("decimal(19,4)");
+
+                    b.HasKey("OrderId", "ArtworkId");
+
+                    b.HasIndex("ArtworkId");
+
+                    b.ToTable("OrderDetails");
+                });
+
             modelBuilder.Entity("artshare_server.Core.Models.Report", b =>
                 {
                     b.Property<int>("ReportId")
@@ -362,21 +365,6 @@ namespace artshare_server.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ArtworkOrder", b =>
-                {
-                    b.HasOne("artshare_server.Core.Models.Artwork", null)
-                        .WithMany()
-                        .HasForeignKey("ArtworksArtworkId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("artshare_server.Core.Models.Order", null)
-                        .WithMany()
-                        .HasForeignKey("OrdersOrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("artshare_server.Core.Models.Artwork", b =>
                 {
                     b.HasOne("artshare_server.Core.Models.Account", "Creator")
@@ -444,6 +432,25 @@ namespace artshare_server.Infrastructure.Migrations
                     b.Navigation("Customer");
                 });
 
+            modelBuilder.Entity("artshare_server.Core.Models.OrderDetails", b =>
+                {
+                    b.HasOne("artshare_server.Core.Models.Artwork", "Artwork")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("ArtworkId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("artshare_server.Core.Models.Order", "Order")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Artwork");
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("artshare_server.Core.Models.Report", b =>
                 {
                     b.HasOne("artshare_server.Core.Models.Account", "Account")
@@ -495,7 +502,14 @@ namespace artshare_server.Infrastructure.Migrations
 
                     b.Navigation("Likes");
 
+                    b.Navigation("OrderDetails");
+
                     b.Navigation("Reports");
+                });
+
+            modelBuilder.Entity("artshare_server.Core.Models.Order", b =>
+                {
+                    b.Navigation("OrderDetails");
                 });
 
             modelBuilder.Entity("artshare_server.Core.Models.Watermark", b =>

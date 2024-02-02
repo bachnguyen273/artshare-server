@@ -6,7 +6,7 @@ namespace artshare_server.Services.Interfaces
     {
         Task<IEnumerable<Comment>> GetAllCommentsAsync();
 
-        Task<Comment> GetCommentByIdAsync(int commentId);
+        Task<Comment?> GetCommentByIdAsync(int commentId);
 
         Task<bool> CreateCommentAsync(Comment comment);
 

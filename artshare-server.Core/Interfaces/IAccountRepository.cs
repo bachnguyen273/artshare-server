@@ -4,5 +4,6 @@ namespace artshare_server.Core.Interfaces
 {
     public interface IAccountRepository : IGenericRepository<Account>
     {
+        Task<Account?> GetByEmailAsync(string email);
     }
 }

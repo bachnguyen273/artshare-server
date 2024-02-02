@@ -11,11 +11,13 @@ namespace artshare_server.Infrastructure.Repositories
         private readonly IGenreRepository _genreRepo;
         private readonly ILikeRepository _likeRepo;
         private readonly IOrderRepository _orderRepo;
+        private readonly IOrderDetailsRepository _orderDetailsRepo;
         private readonly IReportRepository _reportRepo;
         private readonly IWatermarkRepository _watermarkRepo;
 
         public UnitOfWork(AppDbContext dbContext, IAccountRepository accountRepo, IArtworkRepository artworkRepo, ICommentRepository commentRepo,
-            IGenreRepository genreRepo, ILikeRepository likeRepo, IOrderRepository orderRepo, IReportRepository reportRepo, IWatermarkRepository watermarkRepo)
+            IGenreRepository genreRepo, ILikeRepository likeRepo, IOrderRepository orderRepo, IOrderDetailsRepository orderDetailsRepo,
+            IReportRepository reportRepo, IWatermarkRepository watermarkRepo)
         {
             _dbContext = dbContext;
             _accountRepo = accountRepo;
@@ -24,6 +26,7 @@ namespace artshare_server.Infrastructure.Repositories
             _genreRepo = genreRepo;
             _likeRepo = likeRepo;
             _orderRepo = orderRepo;
+            _orderDetailsRepo = orderDetailsRepo;
             _reportRepo = reportRepo;
             _watermarkRepo = watermarkRepo;
         }
@@ -34,6 +37,7 @@ namespace artshare_server.Infrastructure.Repositories
         public IGenreRepository GenreRepo => _genreRepo;
         public ILikeRepository LikeRepo => _likeRepo;
         public IOrderRepository OrderRepo => _orderRepo;
+        public IOrderDetailsRepository OrderDetailsRepo => _orderDetailsRepo;
         public IReportRepository ReportRepo => _reportRepo;
         public IWatermarkRepository WatermarkRepo => _watermarkRepo;
 

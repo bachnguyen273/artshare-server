@@ -19,15 +19,12 @@ namespace artshare_server.Services.Services
             return watermarkList;
         }
 
-        public async Task<Watermark> GetWatermarkByIdAsync(int watermarkId)
+        public async Task<Watermark?> GetWatermarkByIdAsync(int watermarkId)
         {
             if (watermarkId > 0)
             {
                 var watermark = await _unitOfWork.WatermarkRepo.GetByIdAsync(watermarkId);
-                if (watermark != null)
-                {
-                    return watermark;
-                }
+                return watermark;
             }
             return null;
         }

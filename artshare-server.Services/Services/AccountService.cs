@@ -1,6 +1,7 @@
 ﻿using artshare_server.Core.Interfaces;
 using artshare_server.Core.Models;
 using artshare_server.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace artshare_server.Services.Services
 {
@@ -19,12 +20,28 @@ namespace artshare_server.Services.Services
             return accountList;
         }
 
-        public async Task<Account> GetAccountByIdAsync(int accountId)
+        public async Task<Account?> GetAccountByIdAsync(int accountId)
         {
             if (accountId > 0)
             {
                 var account = await _unitOfWork.AccountRepo.GetByIdAsync(accountId);
-                if (account != null)
+                return account;
+            }
+            return null;
+        }
+
+        public async Task<Account?> GetAccountByEmailAsync(string email)
+        {
+            var account = await _unitOfWork.AccountRepo.GetByEmailAsync(email);
+            return account;
+        }
+
+        public async Task<Account?> GetAccountByEmailAndPasswordAsync(string email, string password)
+        {
+            var account = await _unitOfWork.AccountRepo.GetByEmailAsync(email);
+            if(account != null)
+            {
+                if(BCrypt.Net.BCrypt.Verify(password, account.PasswordHash))
                 {
                     return account;
                 }
@@ -34,7 +51,16 @@ namespace artshare_server.Services.Services
 
         public async Task<bool> CreateAccountAsync(Account account)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _unitOfWork.AccountRepo.AddAsync(account);
+                var result = await _unitOfWork.SaveAsync() > 0;
+                return result;
+            }
+            catch (DbUpdateException)
+            {
+                throw;
+            }
         }
 
         public async Task<bool> UpdateAccountAsync(Account account)
@@ -46,5 +72,7 @@ namespace artshare_server.Services.Services
         {
             throw new NotImplementedException();
         }
+
+        
     }
 }

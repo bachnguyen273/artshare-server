@@ -19,15 +19,12 @@ namespace artshare_server.Services.Services
             return likeList;
         }
 
-        public async Task<Like> GetLikeByIdAsync(int likeId)
+        public async Task<Like?> GetLikeByIdAsync(int likeId)
         {
             if (likeId > 0)
             {
                 var like = await _unitOfWork.LikeRepo.GetByIdAsync(likeId);
-                if (like != null)
-                {
-                    return like;
-                }
+                return like;
             }
             return null;
         }

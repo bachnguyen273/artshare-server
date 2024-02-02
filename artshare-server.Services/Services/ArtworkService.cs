@@ -19,15 +19,12 @@ namespace artshare_server.Services.Services
             return artworkList;
         }
 
-        public async Task<Artwork> GetArtworkByIdAsync(int artworkId)
+        public async Task<Artwork?> GetArtworkByIdAsync(int artworkId)
         {
             if (artworkId > 0)
             {
                 var artwork = await _unitOfWork.ArtworkRepo.GetByIdAsync(artworkId);
-                if (artwork != null)
-                {
-                    return artwork;
-                }
+                return artwork;
             }
             return null;
         }

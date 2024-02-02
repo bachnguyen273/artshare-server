@@ -6,7 +6,7 @@ namespace artshare_server.Services.Interfaces
     {
         Task<IEnumerable<Order>> GetAllOrdersAsync();
 
-        Task<Order> GetOrderByIdAsync(int orderId);
+        Task<Order?> GetOrderByIdAsync(int orderId);
 
         Task<bool> CreateOrderAsync(Order order);
 

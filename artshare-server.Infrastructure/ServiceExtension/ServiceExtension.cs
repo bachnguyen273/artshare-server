@@ -1,4 +1,5 @@
 ﻿using artshare_server.Core.Interfaces;
+using artshare_server.Infrastructure.AutoMapper;
 using artshare_server.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -12,7 +13,7 @@ namespace artshare_server.Infrastructure.ServiceExtension
         {
             services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("LocalDatabase"));
+                options.UseSqlServer(configuration.GetConnectionString("BachDatabase"));
             });
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAccountRepository, AccountRepository>();
@@ -21,8 +22,11 @@ namespace artshare_server.Infrastructure.ServiceExtension
             services.AddScoped<IGenreRepository, GenreRepository>();
             services.AddScoped<ILikeRepository, LikeRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderDetailsRepository, OrderDetailsRepository>();
             services.AddScoped<IReportRepository, ReportRepository>();
             services.AddScoped<IWatermarkRepository, WatermarkRepository>();
+
+            services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
             return services;
         }

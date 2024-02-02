@@ -19,7 +19,7 @@ namespace artshare_server.Core.Models
         public ArtworkStatus Status { get; set; }
         public Account Creator { get; set; }
         public Watermark? Watermark { get; set; }
-        public ICollection<Order> Orders { get; set; }
+        public ICollection<OrderDetails> OrderDetails { get; set; }
         public ICollection<Like> Likes { get; set; }
         public ICollection<Comment> Comments { get; set; }
         public ICollection<Genre> Genres { get; set; }

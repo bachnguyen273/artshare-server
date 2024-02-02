@@ -6,7 +6,9 @@ namespace artshare_server.Services.Interfaces
     {
         Task<IEnumerable<Account>> GetAllAccountsAsync();
 
-        Task<Account> GetAccountByIdAsync(int accountId);
+        Task<Account?> GetAccountByIdAsync(int accountId);
+        Task<Account?> GetAccountByEmailAsync(string email);
+        Task<Account?> GetAccountByEmailAndPasswordAsync(string email, string password);
 
         Task<bool> CreateAccountAsync(Account account);
 

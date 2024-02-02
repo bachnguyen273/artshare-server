@@ -15,10 +15,10 @@ namespace artshare_server.Infrastructure.FluentAPIs
             builder.Property(t => t.TotalPrice)
                 .IsRequired()
                 .HasPrecision(19, 4);
-            builder.HasMany(t => t.Artworks)
-                .WithMany(e => e.Orders)
-                .UsingEntity(j => j
-                    .ToTable("OrderDetails"));
+            builder.HasMany(t => t.OrderDetails)
+                .WithOne(e => e.Order)
+                .HasForeignKey(x => x.OrderId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

@@ -19,15 +19,12 @@ namespace artshare_server.Services.Services
             return commentList;
         }
 
-        public async Task<Comment> GetCommentByIdAsync(int commentId)
+        public async Task<Comment?> GetCommentByIdAsync(int commentId)
         {
             if (commentId > 0)
             {
                 var comment = await _unitOfWork.CommentRepo.GetByIdAsync(commentId);
-                if (comment != null)
-                {
-                    return comment;
-                }
+                return comment;
             }
             return null;
         }

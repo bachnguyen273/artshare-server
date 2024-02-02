@@ -19,15 +19,12 @@ namespace artshare_server.Services.Services
             return reportList;
         }
 
-        public async Task<Report> GetReportByIdAsync(int reportId)
+        public async Task<Report?> GetReportByIdAsync(int reportId)
         {
             if (reportId > 0)
             {
                 var report = await _unitOfWork.ReportRepo.GetByIdAsync(reportId);
-                if (report != null)
-                {
-                    return report;
-                }
+                return report;
             }
             return null;
         }

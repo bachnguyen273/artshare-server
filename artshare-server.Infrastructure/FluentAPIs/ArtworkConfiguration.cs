@@ -37,6 +37,10 @@ namespace artshare_server.Infrastructure.FluentAPIs
             builder.Property(t => t.Status)
                 .IsRequired()
                 .HasColumnType("nvarchar(10)");
+            builder.HasMany(t => t.OrderDetails)
+                .WithOne(e => e.Artwork)
+                .HasForeignKey(x => x.ArtworkId)
+                .OnDelete(DeleteBehavior.NoAction);
             builder.HasMany(t => t.Likes)
                 .WithOne(e => e.Artwork)
                 .HasForeignKey(x => x.ArtworkId)

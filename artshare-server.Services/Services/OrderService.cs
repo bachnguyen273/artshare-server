@@ -19,15 +19,12 @@ namespace artshare_server.Services.Services
             return orderList;
         }
 
-        public async Task<Order> GetOrderByIdAsync(int orderId)
+        public async Task<Order?> GetOrderByIdAsync(int orderId)
         {
             if (orderId > 0)
             {
                 var order = await _unitOfWork.OrderRepo.GetByIdAsync(orderId);
-                if (order != null)
-                {
-                    return order;
-                }
+                return order;
             }
             return null;
         }

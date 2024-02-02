@@ -6,7 +6,7 @@ namespace artshare_server.Services.Interfaces
     {
         Task<IEnumerable<Genre>> GetAllGenresAsync();
 
-        Task<Genre> GetGenreByIdAsync(int genreId);
+        Task<Genre?> GetGenreByIdAsync(int genreId);
 
         Task<bool> CreateGenreAsync(Genre genre);
 

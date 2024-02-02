@@ -19,7 +19,7 @@ namespace artshare_server.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(72)", maxLength: 72, nullable: false),
-                    AvatarUrl = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    AvatarUrl = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
@@ -197,24 +197,23 @@ namespace artshare_server.Infrastructure.Migrations
                 name: "OrderDetails",
                 columns: table => new
                 {
-                    ArtworksArtworkId = table.Column<int>(type: "int", nullable: false),
-                    OrdersOrderId = table.Column<int>(type: "int", nullable: false)
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    ArtworkId = table.Column<int>(type: "int", nullable: false),
+                    UnitPrice = table.Column<decimal>(type: "decimal(19,4)", precision: 19, scale: 4, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderDetails", x => new { x.ArtworksArtworkId, x.OrdersOrderId });
+                    table.PrimaryKey("PK_OrderDetails", x => new { x.OrderId, x.ArtworkId });
                     table.ForeignKey(
-                        name: "FK_OrderDetails_Artworks_ArtworksArtworkId",
-                        column: x => x.ArtworksArtworkId,
+                        name: "FK_OrderDetails_Artworks_ArtworkId",
+                        column: x => x.ArtworkId,
                         principalTable: "Artworks",
-                        principalColumn: "ArtworkId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ArtworkId");
                     table.ForeignKey(
-                        name: "FK_OrderDetails_Orders_OrdersOrderId",
-                        column: x => x.OrdersOrderId,
+                        name: "FK_OrderDetails_Orders_OrderId",
+                        column: x => x.OrderId,
                         principalTable: "Orders",
-                        principalColumn: "OrderId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "OrderId");
                 });
 
             migrationBuilder.CreateTable(
@@ -281,9 +280,9 @@ namespace artshare_server.Infrastructure.Migrations
                 column: "ArtworkId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderDetails_OrdersOrderId",
+                name: "IX_OrderDetails_ArtworkId",
                 table: "OrderDetails",
-                column: "OrdersOrderId");
+                column: "ArtworkId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_CustomerId",

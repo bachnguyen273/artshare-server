@@ -6,7 +6,7 @@ namespace artshare_server.Services.Interfaces
     {
         Task<IEnumerable<Artwork>> GetAllArtworksAsync();
 
-        Task<Artwork> GetArtworkByIdAsync(int artworkId);
+        Task<Artwork?> GetArtworkByIdAsync(int artworkId);
 
         Task<bool> CreateArtworkAsync(Artwork artwork);
 

@@ -12,12 +12,14 @@ namespace artshare_server
 
             // Add services to the container.
             builder.Services.AddDIServices(builder.Configuration);
+            builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IAccountService, AccountService>();
             builder.Services.AddScoped<IArtworkService, ArtworkService>();
             builder.Services.AddScoped<ICommentService, CommentService>();
             builder.Services.AddScoped<IGenreService, GenreService>();
             builder.Services.AddScoped<ILikeService, LikeService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<IOrderDetailsService, OrderDetailsService>();
             builder.Services.AddScoped<IReportService, ReportService>();
             builder.Services.AddScoped<IWatermarkService, WatermarkService>();
 
@@ -27,13 +29,10 @@ namespace artshare_server
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
-
+            app.UseSwagger();
+            app.UseSwaggerUI();
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

@@ -17,8 +17,7 @@ namespace artshare_server.Infrastructure.Configurations
                 .HasMaxLength(72)
                 .IsRequired();
             builder.Property(t => t.AvatarUrl)
-                .HasMaxLength(255)
-                .IsRequired();
+                .HasMaxLength(255);
             builder.Property(t => t.UserName)
                 .HasMaxLength(36)
                 .IsRequired();

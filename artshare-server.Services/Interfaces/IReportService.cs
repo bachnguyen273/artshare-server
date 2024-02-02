@@ -6,7 +6,7 @@ namespace artshare_server.Services.Interfaces
     {
         Task<IEnumerable<Report>> GetAllReportsAsync();
 
-        Task<Report> GetReportByIdAsync(int reportId);
+        Task<Report?> GetReportByIdAsync(int reportId);
 
         Task<bool> CreateReportAsync(Report report);
 

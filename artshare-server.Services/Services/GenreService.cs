@@ -19,15 +19,12 @@ namespace artshare_server.Services.Services
             return genreList;
         }
 
-        public async Task<Genre> GetGenreByIdAsync(int genreId)
+        public async Task<Genre?> GetGenreByIdAsync(int genreId)
         {
             if (genreId > 0)
             {
                 var genre = await _unitOfWork.GenreRepo.GetByIdAsync(genreId);
-                if (genre != null)
-                {
-                    return genre;
-                }
+                return genre;
             }
             return null;
         }

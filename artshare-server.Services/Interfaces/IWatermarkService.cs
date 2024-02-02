@@ -6,7 +6,7 @@ namespace artshare_server.Services.Interfaces
     {
         Task<IEnumerable<Watermark>> GetAllWatermarksAsync();
 
-        Task<Watermark> GetWatermarkByIdAsync(int watermarkId);
+        Task<Watermark?> GetWatermarkByIdAsync(int watermarkId);
 
         Task<bool> CreateWatermarkAsync(Watermark watermark);
 
