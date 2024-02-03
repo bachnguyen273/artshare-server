@@ -9,7 +9,7 @@ namespace artshare_server.Infrastructure.Repositories
 
         protected GenericRepository(AppDbContext dbContext)
         {
-            _dbContext = dbContext;
+            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
         public async Task<T?> GetByIdAsync(int id)

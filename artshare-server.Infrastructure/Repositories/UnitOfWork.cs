@@ -15,20 +15,18 @@ namespace artshare_server.Infrastructure.Repositories
         private readonly IReportRepository _reportRepo;
         private readonly IWatermarkRepository _watermarkRepo;
 
-        public UnitOfWork(AppDbContext dbContext, IAccountRepository accountRepo, IArtworkRepository artworkRepo, ICommentRepository commentRepo,
-            IGenreRepository genreRepo, ILikeRepository likeRepo, IOrderRepository orderRepo, IOrderDetailsRepository orderDetailsRepo,
-            IReportRepository reportRepo, IWatermarkRepository watermarkRepo)
+        public UnitOfWork()
         {
-            _dbContext = dbContext;
-            _accountRepo = accountRepo;
-            _artworkRepo = artworkRepo;
-            _commentRepo = commentRepo;
-            _genreRepo = genreRepo;
-            _likeRepo = likeRepo;
-            _orderRepo = orderRepo;
-            _orderDetailsRepo = orderDetailsRepo;
-            _reportRepo = reportRepo;
-            _watermarkRepo = watermarkRepo;
+            _dbContext = new AppDbContext();
+            _accountRepo = new AccountRepository(_dbContext);
+            _artworkRepo = new ArtworkRepository(_dbContext);
+            _commentRepo = new CommentRepository(_dbContext);
+            _genreRepo = new GenreRepository(_dbContext);
+            _likeRepo = new LikeRepository(_dbContext);
+            _orderRepo = new OrderRepository(_dbContext);
+            _orderDetailsRepo = new OrderDetailsRepository(_dbContext);
+            _reportRepo = new ReportRepository(_dbContext);
+            _watermarkRepo = new WatermarkRepository(_dbContext);
         }
 
         public IAccountRepository AccountRepo => _accountRepo;
