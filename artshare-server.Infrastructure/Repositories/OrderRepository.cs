@@ -16,13 +16,14 @@ namespace artshare_server.Infrastructure.Repositories
 
         public OrderRepository(AppDbContext dbContext, IMapper mapper) : base(dbContext)
         {
-            _mapper = mapper;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper)); ;
         }
 
         public async Task<List<OrderDTO>> GetOrdersByArtIdAsync(int id)
         {
-            var list= await _dbContext.OrderDetails.Where(x=>x.ArtworkId==id).Include(x=>x.Order).Select(x=>x.Order).DistinctBy(x=>x.OrderId).ToListAsync(); 
-            return _mapper.Map<List<OrderDTO>>(list);
+            var list= await _dbContext.OrderDetails.Where(x=>x.ArtworkId==id).Include(x=>x.Order).Select(x=>x.Order).ToListAsync();
+            var distinct = list.DistinctBy(x => x.OrderId).ToList();
+            return _mapper.Map<List<OrderDTO>>(distinct);
         }
 
         public async Task<List<OrderDTO>> GetOrdersByCusIdAsync(int id)
