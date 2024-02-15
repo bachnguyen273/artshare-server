@@ -32,7 +32,7 @@ namespace artshare_server.Services.Services
             {
                 throw new NullReferenceException("Wrong email or password.");
             }
-            return "Login successfully.";
+            return CreateToken(account);
         }
 
         public async Task<bool> RegisterAsync(RegisterDTO registerData)
@@ -58,13 +58,25 @@ namespace artshare_server.Services.Services
         private string CreateToken(Account account)
         {
             var nowUtc = DateTime.UtcNow;
-            var expirationDuration =
-                TimeSpan.FromMinutes(10);
+            var expirationDuration = TimeSpan.FromMinutes(10);
             var expirationUtc = nowUtc.Add(expirationDuration);
 
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, _configuration.GetSection("JwtSecurityToken:Subject").Value),
+                new Claim(JwtRegisteredClaimNames.Sub, 
+                        _configuration.GetSection("JwtSecurityToken:Subject").Value),
+                new Claim(JwtRegisteredClaimNames.Jti,
+                                  Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Iat, 
+                                  EpochTime.GetIntDate(nowUtc).ToString(), 
+                                  ClaimValueTypes.Integer64),
+                new Claim(JwtRegisteredClaimNames.Exp, 
+                                  EpochTime.GetIntDate(expirationUtc).ToString(), 
+                                  ClaimValueTypes.Integer64),
+                new Claim(JwtRegisteredClaimNames.Iss, 
+                                  _configuration.GetSection("JwtSecurityToken:Issuer").Value),
+                new Claim(JwtRegisteredClaimNames.Aud, 
+                                  _configuration.GetSection("JwtSecurityToken:Audience").Value),
                 new Claim(ClaimTypes.Email, account.Email),
                 new Claim(ClaimTypes.Role, account.Role.ToString())
             };
@@ -75,7 +87,7 @@ namespace artshare_server.Services.Services
 
             var token = new JwtSecurityToken(
                         issuer: _configuration.GetSection("JwtSecurityToken:Issuer").Value,
-                        audience: _configuration.GetSection("JwtSecurityToken:JWTAuthClient").Value,
+                        audience: _configuration.GetSection("JwtSecurityToken:Audience").Value,
                         claims: claims,
                         expires: expirationUtc,
                         signingCredentials: signIn);
