@@ -1,4 +1,5 @@
-﻿using artshare_server.Core.Interfaces;
+﻿using artshare_server.ApiModels.DTOs;
+using artshare_server.Core.Interfaces;
 using artshare_server.Core.Models;
 using artshare_server.Services.Interfaces;
 
@@ -42,6 +43,18 @@ namespace artshare_server.Services.Services
         public async Task<bool> DeleteOrderAsync(int orderId)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<List<OrderDTO>> GetOrdersByCusIdAsync(int id)
+        {
+            var orderList = await _unitOfWork.OrderRepo.GetOrdersByCusIdAsync(id);
+            return orderList;
+        }
+
+        public async Task<List<OrderDTO>> GetOrdersByArtIdAsync(int id)
+        {
+            var orderList = await _unitOfWork.OrderRepo.GetOrdersByArtIdAsync(id);
+            return orderList;
         }
     }
 }
