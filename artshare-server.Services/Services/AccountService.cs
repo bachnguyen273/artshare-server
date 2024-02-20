@@ -1,7 +1,10 @@
-﻿using artshare_server.Core.Interfaces;
+﻿using artshare_server.ApiModels.DTOs;
+using artshare_server.Core.Interfaces;
 using artshare_server.Core.Models;
 using artshare_server.Services.Interfaces;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace artshare_server.Services.Services
 {
@@ -63,9 +66,18 @@ namespace artshare_server.Services.Services
             }
         }
 
-        public async Task<bool> UpdateAccountAsync(Account account)
+        public async Task<bool> UpdateAccountAsync(int id, ProfileDTO account)
         {
-            throw new NotImplementedException();
+            var profile = await _unitOfWork.AccountRepo.GetByIdAsync(id);
+            profile.Email = account.Email;
+            profile.PasswordHash = account.PasswordHash;
+            profile.AvatarUrl = account.AvatarUrl;
+            profile.UserName = account.UserName;
+            profile.FullName = account.FullName;
+            profile.PhoneNumber = account.PhoneNumber;
+            _unitOfWork.AccountRepo.Update(profile);
+            await _unitOfWork.SaveAsync();
+            return true;
         }
 
         public async Task<bool> DeleteAccountAsync(int accountId)
@@ -73,6 +85,10 @@ namespace artshare_server.Services.Services
             throw new NotImplementedException();
         }
 
-        
+        public async Task<Account?> GetAccountByUsernameAsync(string username)
+        {
+            var account = await _unitOfWork.AccountRepo.GetByUsernameAsync(username);
+            return account;
+        }
     }
 }

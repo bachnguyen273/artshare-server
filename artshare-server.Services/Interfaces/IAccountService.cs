@@ -1,4 +1,5 @@
-﻿using artshare_server.Core.Models;
+﻿using artshare_server.ApiModels.DTOs;
+using artshare_server.Core.Models;
 
 namespace artshare_server.Services.Interfaces
 {
@@ -9,10 +10,11 @@ namespace artshare_server.Services.Interfaces
         Task<Account?> GetAccountByIdAsync(int accountId);
         Task<Account?> GetAccountByEmailAsync(string email);
         Task<Account?> GetAccountByEmailAndPasswordAsync(string email, string password);
+        Task<Account?> GetAccountByUsernameAsync(string username);
 
         Task<bool> CreateAccountAsync(Account account);
 
-        Task<bool> UpdateAccountAsync(Account account);
+        Task<bool> UpdateAccountAsync(int id, ProfileDTO profile);
 
         Task<bool> DeleteAccountAsync(int accountId);
     }
