@@ -1,4 +1,4 @@
-﻿using artshare_server.Core.Interfaces;
+﻿    using artshare_server.Core.Interfaces;
 using artshare_server.Core.Models;
 using artshare_server.Services.Interfaces;
 
@@ -16,6 +16,11 @@ namespace artshare_server.Services.Services
         public async Task<IEnumerable<Comment>> GetAllCommentsAsync()
         {
             var commentList = await _unitOfWork.CommentRepo.GetAllAsync();
+            return commentList;
+        }
+        public async Task<IEnumerable<Comment>> GetAllCommentsByArtworkIdAsync(int artworkId)
+        {
+            var commentList = await _unitOfWork.CommentRepo.GetAllCommentsByArtworkIdAsync(artworkId);
             return commentList;
         }
 
