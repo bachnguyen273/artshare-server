@@ -24,7 +24,7 @@ namespace artshare_server.Services.ServiceExtension
             services.AddScoped<IOrderDetailsService, OrderDetailsService>();
             services.AddScoped<IReportService, ReportService>();
             services.AddScoped<IWatermarkService, WatermarkService>();
-
+            
             services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
             return services;
