@@ -1,7 +1,7 @@
 using artshare_server.Services.ServiceExtension;
-using artshare_server.WebAPIExtension;
+using artshare_server.WebAPI.WebAPIExtension;
 
-namespace artshare_server
+namespace artshare_server.WebAPI
 {
     public class Program
     {

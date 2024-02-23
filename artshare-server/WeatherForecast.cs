@@ -1,4 +1,4 @@
-namespace artshare_server
+namespace artshare_server.WebAPI
 {
     public class WeatherForecast
     {
