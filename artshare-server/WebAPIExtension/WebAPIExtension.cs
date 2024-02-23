@@ -3,7 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 
-namespace artshare_server.WebAPIExtension
+namespace artshare_server.WebAPI.WebAPIExtension
 {
     public static class WebAPIExtension
     {

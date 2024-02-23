@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace artshare_server.ResponseModels
+namespace artshare_server.WebAPI.ResponseModels
 {
     public class SucceededResponseModel
     {
