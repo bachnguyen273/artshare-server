@@ -1,5 +1,8 @@
 ﻿using artshare_server.ApiModels.DTOs;
+using artshare_server.Core.Enums;
+using artshare_server.Core.Interfaces;
 using artshare_server.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,13 +19,30 @@ namespace artshare_server.Controllers
             _accountService = accountService;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAllAccount()
+        {
+            try
+            {
+                var accList = await _accountService.GetAllAccountsAsync();
+                if(accList == null)
+                {
+                    return BadRequest("List is null");
+                }
+                return Ok(accList);
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("{username}")]
         public async Task<IActionResult> GetAccountByUsername(string username)
         {
             try
             {
                 var account = await _accountService.GetAccountByUsernameAsync(username);
-                if (account == null)
+                if (account == null || account.Status.Equals(AccountStatus.Inactive))
                 {
                     return NotFound();
                 }
@@ -73,6 +93,26 @@ namespace artshare_server.Controllers
                 return BadRequest(ex.Message);
             }
            
+        }
+
+
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteAccount(int id)
+        {
+            try
+            {
+                var check = await _accountService.UpdateAccountStatuslAsync(id);
+                if (!check)
+                {
+                    return BadRequest("Delete Fail");
+                }
+                return Ok("Delete Success");
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
