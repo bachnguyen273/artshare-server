@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
 
 namespace artshare_server.WebApp.Pages
@@ -19,6 +20,11 @@ namespace artshare_server.WebApp.Pages
 		}
 		public async Task<IActionResult> OnPost()
 		{
+			 IConfiguration config = new ConfigurationBuilder()
+										.SetBasePath(Directory.GetCurrentDirectory())
+										.AddJsonFile("appsettings.json", true, true)
+										.Build();
+			string apiUrl = config["API_URL"];
 			if (!ModelState.IsValid)
 			{
 				return Page();
@@ -31,7 +37,7 @@ namespace artshare_server.WebApp.Pages
 			};
 
 			var jsonBody = JsonConvert.SerializeObject(requestBody);
-			var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5292/api/Auth/Login");
+			var request = new HttpRequestMessage(HttpMethod.Post, $"{apiUrl}/Auth/Login");
 			request.Content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
 
 			// Send the request
