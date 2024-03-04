@@ -20,7 +20,5 @@ namespace artshare_server.Infrastructure.Repositories
         {
             return await _dbContext.Accounts.Where(x => x.UserName == username).FirstOrDefaultAsync();
         }
- 
-      
     }
 }
