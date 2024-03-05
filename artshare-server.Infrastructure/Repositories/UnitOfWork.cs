@@ -1,4 +1,5 @@
 ﻿using artshare_server.Core.Interfaces;
+using AutoMapper;
 
 namespace artshare_server.Infrastructure.Repositories
 {
@@ -14,17 +15,18 @@ namespace artshare_server.Infrastructure.Repositories
         private readonly IOrderDetailsRepository _orderDetailsRepo;
         private readonly IReportRepository _reportRepo;
         private readonly IWatermarkRepository _watermarkRepo;
-
-        public UnitOfWork()
+        private readonly IMapper _mapper;
+        public UnitOfWork(IMapper mapper)
         {
+            _mapper = mapper;
             _dbContext = new AppDbContext();
             _accountRepo = new AccountRepository(_dbContext);
             _artworkRepo = new ArtworkRepository(_dbContext);
             _commentRepo = new CommentRepository(_dbContext);
             _genreRepo = new GenreRepository(_dbContext);
             _likeRepo = new LikeRepository(_dbContext);
-            _orderRepo = new OrderRepository(_dbContext);
-            _orderDetailsRepo = new OrderDetailsRepository(_dbContext);
+            _orderRepo = new OrderRepository(_dbContext,_mapper);
+            _orderDetailsRepo = new OrderDetailsRepository(_dbContext,_mapper);
             _reportRepo = new ReportRepository(_dbContext);
             _watermarkRepo = new WatermarkRepository(_dbContext);
         }

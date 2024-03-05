@@ -1,4 +1,5 @@
-﻿using artshare_server.Core.Interfaces;
+﻿using artshare_server.ApiModels.DTOs;
+using artshare_server.Core.Interfaces;
 using artshare_server.Core.Models;
 using artshare_server.Services.Interfaces;
 
@@ -19,7 +20,7 @@ namespace artshare_server.Services.Services
             return orderList;
         }
 
-        public async Task<OrderDetails?> GetOrderDetailsByOrderIdAsync(int orderId)
+        public async Task<List<OrderDetailDTO>?> GetOrderDetailsByOrderIdAsync(int orderId)
         {
             if (orderId > 0)
             {
