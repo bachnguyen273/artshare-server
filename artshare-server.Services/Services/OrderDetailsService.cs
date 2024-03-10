@@ -25,6 +25,7 @@ namespace artshare_server.Services.Services
             if (orderId > 0)
             {
                 var orderDetails = await _unitOfWork.OrderDetailsRepo.GetByOrderIdAsync(orderId);
+                _unitOfWork.SaveAsync();
                 return orderDetails;
             }
             return null;
@@ -32,7 +33,8 @@ namespace artshare_server.Services.Services
 
         public async Task<bool> CreateOrderDetailsAsync(OrderDetails orderDetails)
         {
-            throw new NotImplementedException();
+            _unitOfWork.OrderDetailsRepo.AddAsync(orderDetails);
+            return true;
         }
 
         public async Task<bool> UpdateOrderDetailsAsync(OrderDetails orderDetails)
