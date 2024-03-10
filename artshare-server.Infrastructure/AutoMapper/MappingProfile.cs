@@ -14,6 +14,8 @@ namespace artshare_server.Infrastructure.AutoMapper
                 .ForMember(des => des.Role, src => src.MapFrom(src => EnumMapper<AccountRole>.MapType(src.Role)));
             CreateMap<Order, OrderDTO>();
             CreateMap<OrderDetails, OrderDetailDTO>();
+            CreateMap<CreateOrderDTO, Order>();
+            
         }
     }
 }
