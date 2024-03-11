@@ -24,9 +24,9 @@ namespace artshare_server.Controllers
             }return Ok(listComments);
         }
         [HttpGet]
-        public async Task<IActionResult> GetAllCommentByArtWorkAsync()
+        public async Task<IActionResult> GetAllCommentByArtWorkIdAsync(int artwordId)
         {
-            var listComments = await _commentService.GetAllCommentsAsync();
+            var listComments = await _commentService.GetAllCommentsByArtworkIdAsync(artwordId);
             if (listComments == null)
             {
                 return NotFound();

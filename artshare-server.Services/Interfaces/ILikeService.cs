@@ -12,6 +12,11 @@ namespace artshare_server.Services.Interfaces
 
         Task<bool> UpdateLikeAsync(Like like);
 
-        Task<bool> DeleteLikeAsync(int likeId);
+        Task<bool> DeleteLikeAsync(Like like);
+        Task<IEnumerable<Like>> GetAllLikeByArtworkId(int artworkId);
+        Task<Like> GetLikeByAccountIdAndArtworkId(int accountId, int artworkId);
+        Task<int> CountLikeByArtWorkId(int artworkId);
+        Task<int> CountDisLikeByArtWorkId(int artworkId);
+        
     }
 }
