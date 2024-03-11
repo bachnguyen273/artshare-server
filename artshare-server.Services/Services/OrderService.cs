@@ -32,7 +32,9 @@ namespace artshare_server.Services.Services
 
         public async Task<bool> CreateOrderAsync(Order order)
         {
-            throw new NotImplementedException();
+            await _unitOfWork.OrderRepo.AddAsync(order);
+            _unitOfWork.SaveAsync();
+            return true;
         }
 
         public async Task<bool> UpdateOrderAsync(Order order)
