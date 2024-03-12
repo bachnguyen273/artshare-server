@@ -28,7 +28,7 @@ namespace artshare_server.Infrastructure.Repositories
             _orderRepo = new OrderRepository(_dbContext,_mapper);
             _orderDetailsRepo = new OrderDetailsRepository(_dbContext,_mapper);
             _reportRepo = new ReportRepository(_dbContext);
-            _watermarkRepo = new WatermarkRepository(_dbContext);
+            _watermarkRepo = new WatermarkRepository(_dbContext,_mapper);
         }
 
         public IAccountRepository AccountRepo => _accountRepo;
