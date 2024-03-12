@@ -20,7 +20,6 @@ namespace artshare_server.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetAllAccount()
         {
             try
@@ -38,7 +37,6 @@ namespace artshare_server.Controllers
         }
 
         [HttpGet("{username}")]
-        [Authorize]
         public async Task<IActionResult> GetAccountByUsername(string username)
         {
             try
@@ -57,7 +55,6 @@ namespace artshare_server.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
         public async Task<IActionResult> GetAccountById (int id)
         {
             try
@@ -76,7 +73,6 @@ namespace artshare_server.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize]
         public async Task<IActionResult> UpdateProfile (int id, ProfileDTO profileDTO)
         {
             try
@@ -101,7 +97,6 @@ namespace artshare_server.Controllers
 
 
         [HttpDelete("{id}")]
-        [Authorize]
         public async Task<IActionResult> DeleteAccount(int id)
         {
             try

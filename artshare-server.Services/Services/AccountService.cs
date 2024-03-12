@@ -14,9 +14,10 @@ namespace artshare_server.Services.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public AccountService(IUnitOfWork unitOfWork)
+        public AccountService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<Account>> GetAllAccountsAsync()
@@ -25,12 +26,12 @@ namespace artshare_server.Services.Services
             return accountList;
         }
 
-        public async Task<Account?> GetAccountByIdAsync(int accountId)
+        public async Task<ProfileDTO?> GetAccountByIdAsync(int accountId)
         {
             if (accountId > 0)
             {
                 var account = await _unitOfWork.AccountRepo.GetByIdAsync(accountId);
-                return account;
+                return _mapper.Map<ProfileDTO>(account);
             }
             return null;
         }
@@ -77,12 +78,13 @@ namespace artshare_server.Services.Services
                 {
                     return false;
                 }
-                profile.Email = account.Email;
-                profile.PasswordHash = BCrypt.Net.BCrypt.HashPassword(account.PasswordHash);
+                profile.Email = account.Email;               
+                profile.PasswordHash = (account.PasswordHash != null) ? BCrypt.Net.BCrypt.HashPassword(account.PasswordHash):profile.PasswordHash;
                 profile.AvatarUrl = account.AvatarUrl;
                 profile.UserName = account.UserName;
                 profile.FullName = account.FullName;
                 profile.PhoneNumber = account.PhoneNumber;
+                profile.JoinDate = account.JoinDate;             
                 profile.Status = (account.Status.Equals("Active")) ? AccountStatus.Active : AccountStatus.Inactive;  
                 _unitOfWork.AccountRepo.Update(profile);
                 await _unitOfWork.SaveAsync();
@@ -98,10 +100,10 @@ namespace artshare_server.Services.Services
             throw new NotImplementedException();
         }
 
-        public async Task<Account?> GetAccountByUsernameAsync(string username)
+        public async Task<ProfileDTO> GetAccountByUsernameAsync(string username)
         {
-            var account = await _unitOfWork.AccountRepo.GetByUsernameAsync(username);
-            return account;
+            var account = await _unitOfWork.AccountRepo.GetByUsernameAsync(username);            
+            return _mapper.Map<ProfileDTO>(account); 
         }
 
         public async Task<bool> UpdateAccountStatuslAsync(int accountId)
