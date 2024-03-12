@@ -1,6 +1,41 @@
 ﻿@page
 @model artshare_server.WebApp.Pages.Audiences.CartModel
 @{
+    Layout = "_Layout";
 }
 
-<section class=""
+<section class="banner-area relative">
+    <div class="container">
+        <div class="section-top-border">
+            <h3 class="mb-30">Shopping Cart</h3>
+            <div class="progress-table-wrap">
+                <div class="progress-table">
+                    <div class="table-row">
+                        <div class="table-head">Product</div>
+                        <div class="table-head">Price</div>
+                        <div class="table-head"></div>
+                    </div>
+                    <!-- Repeat this block for each product in the cart -->
+                    <div class="table-row">
+                        <div class="table-cell">
+                            <img src="path_to_product_image" alt="Product Image" class="img-fluid" style="width: 50px;">
+                            Product Name
+                        </div>
+                        <div class="table-cell">$Product Price</div>
+                        <div class="table-cell"><button class="btn btn-danger">Remove</button></div>
+                    </div>
+                    <!-- End of product block -->
+                    <div class="table-row">
+                        <div class="table-cell">Total</div>
+                        <div class="table-cell">$Total Price</div>
+                        <div class="table-cell"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="button-group-area mt-40">
+                <a href="#" class="genric-btn primary-border circle">Continue Shopping</a>
+                <a href="#" class="genric-btn primary circle">Checkout</a>
+            </div>
+        </div>
+    </div>
+</section>
