@@ -118,7 +118,35 @@ namespace artshare_server.WebAPI.Controllers
                 });
             }
         }
+        [HttpPost]
+        public async Task<IActionResult> UploadArtAndWatermark(IFormFile artwork, IFormFile watermark)
+        {
+            var combinedImage = await FileHelper.CombineImages(artwork, watermark);
+            try
+            {
+                var containerName = "apifile"; // replace with your container name
+                var uri = await _azureBlobStorageService.UploadFileAsync(containerName, combinedImage);
 
+                return Ok(new SucceededResponseModel()
+                {
+                    Status = Ok().StatusCode,
+                    Message = "File uploaded successfully",
+                    Data = new
+                    {
+                        FileName = combinedImage.FileName,
+                        FileUri = uri
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new FailedResponseModel
+                {
+                    Status = 500,
+                    Message = $"An error occurred while uploading the file: {ex.Message}"
+                });
+            }
+        }
 
     }
 }

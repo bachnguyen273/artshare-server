@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\artshare-server.Core\artshare-server.Core.csproj" />
     <ProjectReference Include="..\artshare-server.Services\artshare-server.Services.csproj" />
   </ItemGroup>
 
