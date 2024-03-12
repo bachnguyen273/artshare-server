@@ -16,6 +16,9 @@ namespace artshare_server.Infrastructure.AutoMapper
             CreateMap<OrderDetails, OrderDetailDTO>();
             CreateMap<Watermark, WatermarkDTO>();
             CreateMap<WatermarkCreateDTO, Watermark>();
+
+            CreateMap<CreateOrderDTO, Order>();
+            
         }
     }
 }

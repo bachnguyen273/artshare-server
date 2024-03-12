@@ -13,10 +13,12 @@ namespace artshare_server.WebAPI.Controllers
     {
         private readonly IAuthService _authService;
         private readonly IAccountService _accountService;
-        public AuthController(IAuthService authService, IAccountService accountService)
+        private readonly IAzureBlobStorageService _azureBlobStorageService;
+        public AuthController(IAuthService authService, IAccountService accountService, IAzureBlobStorageService azureBlobStorageService)
         {
             _authService = authService;
             _accountService = accountService;
+            _azureBlobStorageService = azureBlobStorageService;
         }
 
         [HttpPost]
@@ -80,5 +82,71 @@ namespace artshare_server.WebAPI.Controllers
                 });
             }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadFile(IFormFile file)
+        {
+            try
+            {
+                if (file == null || file.Length == 0)
+                    return BadRequest(new FailedResponseModel()
+                    {
+                        Status = BadRequest().StatusCode,
+                        Message = "File is not selected or empty."
+                    });
+
+                var containerName = "apifile"; // replace with your container name
+                var uri = await _azureBlobStorageService.UploadFileAsync(containerName, file);
+
+                return Ok(new SucceededResponseModel()
+                {
+                    Status = Ok().StatusCode,
+                    Message = "File uploaded successfully",
+                    Data = new
+                    {
+                        FileName = file.FileName,
+                        FileUri = uri
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new FailedResponseModel
+                {
+                    Status = 500,
+                    Message = $"An error occurred while uploading the file: {ex.Message}"
+                });
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> UploadArtAndWatermark(IFormFile artwork, IFormFile watermark)
+        {
+            var combinedImage = await FileHelper.CombineImages(artwork, watermark);
+            try
+            {
+                var containerName = "apifile"; // replace with your container name
+                var uri = await _azureBlobStorageService.UploadFileAsync(containerName, combinedImage);
+
+                return Ok(new SucceededResponseModel()
+                {
+                    Status = Ok().StatusCode,
+                    Message = "File uploaded successfully",
+                    Data = new
+                    {
+                        FileName = combinedImage.FileName,
+                        FileUri = uri
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new FailedResponseModel
+                {
+                    Status = 500,
+                    Message = $"An error occurred while uploading the file: {ex.Message}"
+                });
+            }
+        }
+
     }
 }
