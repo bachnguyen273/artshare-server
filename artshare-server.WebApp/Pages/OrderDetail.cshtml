@@ -1,0 +1,58 @@
+﻿@page "{id:int}"
+@model artshare_server.WebApp.Pages.OrderDetailModel
+@{
+    var oderDetails = Model.OrderDetails;
+}
+<section class="banner-area relative" id="home">
+    <div class="overlay overlay-bg"></div>
+    <div class="container">
+        <div class="row fullscreen d-flex align-items-center justify-content-center">
+            <div class="banner-content col-lg-8">
+                <h1 class="text-white">
+                    Order Details
+                </h1>               
+                <br />
+                <table class="table table-striped table-bordered">
+                    <thead class="thead-dark, font-weight-bold, text">
+                        <tr>
+                            <td></td>
+                            <td>Order Id</td>
+                            <td>Artwork Id</td>
+                            <td>Unit Price</td>                            
+                        </tr>
+                    </thead>
+                    <tbody class="green-text">
+                        @{
+                            int i = 0;
+                            foreach (var oderDetail in oderDetails)
+                            {
+                                i++;
+                                <tr>
+                                    <td>@i</td>
+                                    <td>@oderDetail.OrderId</td>
+                                    <td>@oderDetail.ArtworkId</td>
+                                    <td>@oderDetail.UnitPrice</td>                                 
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<style>
+    .green-text {
+        color: darkseagreen;
+        font-weight: bold;
+        font-size: 15px;
+    }
+
+    .text {
+        color: deeppink;
+        font-size: 20px;
+    }
+</style>
