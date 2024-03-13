@@ -80,8 +80,8 @@
       }
     },
     methods = {
-      init: function(options) {
-        var o = $.extend({}, defaults, options);
+      init: function(filter) {
+        var o = $.extend({}, defaults, filter);
         return this.each(function() {
           var stickyElement = $(this);
 
@@ -115,7 +115,7 @@
         });
       },
       update: scroller,
-      unstick: function(options) {
+      unstick: function(filter) {
         return this.each(function() {
           var unstickyElement = $(this);
 
