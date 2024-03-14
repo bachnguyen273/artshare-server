@@ -31,7 +31,9 @@
                     <p>@Model.Artwork.description</p>
                     <p>@Model.Artwork.price</p>
                 </div>
-                <a asp-page="/Login" class="primary-btn text-uppercase">Art to cart</a>
+                <form method="post" asp-page-handler="AddToCart" asp-route-ItemId="@Model.Artwork.artworkId">
+                    <button type="submit" class="genric-btn info radius">Add to Cart</button>
+                </form>
             </div>
         </div>
     </div>
