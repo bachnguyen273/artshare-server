@@ -9,6 +9,15 @@ namespace artshare_server.WebApp
             // Add services to the container.
             builder.Services.AddRazorPages();
 
+            builder.Services.AddDistributedMemoryCache();
+
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(600);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -25,6 +34,8 @@ namespace artshare_server.WebApp
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.MapRazorPages();
 
