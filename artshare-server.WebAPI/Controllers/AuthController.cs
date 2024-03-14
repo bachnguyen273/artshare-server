@@ -4,6 +4,7 @@ using artshare_server.Services.CustomExceptions;
 using artshare_server.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using artshare_server.Core.Enums;
 
 namespace artshare_server.WebAPI.Controllers
 {
@@ -27,16 +28,17 @@ namespace artshare_server.WebAPI.Controllers
             try
             {
                 var loginRequest = await _authService.LoginAsync(loginData);
-                return Ok(new SucceededResponseModel()
-                {
-                    Status = Ok().StatusCode,
-                    Message = "Success",
-                    Data = new
-                    {
-                        Token = loginRequest,
-                        Account = await _accountService.GetAccountByEmailAsync(loginData.Email)
-                    }
-                });
+                //return Ok(new SucceededResponseModel()
+                //{
+                //    Status = Ok().StatusCode,
+                //    Message = "Success",
+                //    Data = new
+                //    {
+                //        Token = loginRequest,
+                //        Account = await _accountService.GetAccountByEmailAsync(loginData.Email)
+                //    }
+                //});
+                return Ok(loginRequest);
             }
             catch (NullReferenceException ex)
             {
@@ -49,11 +51,11 @@ namespace artshare_server.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterDTO registerRequest)
+        public async Task<IActionResult> Register([FromQuery] AccountRole accounrRole, [FromBody] RegisterDTO registerRequest)
         {
             try
             {
-                var requestResult = await _authService.RegisterAsync(registerRequest);
+                var requestResult = await _authService.RegisterAsync(accounrRole, registerRequest);
                 if (!requestResult)
                 {
                     return StatusCode(500, new FailedResponseModel
@@ -84,7 +86,7 @@ namespace artshare_server.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UploadFile(IFormFile file)
+        public async Task<IActionResult> UploadFile(IFormFile file, ContainerEnum containerName)
         {
             try
             {
@@ -95,8 +97,8 @@ namespace artshare_server.WebAPI.Controllers
                         Message = "File is not selected or empty."
                     });
 
-                var containerName = "apifile"; // replace with your container name
-                var uri = await _azureBlobStorageService.UploadFileAsync(containerName, file);
+                //var containerName = "apifile"; // replace with your container name
+                var uri = await _azureBlobStorageService.UploadFileAsync(containerName.ToString(), file);
 
                 return Ok(new SucceededResponseModel()
                 {
