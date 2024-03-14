@@ -23,7 +23,7 @@ namespace artshare_server.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllGenre([FromQuery] GenreFilters genreFilters)
+        public async Task<IActionResult> GetGenres([FromQuery] GenreFilters genreFilters)
         {
             try
             {
