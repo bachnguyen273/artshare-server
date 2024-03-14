@@ -35,47 +35,6 @@ namespace artshare_server.WebApp.Pages
             }
         }
 
-        public IActionResult OnPostAddToCart(int itemId)
-        {
-            Role = HttpContext.Session.GetString("AccountRole");
-            if (AccountRole == "Customer")
-            {
-                try
-                {
-                    var cage = _birdCageRepository.GetCageById(itemId);
-
-                    if (cage != null)
-                    {
-                        var cart = HttpContext.Session.Get<Dictionary<BirdCage, int>>("Cart");
-                        if (cart != null)
-                        {
-                            if (cart.ContainsKey(cage))
-                            {
-                                cart[cage]++;
-                            }
-                            else
-                            {
-                                cart.Add(cage, 1);
-                            }
-                            HttpContext.Session.Set("Cart", cart);
-                        }
-                        else
-                        {
-                            cart = new Dictionary<BirdCage, int> { { cage, 1 } };
-                            HttpContext.Session.Set("Cart", cart);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    TempData["ErrorMessage"] = "An error occurred: " + ex.Message;
-                }
-                return RedirectToPage();
-            }
-            else
-            {
-                return RedirectToPage("/Users/Login");
-            }
-        }
+        
     }
 }
