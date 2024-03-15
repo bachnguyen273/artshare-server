@@ -2,6 +2,7 @@
 using artshare_server.Core.Enums;
 using artshare_server.Core.Interfaces;
 using artshare_server.Services.Interfaces;
+using artshare_server.WebAPI.ResponseModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +14,12 @@ namespace artshare_server.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;
+        private readonly IAzureBlobStorageService _azureBlobStorageService;
 
-        public AccountController(IAccountService accountService)
+        public AccountController(IAccountService accountService, IAzureBlobStorageService azureBlobStorageService)
         {
             _accountService = accountService;
+            _azureBlobStorageService = azureBlobStorageService;
         }
 
         [HttpGet]
@@ -111,6 +114,42 @@ namespace artshare_server.Controllers
             catch(Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadFileAvatar(IFormFile file)
+        {
+            try
+            {
+                if (file == null || file.Length == 0)
+                    return BadRequest(new FailedResponseModel()
+                    {
+                        Status = BadRequest().StatusCode,
+                        Message = "File is not selected or empty."
+                    });
+
+                var containerName = "avatar"; // replace with your container name
+                var uri = await _azureBlobStorageService.UploadFileAsync(containerName, file);
+
+                return Ok(new SucceededResponseModel()
+                {
+                    Status = Ok().StatusCode,
+                    Message = "File uploaded successfully",
+                    Data = new
+                    {
+                        FileName = file.FileName,
+                        FileUri = uri
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new FailedResponseModel
+                {
+                    Status = 500,
+                    Message = $"An error occurred while uploading the file: {ex.Message}"
+                });
             }
         }
     }

@@ -20,10 +20,10 @@ namespace artshare_server.Services.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Account>> GetAllAccountsAsync()
+        public async Task<IEnumerable<ProfileDTO>> GetAllAccountsAsync()
         {
             var accountList = await _unitOfWork.AccountRepo.GetAllAsync();
-            return accountList;
+            return _mapper.Map<IEnumerable<ProfileDTO>>(accountList);
         }
 
         public async Task<ProfileDTO?> GetAccountByIdAsync(int accountId)
@@ -80,7 +80,7 @@ namespace artshare_server.Services.Services
                 }
                 profile.Email = account.Email;               
                 profile.PasswordHash = (account.PasswordHash != null) ? BCrypt.Net.BCrypt.HashPassword(account.PasswordHash):profile.PasswordHash;
-                profile.AvatarUrl = account.AvatarUrl;
+                profile.AvatarUrl = (account.AvatarUrl != null) ? account.AvatarUrl:profile.AvatarUrl;
                 profile.UserName = account.UserName;
                 profile.FullName = account.FullName;
                 profile.PhoneNumber = account.PhoneNumber;
