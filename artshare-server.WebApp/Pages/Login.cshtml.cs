@@ -56,12 +56,13 @@ namespace artshare_server.WebApp.Pages
 
                 // Extract the role claim
                 var role = tokenS.Claims.First(claim => claim.Type == ClaimTypes.Role).Value;
+                HttpContext.Session.SetString("Role", role);
 
                 // Redirect users based on their roles
                 switch (role)
                 {
                     case "Audience":
-                        return RedirectToPage("./Audience/Index");
+                        return RedirectToPage("./Index");
                     case "Creator":
                         return RedirectToPage("./Creators/Index");
                     case "Admin":

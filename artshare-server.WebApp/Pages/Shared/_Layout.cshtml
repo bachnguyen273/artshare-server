@@ -39,17 +39,34 @@
                 </div>
                 <nav id="nav-menu-container">
                     <ul class="nav-menu">
-                        <li class="menu-active"><a href="../index">Home</a></li>
-                        <li><a asp-page="/Login">Login</a></li>
-                        <li><a asp-page="/Register">Register</a></li>
-                        <li class="menu-has-children">
-                            <a href="">Pages</a>
-                            <ul>
-                                <li><a href="blog-single.html">Blog Single</a></li>
-                                <li><a href="category.html">Category</a></li>
-                                <li><a href="elements.html">Elements</a></li>
-                            </ul>
-                        </li>
+                        
+                        @if(Context.Session.GetString("Role") == null)
+                        {
+                            <li class="menu-active"><a href="../Index">Home</a></li>
+                            <li><a href="../Login">Login</a></li>
+                            <li><a href="../Register">Register</a></li>
+                        }
+                        else
+                        {
+                            if (Context.Session.GetString("Role") == "Audience")
+                            {
+                                <li class="menu-active"><a href="../Index">Home</a></li>
+                                <li><a href="../Audiences/Cart">Cart</a></li>
+                                <li><a href="../Audiences/AudienceOrderList">Order</a></li>
+                            }
+                            else if (Context.Session.GetString("Role") == "Creator")
+                            {
+                                <li><a href="../Creators/Index">Dashboard</a></li>
+                                <li><a href="../Creators/Artworks/Index">Artwork</a></li>
+                                <li><a href="../Creators/AudienceOrderList">Order</a></li>
+                            }
+                            else if (Context.Session.GetString("Role") == "Admin")
+                            {
+                                <li><a href="../Admins/Index">Dashboard</a></li>
+                                <li><a href="../Admins/AllOrdersList">Order</a></li>
+                            }
+                            <li><a href="../Logout">Logout</a></li>
+                        }
                     </ul>
                 </nav><!-- #nav-menu-container -->
             </div>

@@ -31,9 +31,18 @@
                     <p>@Model.Artwork.description</p>
                     <p>@Model.Artwork.price</p>
                 </div>
-                <form method="post" asp-page-handler="AddToCart" asp-route-ItemId="@Model.Artwork.artworkId">
-                    <button type="submit" class="genric-btn info radius">Add to Cart</button>
-                </form>
+                @if (Model.IsProductInCart(Model.Artwork))
+                {
+                    <form method="post" asp-page-handler="RemoveFromCart" asp-route-ItemId="@Model.Artwork.artworkId">
+                        <button type="submit" class="genric-btn danger radius">Remove from Cart</button>
+                    </form>
+                }
+                else
+                {
+                    <form method="post" asp-page-handler="AddToCart" asp-route-ItemId="@Model.Artwork.artworkId">
+                        <button type="submit" class="genric-btn info radius">Add to Cart</button>
+                    </form>
+                }
             </div>
         </div>
     </div>
