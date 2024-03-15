@@ -1,0 +1,63 @@
+﻿@page
+@model CartModel
+@{
+}
+
+<section class="banner-area relative" id="home">
+    <div class="overlay overlay-bg"></div>
+    <div class="container">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="about-content col-lg-12">
+                <h1 class="text-white">
+                    Elements
+                </h1>
+                <p class="text-white link-nav"><a href="index.html">Home </a>  <span class="lnr lnr-arrow-right"></span>  <a href="elements.html"> Elements</a></p>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="whole-wrap">
+    <div class="container">
+        <div class="section-top-border">
+            @if(Model.Cart != null)
+            {
+                <h3 class="mb-30">Table</h3>
+                <table class="table table-striped table-bordered">
+                    <thead class="thead-dark, font-weight-bold, text">
+                        <tr>
+                            <td>#</td>
+                            <td>Item</td>
+                            <td>Image</td>
+                            <td>Price</td>
+                            <td>Action</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Cart)
+                        {
+                        <tr>
+                            <td></td>
+                            <td>@item.title</td>
+                             <td><img src="@item.watermarkedArtUrl" alt="@item.title" width="100" height="100" /></td>
+                            <td>@item.price</td>
+                             <td>
+                                    <form method="post" asp-page-handler="RemoveFromCart" asp-route-ItemId="@item.artworkId">
+                                     <button type="submit" class="genric-btn danger radius">Remove</button>
+                                 </form>
+                             </td>
+                        </tr>
+                        }
+                        <tr>
+                            <td colspan="4" class="text-right"><strong>Total:</strong></td>
+                            <td>$@Model.Cart.Sum(item => item.price)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            }   
+        </div>
+        <div class="button-group-area mt-40">
+            <a href="./Payment" class="genric-btn primary circle">Payment</a>
+        </div>
+    </div>
+</div>
+

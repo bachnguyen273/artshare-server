@@ -1,4 +1,5 @@
-﻿using artshare_server.Core.Interfaces;
+﻿using artshare_server.ApiModels.DTOs;
+using artshare_server.Core.Interfaces;
 using artshare_server.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,5 +15,11 @@ namespace artshare_server.Infrastructure.Repositories
         {
             return await _dbContext.Accounts.Where(t => t.Email == email).FirstOrDefaultAsync();
         }
+
+        public async Task<Account?> GetByUsernameAsync(string username)
+        {
+            return await _dbContext.Accounts.Where(x => x.UserName == username).FirstOrDefaultAsync();
+        }
+      
     }
 }

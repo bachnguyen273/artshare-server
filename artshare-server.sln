@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "artshare-server", "artshare-server\artshare-server.csproj", "{536EF619-6AF3-4380-8C5F-BCCCA289698E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "artshare-server.Core", "artshare-server.Core\artshare-server.Core.csproj", "{692C7313-2694-41FC-9BBA-049D0464E49C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "artshare-server.Infrastructure", "artshare-server.Infrastructure\artshare-server.Infrastructure.csproj", "{B7C8CF28-49AE-4680-ADFA-AFB05ADDDC2E}"
@@ -13,16 +11,20 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "artshare-server.Services", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "artshare-server.Contracts", "artshare-server.Contracts\artshare-server.Contracts.csproj", "{539CC308-22AE-4D11-904E-56C27B671B2A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "artshare-server.WebApp", "artshare-server.WebApp\artshare-server.WebApp.csproj", "{D769DDAE-3F6E-41FA-BFC8-1E0B4A62F360}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{A75803EA-E5AC-4CDB-959F-0BC6362EEC2B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{ABCE3328-B74C-4938-AB05-1D0CA11171FE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "artshare-server.WebAPI", "artshare-server.WebAPI\artshare-server.WebAPI.csproj", "{53191C11-D237-4ABC-A729-6BD0087F76D2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{536EF619-6AF3-4380-8C5F-BCCCA289698E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{536EF619-6AF3-4380-8C5F-BCCCA289698E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{536EF619-6AF3-4380-8C5F-BCCCA289698E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{536EF619-6AF3-4380-8C5F-BCCCA289698E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{692C7313-2694-41FC-9BBA-049D0464E49C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{692C7313-2694-41FC-9BBA-049D0464E49C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{692C7313-2694-41FC-9BBA-049D0464E49C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,9 +41,23 @@ Global
 		{539CC308-22AE-4D11-904E-56C27B671B2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{539CC308-22AE-4D11-904E-56C27B671B2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{539CC308-22AE-4D11-904E-56C27B671B2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D769DDAE-3F6E-41FA-BFC8-1E0B4A62F360}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D769DDAE-3F6E-41FA-BFC8-1E0B4A62F360}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D769DDAE-3F6E-41FA-BFC8-1E0B4A62F360}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D769DDAE-3F6E-41FA-BFC8-1E0B4A62F360}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53191C11-D237-4ABC-A729-6BD0087F76D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53191C11-D237-4ABC-A729-6BD0087F76D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53191C11-D237-4ABC-A729-6BD0087F76D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53191C11-D237-4ABC-A729-6BD0087F76D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{692C7313-2694-41FC-9BBA-049D0464E49C} = {A75803EA-E5AC-4CDB-959F-0BC6362EEC2B}
+		{B7C8CF28-49AE-4680-ADFA-AFB05ADDDC2E} = {A75803EA-E5AC-4CDB-959F-0BC6362EEC2B}
+		{D769DDAE-3F6E-41FA-BFC8-1E0B4A62F360} = {ABCE3328-B74C-4938-AB05-1D0CA11171FE}
+		{53191C11-D237-4ABC-A729-6BD0087F76D2} = {A75803EA-E5AC-4CDB-959F-0BC6362EEC2B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {885C2658-4B88-4367-9C08-65FBE8EEE725}

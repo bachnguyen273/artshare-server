@@ -33,7 +33,7 @@ namespace artshare_server.Infrastructure
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", true, true)
                 .Build();
-            connectionString = config.GetConnectionString("BaoDatabase");
+            connectionString = config.GetConnectionString("NamDatabase");
             return connectionString;
         }
     }

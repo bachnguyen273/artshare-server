@@ -1,4 +1,5 @@
-﻿using artshare_server.Core.Interfaces;
+﻿using artshare_server.ApiModels.DTOs;
+using artshare_server.Core.Interfaces;
 using artshare_server.Core.Models;
 using artshare_server.Services.Interfaces;
 
@@ -19,11 +20,12 @@ namespace artshare_server.Services.Services
             return orderList;
         }
 
-        public async Task<OrderDetails?> GetOrderDetailsByOrderIdAsync(int orderId)
+        public async Task<List<OrderDetailDTO>?> GetOrderDetailsByOrderIdAsync(int orderId)
         {
             if (orderId > 0)
             {
                 var orderDetails = await _unitOfWork.OrderDetailsRepo.GetByOrderIdAsync(orderId);
+                _unitOfWork.SaveAsync();
                 return orderDetails;
             }
             return null;
@@ -31,7 +33,8 @@ namespace artshare_server.Services.Services
 
         public async Task<bool> CreateOrderDetailsAsync(OrderDetails orderDetails)
         {
-            throw new NotImplementedException();
+            _unitOfWork.OrderDetailsRepo.AddAsync(orderDetails);
+            return true;
         }
 
         public async Task<bool> UpdateOrderDetailsAsync(OrderDetails orderDetails)
