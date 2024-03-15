@@ -2,3 +2,14 @@
 @model artshare_server.WebApp.Pages.ProfileModel
 @{
 }
+
+<section class="quote-area pt-100">
+	<div class="container">
+		<div>
+			<img src="@Model.ProfileViewModel1.AvatarUrl" style="display:block;margin-left:auto;margin-right:auto;width:100px;height:100px;border-radius:100%"/>
+		    <h2 style="text-align:center; margin-top:1rem">@Model.ProfileViewModel1.UserName</h2>
+			<p style="text-align:center; margin-top:0.5rem">@Model.ProfileViewModel1.FullName</p>
+			<p style ="text-align:center;">@Model.ProfileViewModel1.Email</p>
+		</div>
+	</div>
+</section>

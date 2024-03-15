@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-namespace artshare_server.ApiModels.DTOs
+﻿namespace artshare_server.WebApp.ViewModels
 {
-    public class ProfileDTO
+    public class ProfileViewModel
     {
 		public int AccountId { get; set; }
 		public string Email { get; set; }
@@ -16,8 +9,8 @@ namespace artshare_server.ApiModels.DTOs
         public string UserName { get; set; }
         public string FullName { get; set; }
         public string PhoneNumber { get; set; }
-		public DateTime JoinDate { get; set; }
-		public string Role { get; set; }
+        public DateTime JoinDate { get; set; }
+        public string Role { get; set; }
         public string Status { get; set; }
     }
 }
