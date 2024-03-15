@@ -5,6 +5,7 @@ namespace artshare_server.Services.Interfaces
     public interface ICommentService
     {
         Task<IEnumerable<Comment>> GetAllCommentsAsync();
+        Task<IEnumerable<Comment>> GetAllCommentsByArtworkIdAsync(int artworkId);
 
         Task<Comment?> GetCommentByIdAsync(int commentId);
 
