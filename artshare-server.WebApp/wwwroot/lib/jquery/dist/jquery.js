@@ -255,7 +255,7 @@ jQuery.fn = jQuery.prototype = {
 };
 
 jQuery.extend = jQuery.fn.extend = function() {
-	var options, name, src, copy, copyIsArray, clone,
+	var filter, name, src, copy, copyIsArray, clone,
 		target = arguments[ 0 ] || {},
 		i = 1,
 		length = arguments.length,
@@ -284,11 +284,11 @@ jQuery.extend = jQuery.fn.extend = function() {
 	for ( ; i < length; i++ ) {
 
 		// Only deal with non-null/undefined values
-		if ( ( options = arguments[ i ] ) != null ) {
+		if ( ( filter = arguments[ i ] ) != null ) {
 
 			// Extend the base object
-			for ( name in options ) {
-				copy = options[ name ];
+			for ( name in filter ) {
+				copy = filter[ name ];
 
 				// Prevent Object.prototype pollution
 				// Prevent never-ending loop
@@ -372,8 +372,8 @@ jQuery.extend( {
 
 	// Evaluates a script in a provided context; falls back to the global one
 	// if not specified.
-	globalEval: function( code, options, doc ) {
-		DOMEval( code, { nonce: options && options.nonce }, doc );
+	globalEval: function( code, filter, doc ) {
+		DOMEval( code, { nonce: filter && filter.nonce }, doc );
 	},
 
 	each: function( obj, callback ) {
@@ -2195,7 +2195,7 @@ Expr = Sizzle.selectors = {
 		"selected": function( elem ) {
 
 			// Accessing this property makes selected-by-default
-			// options in Safari work properly
+			// filter in Safari work properly
 			if ( elem.parentNode ) {
 				// eslint-disable-next-line no-unused-expressions
 				elem.parentNode.selectedIndex;
@@ -3423,10 +3423,10 @@ var rnothtmlwhite = ( /[^\x20\t\r\n\f]+/g );
 
 
 
-// Convert String-formatted options into Object-formatted ones
-function createOptions( options ) {
+// Convert String-formatted filter into Object-formatted ones
+function createfilter( filter ) {
 	var object = {};
-	jQuery.each( options.match( rnothtmlwhite ) || [], function( _, flag ) {
+	jQuery.each( filter.match( rnothtmlwhite ) || [], function( _, flag ) {
 		object[ flag ] = true;
 	} );
 	return object;
@@ -3435,13 +3435,13 @@ function createOptions( options ) {
 /*
  * Create a callback list using the following parameters:
  *
- *	options: an optional list of space-separated options that will change how
+ *	filter: an optional list of space-separated filter that will change how
  *			the callback list behaves or a more traditional option object
  *
  * By default a callback list will act like an event callback list and can be
  * "fired" multiple times.
  *
- * Possible options:
+ * Possible filter:
  *
  *	once:			will ensure the callback list can only be fired once (like a Deferred)
  *
@@ -3454,13 +3454,13 @@ function createOptions( options ) {
  *	stopOnFalse:	interrupt callings when a callback returns false
  *
  */
-jQuery.Callbacks = function( options ) {
+jQuery.Callbacks = function( filter ) {
 
-	// Convert options from String-formatted to Object-formatted if needed
+	// Convert filter from String-formatted to Object-formatted if needed
 	// (we check in cache first)
-	options = typeof options === "string" ?
-		createOptions( options ) :
-		jQuery.extend( {}, options );
+	filter = typeof filter === "string" ?
+		createfilter( filter ) :
+		jQuery.extend( {}, filter );
 
 	var // Flag to know if list is currently firing
 		firing,
@@ -3487,7 +3487,7 @@ jQuery.Callbacks = function( options ) {
 		fire = function() {
 
 			// Enforce single-firing
-			locked = locked || options.once;
+			locked = locked || filter.once;
 
 			// Execute callbacks for all pending executions,
 			// respecting firingIndex overrides and runtime changes
@@ -3498,7 +3498,7 @@ jQuery.Callbacks = function( options ) {
 
 					// Run callback and check for early termination
 					if ( list[ firingIndex ].apply( memory[ 0 ], memory[ 1 ] ) === false &&
-						options.stopOnFalse ) {
+						filter.stopOnFalse ) {
 
 						// Jump to end and forget the data so .add doesn't re-fire
 						firingIndex = list.length;
@@ -3508,7 +3508,7 @@ jQuery.Callbacks = function( options ) {
 			}
 
 			// Forget the data if we're done with it
-			if ( !options.memory ) {
+			if ( !filter.memory ) {
 				memory = false;
 			}
 
@@ -3544,7 +3544,7 @@ jQuery.Callbacks = function( options ) {
 					( function add( args ) {
 						jQuery.each( args, function( _, arg ) {
 							if ( isFunction( arg ) ) {
-								if ( !options.unique || !self.has( arg ) ) {
+								if ( !filter.unique || !self.has( arg ) ) {
 									list.push( arg );
 								}
 							} else if ( arg && arg.length && toType( arg ) !== "string" ) {
@@ -6024,7 +6024,7 @@ function fixInput( src, dest ) {
 	if ( nodeName === "input" && rcheckableType.test( src.type ) ) {
 		dest.checked = src.checked;
 
-	// Fails to return the selected option to the default selected state when cloning options
+	// Fails to return the selected option to the default selected state when cloning filter
 	} else if ( nodeName === "input" || nodeName === "textarea" ) {
 		dest.defaultValue = src.defaultValue;
 	}
@@ -6407,20 +6407,20 @@ var getStyles = function( elem ) {
 		return view.getComputedStyle( elem );
 	};
 
-var swap = function( elem, options, callback ) {
+var swap = function( elem, filter, callback ) {
 	var ret, name,
 		old = {};
 
 	// Remember the old values, and insert the new ones
-	for ( name in options ) {
+	for ( name in filter ) {
 		old[ name ] = elem.style[ name ];
-		elem.style[ name ] = options[ name ];
+		elem.style[ name ] = filter[ name ];
 	}
 
 	ret = callback.call( elem );
 
 	// Revert the old values
-	for ( name in options ) {
+	for ( name in filter ) {
 		elem.style[ name ] = old[ name ];
 	}
 
@@ -7148,18 +7148,18 @@ jQuery.fn.extend( {
 } );
 
 
-function Tween( elem, options, prop, end, easing ) {
-	return new Tween.prototype.init( elem, options, prop, end, easing );
+function Tween( elem, filter, prop, end, easing ) {
+	return new Tween.prototype.init( elem, filter, prop, end, easing );
 }
 jQuery.Tween = Tween;
 
 Tween.prototype = {
 	constructor: Tween,
-	init: function( elem, options, prop, end, easing, unit ) {
+	init: function( elem, filter, prop, end, easing, unit ) {
 		this.elem = elem;
 		this.prop = prop;
 		this.easing = easing || jQuery.easing._default;
-		this.options = options;
+		this.filter = filter;
 		this.start = this.now = this.cur();
 		this.end = end;
 		this.unit = unit || ( jQuery.cssNumber[ prop ] ? "" : "px" );
@@ -7175,17 +7175,17 @@ Tween.prototype = {
 		var eased,
 			hooks = Tween.propHooks[ this.prop ];
 
-		if ( this.options.duration ) {
+		if ( this.filter.duration ) {
 			this.pos = eased = jQuery.easing[ this.easing ](
-				percent, this.options.duration * percent, 0, 1, this.options.duration
+				percent, this.filter.duration * percent, 0, 1, this.filter.duration
 			);
 		} else {
 			this.pos = eased = percent;
 		}
 		this.now = ( this.end - this.start ) * eased + this.start;
 
-		if ( this.options.step ) {
-			this.options.step.call( this.elem, this.now, this );
+		if ( this.filter.step ) {
+			this.filter.step.call( this.elem, this.now, this );
 		}
 
 		if ( hooks && hooks.set ) {
@@ -7535,7 +7535,7 @@ function propFilter( props, specialEasing ) {
 	}
 }
 
-function Animation( elem, properties, options ) {
+function Animation( elem, properties, filter ) {
 	var result,
 		stopped,
 		index = 0,
@@ -7585,11 +7585,11 @@ function Animation( elem, properties, options ) {
 			opts: jQuery.extend( true, {
 				specialEasing: {},
 				easing: jQuery.easing._default
-			}, options ),
+			}, filter ),
 			originalProperties: properties,
-			originalOptions: options,
+			originalfilter: filter,
 			startTime: fxNow || createFxNow(),
-			duration: options.duration,
+			duration: filter.duration,
 			tweens: [],
 			createTween: function( prop, end ) {
 				var tween = jQuery.Tween( elem, animation.opts, prop, end,
@@ -7642,7 +7642,7 @@ function Animation( elem, properties, options ) {
 		animation.opts.start.call( elem, animation );
 	}
 
-	// Attach callbacks from options
+	// Attach callbacks from filter
 	animation
 		.progress( animation.opts.progress )
 		.done( animation.opts.done, animation.opts.complete )
@@ -7969,7 +7969,7 @@ jQuery.fn.delay = function( time, type ) {
 	support.checkOn = input.value !== "";
 
 	// Support: IE <=11 only
-	// Must access selectedIndex to make default options select
+	// Must access selectedIndex to make default filter select
 	support.optSelected = opt.selected;
 
 	// Support: IE <=11 only
@@ -8524,11 +8524,11 @@ jQuery.extend( {
 		select: {
 			get: function( elem ) {
 				var value, option, i,
-					options = elem.options,
+					filter = elem.filter,
 					index = elem.selectedIndex,
 					one = elem.type === "select-one",
 					values = one ? null : [],
-					max = one ? index + 1 : options.length;
+					max = one ? index + 1 : filter.length;
 
 				if ( index < 0 ) {
 					i = max;
@@ -8537,15 +8537,15 @@ jQuery.extend( {
 					i = one ? index : 0;
 				}
 
-				// Loop through all the selected options
+				// Loop through all the selected filter
 				for ( ; i < max; i++ ) {
-					option = options[ i ];
+					option = filter[ i ];
 
 					// Support: IE <=9 only
 					// IE8-9 doesn't update selected after form reset (#2551)
 					if ( ( option.selected || i === index ) &&
 
-							// Don't return options that are disabled or in a disabled optgroup
+							// Don't return filter that are disabled or in a disabled optgroup
 							!option.disabled &&
 							( !option.parentNode.disabled ||
 								!nodeName( option.parentNode, "optgroup" ) ) ) {
@@ -8567,27 +8567,27 @@ jQuery.extend( {
 			},
 
 			set: function( elem, value ) {
-				var optionSet, option,
-					options = elem.options,
+				var filteret, option,
+					filter = elem.filter,
 					values = jQuery.makeArray( value ),
-					i = options.length;
+					i = filter.length;
 
 				while ( i-- ) {
-					option = options[ i ];
+					option = filter[ i ];
 
 					/* eslint-disable no-cond-assign */
 
 					if ( option.selected =
 						jQuery.inArray( jQuery.valHooks.option.get( option ), values ) > -1
 					) {
-						optionSet = true;
+						filteret = true;
 					}
 
 					/* eslint-enable no-cond-assign */
 				}
 
 				// Force browsers to behave consistently when non-matching value is set
-				if ( !optionSet ) {
+				if ( !filteret ) {
 					elem.selectedIndex = -1;
 				}
 				return values;
@@ -9078,7 +9078,7 @@ function addToPrefiltersOrTransports( structure ) {
 }
 
 // Base inspection function for prefilters and transports
-function inspectPrefiltersOrTransports( structure, options, originalOptions, jqXHR ) {
+function inspectPrefiltersOrTransports( structure, filter, originalfilter, jqXHR ) {
 
 	var inspected = {},
 		seekingTransport = ( structure === transports );
@@ -9087,11 +9087,11 @@ function inspectPrefiltersOrTransports( structure, options, originalOptions, jqX
 		var selected;
 		inspected[ dataType ] = true;
 		jQuery.each( structure[ dataType ] || [], function( _, prefilterOrFactory ) {
-			var dataTypeOrTransport = prefilterOrFactory( options, originalOptions, jqXHR );
+			var dataTypeOrTransport = prefilterOrFactory( filter, originalfilter, jqXHR );
 			if ( typeof dataTypeOrTransport === "string" &&
 				!seekingTransport && !inspected[ dataTypeOrTransport ] ) {
 
-				options.dataTypes.unshift( dataTypeOrTransport );
+				filter.dataTypes.unshift( dataTypeOrTransport );
 				inspect( dataTypeOrTransport );
 				return false;
 			} else if ( seekingTransport ) {
@@ -9101,19 +9101,19 @@ function inspectPrefiltersOrTransports( structure, options, originalOptions, jqX
 		return selected;
 	}
 
-	return inspect( options.dataTypes[ 0 ] ) || !inspected[ "*" ] && inspect( "*" );
+	return inspect( filter.dataTypes[ 0 ] ) || !inspected[ "*" ] && inspect( "*" );
 }
 
-// A special extend for ajax options
-// that takes "flat" options (not to be deep extended)
+// A special extend for ajax filter
+// that takes "flat" filter (not to be deep extended)
 // Fixes #9887
 function ajaxExtend( target, src ) {
 	var key, deep,
-		flatOptions = jQuery.ajaxSettings.flatOptions || {};
+		flatfilter = jQuery.ajaxSettings.flatfilter || {};
 
 	for ( key in src ) {
 		if ( src[ key ] !== undefined ) {
-			( flatOptions[ key ] ? target : ( deep || ( deep = {} ) ) )[ key ] = src[ key ];
+			( flatfilter[ key ] ? target : ( deep || ( deep = {} ) ) )[ key ] = src[ key ];
 		}
 	}
 	if ( deep ) {
@@ -9348,11 +9348,11 @@ jQuery.extend( {
 			"text xml": jQuery.parseXML
 		},
 
-		// For options that shouldn't be deep extended:
-		// you can add your own custom options here if
+		// For filter that shouldn't be deep extended:
+		// you can add your own custom filter here if
 		// and when you create one that shouldn't be
 		// deep extended (see ajaxExtend)
-		flatOptions: {
+		flatfilter: {
 			url: true,
 			context: true
 		}
@@ -9375,16 +9375,16 @@ jQuery.extend( {
 	ajaxTransport: addToPrefiltersOrTransports( transports ),
 
 	// Main method
-	ajax: function( url, options ) {
+	ajax: function( url, filter ) {
 
 		// If url is an object, simulate pre-1.5 signature
 		if ( typeof url === "object" ) {
-			options = url;
+			filter = url;
 			url = undefined;
 		}
 
-		// Force options to be an object
-		options = options || {};
+		// Force filter to be an object
+		filter = filter || {};
 
 		var transport,
 
@@ -9413,8 +9413,8 @@ jQuery.extend( {
 			// uncached part of the url
 			uncached,
 
-			// Create the final options object
-			s = jQuery.ajaxSetup( {}, options ),
+			// Create the final filter object
+			s = jQuery.ajaxSetup( {}, filter ),
 
 			// Callbacks context
 			callbackContext = s.context || s,
@@ -9523,7 +9523,7 @@ jQuery.extend( {
 			.replace( rprotocol, location.protocol + "//" );
 
 		// Alias method option to type as per ticket #12004
-		s.type = options.method || options.type || s.method || s.type;
+		s.type = filter.method || filter.type || s.method || s.type;
 
 		// Extract dataTypes list
 		s.dataTypes = ( s.dataType || "*" ).toLowerCase().match( rnothtmlwhite ) || [ "" ];
@@ -9557,7 +9557,7 @@ jQuery.extend( {
 		}
 
 		// Apply prefilters
-		inspectPrefiltersOrTransports( prefilters, s, options, jqXHR );
+		inspectPrefiltersOrTransports( prefilters, s, filter, jqXHR );
 
 		// If request was aborted inside a prefilter, stop there
 		if ( completed ) {
@@ -9584,7 +9584,7 @@ jQuery.extend( {
 		// Remove hash to simplify url manipulation
 		cacheURL = s.url.replace( rhash, "" );
 
-		// More options handling for requests with no content
+		// More filter handling for requests with no content
 		if ( !s.hasContent ) {
 
 			// Remember the hash so we can put it back
@@ -9625,7 +9625,7 @@ jQuery.extend( {
 		}
 
 		// Set the correct header, if data is being sent
-		if ( s.data && s.hasContent && s.contentType !== false || options.contentType ) {
+		if ( s.data && s.hasContent && s.contentType !== false || filter.contentType ) {
 			jqXHR.setRequestHeader( "Content-Type", s.contentType );
 		}
 
@@ -9660,7 +9660,7 @@ jQuery.extend( {
 		jqXHR.fail( s.error );
 
 		// Get transport
-		transport = inspectPrefiltersOrTransports( transports, s, options, jqXHR );
+		transport = inspectPrefiltersOrTransports( transports, s, filter, jqXHR );
 
 		// If no transport, we auto-abort
 		if ( !transport ) {
@@ -9842,7 +9842,7 @@ jQuery.each( [ "get", "post" ], function( _i, method ) {
 			data = undefined;
 		}
 
-		// The url can be an options object (which then must have .url)
+		// The url can be an filter object (which then must have .url)
 		return jQuery.ajax( jQuery.extend( {
 			url: url,
 			type: method,
@@ -9863,7 +9863,7 @@ jQuery.ajaxPrefilter( function( s ) {
 } );
 
 
-jQuery._evalUrl = function( url, options, doc ) {
+jQuery._evalUrl = function( url, filter, doc ) {
 	return jQuery.ajax( {
 		url: url,
 
@@ -9881,7 +9881,7 @@ jQuery._evalUrl = function( url, options, doc ) {
 			"text script": function() {}
 		},
 		dataFilter: function( response ) {
-			jQuery.globalEval( response, options, doc );
+			jQuery.globalEval( response, filter, doc );
 		}
 	} );
 };
@@ -9984,34 +9984,34 @@ var xhrSuccessStatus = {
 support.cors = !!xhrSupported && ( "withCredentials" in xhrSupported );
 support.ajax = xhrSupported = !!xhrSupported;
 
-jQuery.ajaxTransport( function( options ) {
+jQuery.ajaxTransport( function( filter ) {
 	var callback, errorCallback;
 
 	// Cross domain only allowed if supported through XMLHttpRequest
-	if ( support.cors || xhrSupported && !options.crossDomain ) {
+	if ( support.cors || xhrSupported && !filter.crossDomain ) {
 		return {
 			send: function( headers, complete ) {
 				var i,
-					xhr = options.xhr();
+					xhr = filter.xhr();
 
 				xhr.open(
-					options.type,
-					options.url,
-					options.async,
-					options.username,
-					options.password
+					filter.type,
+					filter.url,
+					filter.async,
+					filter.username,
+					filter.password
 				);
 
 				// Apply custom fields if provided
-				if ( options.xhrFields ) {
-					for ( i in options.xhrFields ) {
-						xhr[ i ] = options.xhrFields[ i ];
+				if ( filter.xhrFields ) {
+					for ( i in filter.xhrFields ) {
+						xhr[ i ] = filter.xhrFields[ i ];
 					}
 				}
 
 				// Override mime type if needed
-				if ( options.mimeType && xhr.overrideMimeType ) {
-					xhr.overrideMimeType( options.mimeType );
+				if ( filter.mimeType && xhr.overrideMimeType ) {
+					xhr.overrideMimeType( filter.mimeType );
 				}
 
 				// X-Requested-With header
@@ -10019,7 +10019,7 @@ jQuery.ajaxTransport( function( options ) {
 				// akin to a jigsaw puzzle, we simply never set it to be sure.
 				// (it can always be set on a per-request basis or even using ajaxSetup)
 				// For same-domain requests, won't change header if already provided.
-				if ( !options.crossDomain && !headers[ "X-Requested-With" ] ) {
+				if ( !filter.crossDomain && !headers[ "X-Requested-With" ] ) {
 					headers[ "X-Requested-With" ] = "XMLHttpRequest";
 				}
 
@@ -10106,7 +10106,7 @@ jQuery.ajaxTransport( function( options ) {
 				try {
 
 					// Do send the request (this may raise an exception)
-					xhr.send( options.hasContent && options.data || null );
+					xhr.send( filter.hasContent && filter.data || null );
 				} catch ( e ) {
 
 					// #14683: Only rethrow if this hasn't been notified as an error yet
@@ -10209,7 +10209,7 @@ jQuery.ajaxSetup( {
 	}
 } );
 
-// Detect, normalize options and install callbacks for jsonp requests
+// Detect, normalize filter and install callbacks for jsonp requests
 jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
 
 	var callbackName, overwritten, responseContainer,
@@ -10268,7 +10268,7 @@ jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
 			// Save back as free
 			if ( s[ callbackName ] ) {
 
-				// Make sure that re-using the options doesn't screw things around
+				// Make sure that re-using the filter doesn't screw things around
 				s.jsonpCallback = originalSettings.jsonpCallback;
 
 				// Save the callback name for future use
@@ -10430,7 +10430,7 @@ jQuery.expr.pseudos.animated = function( elem ) {
 
 
 jQuery.offset = {
-	setOffset: function( elem, options, i ) {
+	setOffset: function( elem, filter, i ) {
 		var curPosition, curLeft, curCSSTop, curTop, curOffset, curCSSLeft, calculatePosition,
 			position = jQuery.css( elem, "position" ),
 			curElem = jQuery( elem ),
@@ -10459,21 +10459,21 @@ jQuery.offset = {
 			curLeft = parseFloat( curCSSLeft ) || 0;
 		}
 
-		if ( isFunction( options ) ) {
+		if ( isFunction( filter ) ) {
 
 			// Use jQuery.extend here to allow modification of coordinates argument (gh-1848)
-			options = options.call( elem, i, jQuery.extend( {}, curOffset ) );
+			filter = filter.call( elem, i, jQuery.extend( {}, curOffset ) );
 		}
 
-		if ( options.top != null ) {
-			props.top = ( options.top - curOffset.top ) + curTop;
+		if ( filter.top != null ) {
+			props.top = ( filter.top - curOffset.top ) + curTop;
 		}
-		if ( options.left != null ) {
-			props.left = ( options.left - curOffset.left ) + curLeft;
+		if ( filter.left != null ) {
+			props.left = ( filter.left - curOffset.left ) + curLeft;
 		}
 
-		if ( "using" in options ) {
-			options.using.call( elem, props );
+		if ( "using" in filter ) {
+			filter.using.call( elem, props );
 
 		} else {
 			curElem.css( props );
@@ -10484,14 +10484,14 @@ jQuery.offset = {
 jQuery.fn.extend( {
 
 	// offset() relates an element's border box to the document origin
-	offset: function( options ) {
+	offset: function( filter ) {
 
 		// Preserve chaining for setter
 		if ( arguments.length ) {
-			return options === undefined ?
+			return filter === undefined ?
 				this :
 				this.each( function( i ) {
-					jQuery.offset.setOffset( this, options, i );
+					jQuery.offset.setOffset( this, filter, i );
 				} );
 		}
 

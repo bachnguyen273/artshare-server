@@ -950,16 +950,16 @@ $.validator.addMethod( "postcodeUK", function( value, element ) {
  * partnumber:	{require_from_group: [1,".productinfo"]},
  * description: {require_from_group: [1,".productinfo"]}
  *
- * options[0]: number of fields that must be filled in the group
- * options[1]: CSS selector that defines the group of conditionally required fields
+ * filter[0]: number of fields that must be filled in the group
+ * filter[1]: CSS selector that defines the group of conditionally required fields
  */
-$.validator.addMethod( "require_from_group", function( value, element, options ) {
-	var $fields = $( options[ 1 ], element.form ),
+$.validator.addMethod( "require_from_group", function( value, element, filter ) {
+	var $fields = $( filter[ 1 ], element.form ),
 		$fieldsFirst = $fields.eq( 0 ),
 		validator = $fieldsFirst.data( "valid_req_grp" ) ? $fieldsFirst.data( "valid_req_grp" ) : $.extend( {}, this ),
 		isValid = $fields.filter( function() {
 			return validator.elementValue( this );
-		} ).length >= options[ 0 ];
+		} ).length >= filter[ 0 ];
 
 	// Store the cloned validator for future validation
 	$fieldsFirst.data( "valid_req_grp", validator );
@@ -992,18 +992,18 @@ $.validator.addMethod( "require_from_group", function( value, element, options )
  * description: {skip_or_fill_minimum: [2,".productinfo"]},
  * color:		{skip_or_fill_minimum: [2,".productinfo"]}
  *
- * options[0]: number of fields that must be filled in the group
- * options[1]: CSS selector that defines the group of conditionally required fields
+ * filter[0]: number of fields that must be filled in the group
+ * filter[1]: CSS selector that defines the group of conditionally required fields
  *
  */
-$.validator.addMethod( "skip_or_fill_minimum", function( value, element, options ) {
-	var $fields = $( options[ 1 ], element.form ),
+$.validator.addMethod( "skip_or_fill_minimum", function( value, element, filter ) {
+	var $fields = $( filter[ 1 ], element.form ),
 		$fieldsFirst = $fields.eq( 0 ),
 		validator = $fieldsFirst.data( "valid_skip" ) ? $fieldsFirst.data( "valid_skip" ) : $.extend( {}, this ),
 		numberFilled = $fields.filter( function() {
 			return validator.elementValue( this );
 		} ).length,
-		isValid = numberFilled === 0 || numberFilled >= options[ 0 ];
+		isValid = numberFilled === 0 || numberFilled >= filter[ 0 ];
 
 	// Store the cloned validator for future validation
 	$fieldsFirst.data( "valid_skip", validator );
@@ -1053,11 +1053,11 @@ $.validator.addMethod( "skip_or_fill_minimum", function( value, element, options
  *  }
  *
  */
-$.validator.addMethod( "stateUS", function( value, element, options ) {
-	var isDefault = typeof options === "undefined",
-		caseSensitive = ( isDefault || typeof options.caseSensitive === "undefined" ) ? false : options.caseSensitive,
-		includeTerritories = ( isDefault || typeof options.includeTerritories === "undefined" ) ? false : options.includeTerritories,
-		includeMilitary = ( isDefault || typeof options.includeMilitary === "undefined" ) ? false : options.includeMilitary,
+$.validator.addMethod( "stateUS", function( value, element, filter ) {
+	var isDefault = typeof filter === "undefined",
+		caseSensitive = ( isDefault || typeof filter.caseSensitive === "undefined" ) ? false : filter.caseSensitive,
+		includeTerritories = ( isDefault || typeof filter.includeTerritories === "undefined" ) ? false : filter.includeTerritories,
+		includeMilitary = ( isDefault || typeof filter.includeMilitary === "undefined" ) ? false : filter.includeMilitary,
 		regex;
 
 	if ( !includeTerritories && !includeMilitary ) {

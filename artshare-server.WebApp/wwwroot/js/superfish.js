@@ -66,12 +66,12 @@
 			getMenu = function ($el) {
 				return $el.closest('.' + c.menuClass);
 			},
-			getOptions = function ($el) {
-				return getMenu($el).data('sfOptions');
+			getfilter = function ($el) {
+				return getMenu($el).data('sffilter');
 			},
 			over = function () {
 				var $this = $(this),
-					o = getOptions($this);
+					o = getfilter($this);
 				clearTimeout(o.sfTimer);
 				$this.siblings().superfish('hide').end().superfish('show');
 			},
@@ -88,7 +88,7 @@
 			},
 			out = function () {
 				var $this = $(this),
-					o = getOptions($this);
+					o = getfilter($this);
 				if (ios) {
 					$.proxy(close, $this, o)();
 				}
@@ -99,7 +99,7 @@
 			},
 			touchHandler = function (e) {
 				var $this = $(this),
-					o = getOptions($this),
+					o = getfilter($this),
 					$ul = $this.siblings(e.data.popUpSelector);
 
 				if (o.onHandleTouch.call($ul) === false) {
@@ -146,7 +146,7 @@
 			hide: function (instant) {
 				if (this.length) {
 					var $this = this,
-						o = getOptions($this);
+						o = getfilter($this);
 					if (!o) {
 						return this;
 					}
@@ -172,7 +172,7 @@
 				return this;
 			},
 			show: function () {
-				var o = getOptions(this);
+				var o = getfilter(this);
 				if (!o) {
 					return this;
 				}
@@ -191,7 +191,7 @@
 			destroy: function () {
 				return this.each(function () {
 					var $this = $(this),
-						o = $this.data('sfOptions'),
+						o = $this.data('sffilter'),
 						$hasPopUp;
 					if (!o) {
 						return false;
@@ -211,20 +211,20 @@
 					o.$path.removeClass(o.hoverClass + ' ' + c.bcClass).addClass(o.pathClass);
 					$this.find('.' + o.hoverClass).removeClass(o.hoverClass);
 					o.onDestroy.call($this);
-					$this.removeData('sfOptions');
+					$this.removeData('sffilter');
 				});
 			},
 			init: function (op) {
 				return this.each(function () {
 					var $this = $(this);
-					if ($this.data('sfOptions')) {
+					if ($this.data('sffilter')) {
 						return false;
 					}
 					var o = $.extend({}, $.fn.superfish.defaults, op),
 						$hasPopUp = $this.find(o.popUpSelector).parent('li');
 					o.$path = setPathToCurrent($this, o);
 
-					$this.data('sfOptions', o);
+					$this.data('sffilter', o);
 
 					toggleMenuClasses($this, o, true);
 					toggleAnchorClass($hasPopUp, true);

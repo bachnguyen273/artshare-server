@@ -34,3 +34,18 @@
 		</div>
 	</div>
 </section>
+
+@section Scripts {
+	<script>
+		$(document).ready(function () {
+			var message = '@Model.RegisterMessage';
+			if (message) {
+				var result = confirm(message);
+				// If the registration was successful and the user clicked OK, redirect to the login page
+				if (message === 'Success' && result) {
+					window.location.href = '/Login';
+				}
+			}
+		});
+	</script>
+}

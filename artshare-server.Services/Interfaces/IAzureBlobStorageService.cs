@@ -10,6 +10,11 @@ namespace artshare_server.Services.Interfaces
 {
     public interface IAzureBlobStorageService
     {
+        // tạo ra 4 container 
+        // 1. Avatar
+        // 2. OrigialArtwork
+        // 3. Watermark
+        // 4. WatermarkArtwork
         Task<string> UploadFileAsync(string containerName, IFormFile file);
     }
 }

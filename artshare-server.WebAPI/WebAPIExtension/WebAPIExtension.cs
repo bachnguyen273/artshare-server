@@ -11,11 +11,11 @@ namespace artshare_server.WebAPI.WebAPIExtension
         {
             services.AddControllers();
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen(options =>
+            services.AddSwaggerGen(filter =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo
+                filter.SwaggerDoc("v1", new OpenApiInfo
                 { Title = "WebAPIv7", Version = "v1" });
-                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                filter.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description =
                         "JWT Authorization header using the Bearer scheme. " +
@@ -28,7 +28,7 @@ namespace artshare_server.WebAPI.WebAPIExtension
                     Scheme = "Bearer"
                 });
 
-                options.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                filter.AddSecurityRequirement(new OpenApiSecurityRequirement()
                 {
                     {
                         new OpenApiSecurityScheme
@@ -46,9 +46,9 @@ namespace artshare_server.WebAPI.WebAPIExtension
                     }
                 });
             });
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(filter =>
             {
-                options.TokenValidationParameters = new TokenValidationParameters
+                filter.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidAudience = configuration.GetSection("JwtSecurityToken:Audience").Value,
                     ValidIssuer = configuration.GetSection("JwtSecurityToken:Issuer").Value,

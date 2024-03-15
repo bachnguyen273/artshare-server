@@ -1,8 +1,10 @@
 ﻿using artshare_server.Contracts.DTOs;
+using artshare_server.Core.Enums;
 using artshare_server.Core.Models;
 using artshare_server.Services.CustomExceptions;
 using artshare_server.Services.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -35,10 +37,11 @@ namespace artshare_server.Services.Services
             return CreateToken(account);
         }
 
-        public async Task<bool> RegisterAsync(RegisterDTO registerData)
+        public async Task<bool> RegisterAsync(AccountRole accountRole, RegisterDTO registerData)
         {
             try
             {
+                registerData.Role = accountRole.ToString();
                 var account = await _accountService.GetAccountByEmailAsync(registerData.Email);
                 if (account != null)
                 {
@@ -58,7 +61,7 @@ namespace artshare_server.Services.Services
         private string CreateToken(Account account)
         {
             var nowUtc = DateTime.UtcNow;
-            var expirationDuration = TimeSpan.FromMinutes(10);
+            var expirationDuration = TimeSpan.FromMinutes(60);
             var expirationUtc = nowUtc.Add(expirationDuration);
 
             var claims = new List<Claim>
