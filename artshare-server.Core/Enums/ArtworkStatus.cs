@@ -3,6 +3,7 @@
     public enum ArtworkStatus
     {
         Public,
-        Private
+        Private,
+        Banned
     }
 }

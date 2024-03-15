@@ -12,6 +12,7 @@ namespace artshare_server.Infrastructure.AutoMapper
         {
             CreateMap<RegisterDTO, Account>()
                 .ForMember(des => des.Role, src => src.MapFrom(src => EnumMapper<AccountRole>.MapType(src.Role)));
+
             CreateMap<Order, OrderDTO>();
             CreateMap<OrderDetails, OrderDetailDTO>();
 
@@ -30,10 +31,12 @@ namespace artshare_server.Infrastructure.AutoMapper
 
             CreateMap<CreateOrderDTO, Order>();
            
-             CreateMap<ProfileDTO, Account>()
+            CreateMap<ProfileDTO, Account>()
                .ForMember(des => des.Role, src => src.MapFrom(src => EnumMapper<AccountRole>.MapType(src.Role)))
                .ForMember(des => des.Status, src => src.MapFrom(src => EnumMapper<AccountStatus>.MapType(src.Status)))
                .ReverseMap();
+            CreateMap<ReportDTO, Report>();
+
 
         }
     }
