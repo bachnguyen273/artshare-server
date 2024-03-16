@@ -1,9 +1,9 @@
-﻿@page "{customerId:int}"
+﻿@* @page "{customerId:int}" *@
 @*- Trang này là trang hiển thị các order của 1 customer dựa trên customer id.
   - Muốn hiển thị các order của customer nào thì gọi trang này thông qua url: Audiences/AudienceOrdersList/customerId,
   với customerId là id của customer cần lấy các order. Ví dụ: muốn lấy thông tin các order của customerId có id là 1 thì gọi Audiences/AudienceOrdersList/1
 *@
-@model AudienceOrdersListModel
+@* @model AudienceOrdersListModel
 @{
     var orders = Model.Orders;
 }
@@ -61,8 +61,8 @@
 
     </div>
 
-</section>
-<style>
+</section> *@
+@* <style>
     .green-text {
         color: darkseagreen;
         font-weight: bold;
@@ -73,4 +73,4 @@
         color: deeppink;
         font-size: 20px;
     }
-</style>
+</style> *@

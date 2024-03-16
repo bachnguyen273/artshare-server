@@ -1,6 +1,8 @@
 ﻿using artshare_server.ApiModels.DTOs;
 using artshare_server.Core.Interfaces;
 using artshare_server.Core.Models;
+using artshare_server.Services.FilterModels;
+using artshare_server.Services.FilterModels.Helpers;
 using artshare_server.Services.Interfaces;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -12,57 +14,80 @@ namespace artshare_server.Services.Services
     public class WatermarkService : IWatermarkService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IAzureBlobStorageService _azureBlobStorageService;
         private readonly IMapper _mapper;
 
-        public WatermarkService(IUnitOfWork unitOfWork, IMapper mapper)
+        public WatermarkService(IUnitOfWork unitOfWork, IMapper mapper, IAzureBlobStorageService azureBlobStorageService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _azureBlobStorageService = azureBlobStorageService;
         }
 
-        public async Task<IEnumerable<Watermark>> GetAllWatermarksAsync()
+        public async Task<PagedResult<GetWatermarkDTO>> GetAllWatermarksAsync(WatermarkFilters filters)
         {
-            var watermarkList = await _unitOfWork.WatermarkRepo.GetAllAsync();
-            return watermarkList;
-        }
+			// Apply filtering
+			var items = _mapper.Map<IEnumerable<GetWatermarkDTO>>(await _unitOfWork.WatermarkRepo.GetAllAsync());
+			IQueryable<GetWatermarkDTO> filteredItemsQuery = items.AsQueryable();
 
-        public async Task<Watermark?> GetWatermarkByIdAsync(int watermarkId)
+			if (filters.CreatorId != null)
+				filteredItemsQuery = filteredItemsQuery.Where(item => item.CreatorId == filters.CreatorId);
+			if (filters.WatermarkId != null)
+				filteredItemsQuery = filteredItemsQuery.Where(item => item.WatermarkId == filters.WatermarkId);
+
+			// Apply sorting
+			if (!string.IsNullOrEmpty(filters.SortBy))
+			{
+				switch (filters.SortBy)
+				{
+					default:
+						// Handle other sorting filter using Utils.GetPropertyValue
+						filteredItemsQuery = filters.SortAscending ?
+							filteredItemsQuery.OrderBy(item => Utils.GetPropertyValue(item, filters.SortBy)) :
+							filteredItemsQuery.OrderByDescending(item => Utils.GetPropertyValue(item, filters.SortBy));
+						break;
+				}
+			}
+
+			// Apply paging
+			var pagedItems = filteredItemsQuery
+				.Skip((filters.PageNumber - 1) * filters.PageSize)
+				.Take(filters.PageSize)
+				.ToList(); // Materialize the query
+
+			return new PagedResult<GetWatermarkDTO>
+			{
+				Items = pagedItems,
+				PageNumber = filters.PageNumber,
+				PageSize = filters.PageSize,
+				TotalItems = pagedItems.Count()
+			};
+		}
+        public async Task<GetWatermarkDTO?> GetWatermarkByIdAsync(int watermarkId)
         {
             if (watermarkId > 0)
             {
                 var watermark = await _unitOfWork.WatermarkRepo.GetByIdAsync(watermarkId);
-                return watermark;
+                return _mapper.Map<GetWatermarkDTO>(watermark);
             }
             return null;
         }
 
-        public async Task<Watermark?> GetByCreatorIdAsync(int creatorId)
+        public async Task<GetWatermarkDTO?> GetByCreatorIdAsync(int creatorId)
         {
             var watermark = await _unitOfWork.WatermarkRepo.GetByCreatorIdAsync(creatorId);
-            return watermark;
-        }
+            return _mapper.Map<GetWatermarkDTO>(watermark);
+        }  
 
-        public async Task<WatermarkCreateDTO> CreateWatermarkAsync(WatermarkCreateDTO postedWatermark)
-        {
-                var watermark = _mapper.Map<Watermark>(postedWatermark);
-                await _unitOfWork.WatermarkRepo.AddAsync(watermark);
-                bool result = await _unitOfWork.SaveAsync() > 0;
-                if (result) { return postedWatermark; }
-                return null;
-        }        
-
-        public async Task<WatermarkDTO> UpdateWatermarkAsync(int id, WatermarkDTO newWatermark)
+        public async Task<bool> UpdateWatermarkAsync(int id, UpdateWatermarkDTO updateWatermarkDTO)
         {
             var oldWatermark = await _unitOfWork.WatermarkRepo.GetByIdAsync(id);
-            oldWatermark.WatermarkUrl = newWatermark.WatermarkUrl;
-            _unitOfWork.WatermarkRepo.Update(oldWatermark);
-            bool result =  await _unitOfWork.SaveAsync() > 0;
-            if (result == true)
+            if (updateWatermarkDTO.WatermarkFile != null)
             {
-                var returnObject = _mapper.Map<WatermarkDTO>(oldWatermark);
-                return returnObject;
+                oldWatermark.WatermarkUrl = await _azureBlobStorageService.UploadFileAsync("Watermark", updateWatermarkDTO.WatermarkFile);
             }
-            return null;
+            _unitOfWork.WatermarkRepo.Update(oldWatermark);
+            return await _unitOfWork.SaveAsync() > 0;
         }
 
         public async Task<bool> DeleteWatermarkAsync(int watermarkId)
@@ -71,6 +96,13 @@ namespace artshare_server.Services.Services
             _unitOfWork.WatermarkRepo.Delete(watermark);
             await _unitOfWork.SaveAsync();
             return true;
+        }
+
+        public async Task<bool> CreateWatermarkAsync(CreateWatermarkDTO createWatermarkDTO)
+        {
+            var watermark = _mapper.Map<Watermark>(createWatermarkDTO);
+            await _unitOfWork.WatermarkRepo.AddAsync(watermark);
+            return await _unitOfWork.SaveAsync() > 0;
         }
     }
 }

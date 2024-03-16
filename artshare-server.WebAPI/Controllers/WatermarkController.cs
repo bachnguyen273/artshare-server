@@ -2,6 +2,7 @@
 using artshare_server.Core.Enums;
 using artshare_server.Core.Interfaces;
 using artshare_server.Core.Models;
+using artshare_server.Services.FilterModels;
 using artshare_server.Services.Interfaces;
 using artshare_server.Services.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -22,11 +23,12 @@ namespace artshare_server.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllWatermark()
+        [Authorize(Roles = "Creator")]
+        public async Task<IActionResult> GetWatermakrs([FromQuery] WatermarkFilters filters)
         {
             try
             {
-                var waterMarkList = await _watermarkService.GetAllWatermarksAsync();
+                var waterMarkList = await _watermarkService.GetAllWatermarksAsync(filters);
                 if (waterMarkList == null)
                 {
                     return BadRequest("List is null");
@@ -75,19 +77,15 @@ namespace artshare_server.Controllers
             }
         }
         [HttpPost]
-        public async Task<ActionResult<WatermarkCreateDTO>> CreateWatermarkAsync(WatermarkCreateDTO watermark)
+        public async Task<ActionResult<bool>> CreateWatermarkAsync(CreateWatermarkDTO createWatermarkDTO)
         {         
-                var returnObject = await _watermarkService.CreateWatermarkAsync(watermark);
-                if (returnObject != null)
-                {
-                    return Ok("Create SUCCESS!");
-                }                                 
-                return BadRequest();          
+            var watermark = await _watermarkService.CreateWatermarkAsync(createWatermarkDTO);
+            return watermark;
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateWatermarkAsync(int id, WatermarkDTO watermarkDTO)
+        public async Task<IActionResult> UpdateWatermarkAsync(int id, UpdateWatermarkDTO updateWatermarkDTO)
         {
-            WatermarkDTO updateWatermark = await _watermarkService.UpdateWatermarkAsync(id, watermarkDTO);
+            await _watermarkService.UpdateWatermarkAsync(id, updateWatermarkDTO);
             return Ok("Update SUCCESS!");
         }
 

@@ -77,7 +77,7 @@ namespace artshare_server.Controllers
 
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> UpdateProfile (int id, ProfileDTO profileDTO)
+        public async Task<IActionResult> UpdateProfile (int id, UpdateAccountDTO updateAccountDTO)
         {
             try
             {
@@ -86,7 +86,7 @@ namespace artshare_server.Controllers
                 {
                     return NotFound();
                 }
-                var up = await _accountService.UpdateAccountAsync(id,profileDTO);
+                var up = await _accountService.UpdateAccountAsync(id, updateAccountDTO);
                 if (up)
                 {
                     return Ok("Update SUCCESS!");

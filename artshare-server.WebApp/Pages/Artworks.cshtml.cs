@@ -1,5 +1,3 @@
-using artshare_server.Core.Enums;
-using artshare_server.Core.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -11,7 +9,7 @@ namespace artshare_server.WebApp.Pages
 {
     public class ArtworksModel : PageModel
     {
-		public dynamic Artwork { get; set; }
+		public dynamic Artworks { get; set; }
         public string Role { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int artworkId)
@@ -29,7 +27,7 @@ namespace artshare_server.WebApp.Pages
                 artworkResponseMessage.EnsureSuccessStatusCode();
                 string artworkContent = await artworkResponseMessage.Content.ReadAsStringAsync();
                 dynamic artworkObject = JsonConvert.DeserializeObject(artworkContent);
-                Artwork = artworkObject.data.artwork;
+                Artworks = artworkObject.data.artwork;
 
                 return Page();
             }

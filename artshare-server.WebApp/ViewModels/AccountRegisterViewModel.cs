@@ -1,5 +1,4 @@
-﻿using artshare_server.Core.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace artshare_server.WebApp.ViewModels
 {

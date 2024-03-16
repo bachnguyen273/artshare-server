@@ -1,5 +1,4 @@
-﻿using artshare_server.Contracts.DTOs;
-using artshare_server.WebAPI.ResponseModels;
+﻿using artshare_server.WebAPI.ResponseModels;
 using artshare_server.Services.Interfaces;
 using artshare_server.Services.Services;
 using Microsoft.AspNetCore.Http;
@@ -7,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using artshare_server.ApiModels.DTOs;
 using AutoMapper;
 using artshare_server.Core.Models;
+using artshare_server.Services.FilterModels;
 
 namespace artshare_server.WebAPI.Controllers
 {
@@ -36,10 +36,10 @@ namespace artshare_server.WebAPI.Controllers
 
         }
         [HttpGet]
-        public async Task<IActionResult> GetAllOrders()
+        public async Task<IActionResult> GetOrders([FromQuery] OrderFilters orderFilters)
         {
 
-            var result = await _orderService.GetAllOrdersAsync();
+            var result = await _orderService.GetAllOrdersAsync<Order>(orderFilters);
             return Ok(new SucceededResponseModel()
             {
                 Status = Ok().StatusCode,

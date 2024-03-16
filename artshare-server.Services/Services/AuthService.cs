@@ -1,4 +1,4 @@
-﻿using artshare_server.Contracts.DTOs;
+﻿using artshare_server.ApiModels.DTOs;
 using artshare_server.Core.Enums;
 using artshare_server.Core.Models;
 using artshare_server.Services.CustomExceptions;
@@ -37,7 +37,7 @@ namespace artshare_server.Services.Services
             return CreateToken(account);
         }
 
-        public async Task<bool> RegisterAsync(AccountRole accountRole, RegisterDTO registerData)
+        public async Task<bool> RegisterAsync(AccountRole accountRole, CreateAccountDTO registerData)
         {
             try
             {
@@ -81,7 +81,9 @@ namespace artshare_server.Services.Services
                 new Claim(JwtRegisteredClaimNames.Aud, 
                                   _configuration.GetSection("JwtSecurityToken:Audience").Value),
                 new Claim(ClaimTypes.Email, account.Email),
-                new Claim(ClaimTypes.Role, account.Role.ToString())
+                new Claim(ClaimTypes.Role, account.Role.ToString()),
+                new Claim("AccountId", account.AccountId.ToString()),
+                new Claim("UserName", account.FullName.ToString())
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes

@@ -1,10 +1,11 @@
-﻿using artshare_server.Contracts.DTOs;
-using artshare_server.WebAPI.ResponseModels;
+﻿using artshare_server.WebAPI.ResponseModels;
 using artshare_server.Services.CustomExceptions;
 using artshare_server.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using artshare_server.Core.Enums;
+using artshare_server.ApiModels.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace artshare_server.WebAPI.Controllers
 {
@@ -51,7 +52,7 @@ namespace artshare_server.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register([FromQuery] AccountRole accounrRole, [FromBody] RegisterDTO registerRequest)
+        public async Task<IActionResult> Register([FromQuery] AccountRole accounrRole, [FromBody] CreateAccountDTO registerRequest)
         {
             try
             {
@@ -86,6 +87,7 @@ namespace artshare_server.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Creator, Audience, Admin")]
         public async Task<IActionResult> UploadFile(IFormFile file, ContainerEnum containerName)
         {
             try

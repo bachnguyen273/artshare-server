@@ -14,9 +14,12 @@ namespace artshare_server.Services.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public AccountService(IUnitOfWork unitOfWork)
+        private readonly IAzureBlobStorageService _azureBlobStorageService;
+
+        public AccountService(IUnitOfWork unitOfWork, IAzureBlobStorageService azureBlobStorageService)
         {
             _unitOfWork = unitOfWork;
+            _azureBlobStorageService = azureBlobStorageService;
         }
 
         public async Task<IEnumerable<Account>> GetAllAccountsAsync()
@@ -68,23 +71,26 @@ namespace artshare_server.Services.Services
             }
         }
 
-        public async Task<bool> UpdateAccountAsync(int id, ProfileDTO account)
+        public async Task<bool> UpdateAccountAsync(int id, UpdateAccountDTO updateAccountDTO)
         {
             try
             {
-                var profile = await _unitOfWork.AccountRepo.GetByIdAsync(id);
-                if (profile == null)
+                var account = await _unitOfWork.AccountRepo.GetByIdAsync(id);
+                if (account == null)
                 {
                     return false;
                 }
-                profile.Email = account.Email;
-                profile.PasswordHash = BCrypt.Net.BCrypt.HashPassword(account.PasswordHash);
-                profile.AvatarUrl = account.AvatarUrl;
-                profile.UserName = account.UserName;
-                profile.FullName = account.FullName;
-                profile.PhoneNumber = account.PhoneNumber;
-                profile.Status = (account.Status.Equals("Active")) ? AccountStatus.Active : AccountStatus.Inactive;  
-                _unitOfWork.AccountRepo.Update(profile);
+                account.Email = updateAccountDTO.Email;
+                account.PasswordHash = BCrypt.Net.BCrypt.HashPassword(updateAccountDTO.Password);          
+                account.UserName = updateAccountDTO.UserName;
+                account.FullName = updateAccountDTO.FullName;
+                account.PhoneNumber = updateAccountDTO.PhoneNumber;
+                account.Status = (updateAccountDTO.Status.Equals("Active")) ? AccountStatus.Active : AccountStatus.Inactive;
+                if (updateAccountDTO.AvatarFile != null)
+                {
+                    account.AvatarUrl = await _azureBlobStorageService.UploadFileAsync("Avatar", updateAccountDTO.AvatarFile);
+                }
+                _unitOfWork.AccountRepo.Update(account);
                 await _unitOfWork.SaveAsync();
                 return true;
             }catch(DbUpdateException)

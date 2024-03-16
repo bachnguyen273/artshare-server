@@ -13,11 +13,13 @@ namespace artshare_server.Services.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IAzureBlobStorageService _azureBlobStorageService;
 
-        public ArtworkService(IUnitOfWork unitOfWork, IMapper mapper)
+        public ArtworkService(IUnitOfWork unitOfWork, IMapper mapper, IAzureBlobStorageService azureBlobStorageService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _azureBlobStorageService = azureBlobStorageService;
         }
 
         //public async Task<IEnumerable<Artwork>> GetAllArtworksAsync()
@@ -26,12 +28,12 @@ namespace artshare_server.Services.Services
         //    return artworkList;
         //}
 
-        public async Task<Artwork?> GetArtworkByIdAsync(int artworkId)
+        public async Task<GetArtworkDTO?> GetArtworkByIdAsync(int artworkId)
         {
             if (artworkId > 0)
             {
                 var artwork = await _unitOfWork.ArtworkRepo.GetByIdAsync(artworkId);
-                return artwork;
+                return _mapper.Map<GetArtworkDTO>(artwork);
             }
             return null;
         }
@@ -53,16 +55,17 @@ namespace artshare_server.Services.Services
             artwork.LikeCount = 0;
             artwork.DislikeCount = 0;
             artwork.CreatedDate = DateTime.Now;
+            artwork.OriginalArtUrl = createArtworkDTO.OriginalArtUrl;
             await _unitOfWork.ArtworkRepo.AddAsync(artwork);
             var result = await _unitOfWork.SaveAsync() > 0;
             return result;
         }
 
-        public async Task<PagedResult<Artwork>> GetAllArtworksAsync<T>(ArtworkFilters filters)
+        public async Task<PagedResult<GetArtworkDTO>> GetAllArtworksAsync<T>(ArtworkFilters filters)
         {
             // Apply filtering
-            var items = await _unitOfWork.ArtworkRepo.GetAllAsync();
-            IQueryable<Artwork> filteredItemsQuery = items.AsQueryable();
+            var items = await _unitOfWork.ArtworkRepo.GetArtworks();
+            IQueryable<GetArtworkDTO> filteredItemsQuery = items.AsQueryable();
 
             if (!string.IsNullOrEmpty(filters.Title))
                 filteredItemsQuery = filteredItemsQuery.Where(item => item.Title.Contains(filters.Title, StringComparison.OrdinalIgnoreCase));
@@ -116,7 +119,7 @@ namespace artshare_server.Services.Services
                 .Take(filters.PageSize)
                 .ToList(); // Materialize the query
 
-            return new PagedResult<Artwork>
+            return new PagedResult<GetArtworkDTO>
             {
                 Items = pagedItems,
                 PageNumber = filters.PageNumber,

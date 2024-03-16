@@ -22,16 +22,16 @@
 <div class="whole-wrap">
     <div class="container">
         <div class="section-top-border">
-            <h3 class="mb-30">@Model.Artwork.title</h3>
+            <h3 class="mb-30">@Model.Artworks.title</h3>
             <div class="row">
                 <div class="col-md-3">
-                    <img src="@Model.Artwork.originalArtUrl" alt="@Model.Artwork.title" class="img-fluid">
+                    <img src="@Model.Artworks.originalArtUrl" alt="@Model.Artworks.title" class="img-fluid">
                 </div>
                 <div class="col-md-9 mt-sm-20">
-                    <p>@Model.Artwork.description</p>
-                    <p>@Model.Artwork.price</p>
+                    <p>@Model.Artworks.description</p>
+                    <p>@Model.Artworks.price.000VND</p>
                 </div>
-                <form method="post" asp-page-handler="AddToCart" asp-route-ItemId="@Model.Artwork.artworkId">
+                <form method="post" asp-page-handler="AddToCart" asp-route-ItemId="@Model.Artworks.artworkId">
                     <button type="submit" class="genric-btn info radius">Add to Cart</button>
                 </form>
             </div>

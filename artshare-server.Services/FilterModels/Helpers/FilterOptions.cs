@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace artshare_server.Services.FilterModels.Helpers
 {
-    public class Filterfilter<T>
+    public class FilterOptions<T>
     {
         // Pagination properties
         public int PageNumber { get; set; } = 1;

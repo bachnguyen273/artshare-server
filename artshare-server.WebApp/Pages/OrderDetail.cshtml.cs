@@ -1,6 +1,3 @@
-using artshare_server.ApiModels.DTOs;
-using artshare_server.Core.Models;
-using artshare_server.WebAPI.ResponseModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
@@ -9,7 +6,7 @@ namespace artshare_server.WebApp.Pages
 {
     public class OrderDetailModel : PageModel
     {
-        public IEnumerable<OrderDetailDTO> OrderDetails { get; set; }
+        public dynamic OrderDetails { get; set; }
        
 
         private HttpClient _httpClient = new();
@@ -24,12 +21,8 @@ namespace artshare_server.WebApp.Pages
             var response = await _httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
             {
-                var responseString = await response.Content.ReadAsStringAsync();
-                var obj = JsonConvert.DeserializeObject<SucceededResponseModel>(responseString);
-                
-                OrderDetails = JsonConvert.DeserializeObject<IEnumerable<OrderDetailDTO>>(obj.Data.ToString());
-            }
 
+            }
             return Page();
         }
     }

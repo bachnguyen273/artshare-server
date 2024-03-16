@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace artshare_server.Services.FilterModels
 {
-    public class ArtworkFilters : Filterfilter<Artwork>
+    public class ArtworkFilters : FilterOptions<Artwork>
     {
         // Filtering criteria properties
         public int? ArtworkId { get; set; }

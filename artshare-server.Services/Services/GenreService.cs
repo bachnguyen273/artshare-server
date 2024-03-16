@@ -93,7 +93,7 @@ namespace artshare_server.Services.Services
         public async Task<PagedResult<GetGenreDTO>> GetAllGenresAsync<Genre>(GenreFilters filters)
         {
             // Apply filtering
-            var items = await _unitOfWork.GenreRepo.GetAllAsync();
+            var items = await _unitOfWork.GenreRepo.GetGenres();
             IEnumerable<GetGenreDTO> list = _mapper.Map<IEnumerable<GetGenreDTO>>(items);
             IQueryable<GetGenreDTO> filteredItemsQuery = list.AsQueryable();
 

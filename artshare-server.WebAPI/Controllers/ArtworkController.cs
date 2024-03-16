@@ -1,7 +1,4 @@
-﻿using artshare_server.Contracts.DTOs;
-using artshare_server.Services.Interfaces;
-using artshare_server.Services.Services;
-using artshare_server.Services.Interfaces;
+﻿using artshare_server.Services.Interfaces;
 using artshare_server.Services.Services;
 using artshare_server.WebAPI.ResponseModels;
 using Microsoft.AspNetCore.Mvc;

@@ -61,9 +61,9 @@ namespace artshare_server.WebApp.Pages
                 switch (role)
                 {
                     case "Audience":
-                        return RedirectToPage("./Audience/Index");
+                        return RedirectToPage("/Index");
                     case "Creator":
-                        return RedirectToPage("./Creators/Index");
+                        return RedirectToPage("./Creators/Artworks/Index");
                     case "Admin":
                         return RedirectToPage("./Admin/Index");
                     default:
