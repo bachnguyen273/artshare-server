@@ -12,6 +12,10 @@ namespace artshare_server.Infrastructure.FluentAPIs
             builder.Property(t => t.Name)
                 .HasMaxLength(50)
                 .IsRequired();
+            builder.HasMany(t => t.Artworks)
+                .WithOne(e => e.Genre)
+                .HasForeignKey(x => x.GenreId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
