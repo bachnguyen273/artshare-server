@@ -36,6 +36,7 @@ namespace artshare_server.Infrastructure
 
             connectionString = config.GetConnectionString("BachDatabase");
 
+
             return connectionString;
         }
     }
