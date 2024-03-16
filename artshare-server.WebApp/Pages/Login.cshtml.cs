@@ -2,8 +2,10 @@ using artshare_server.WebApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Security.Claims;
 using System.Text;
 
 namespace artshare_server.WebApp.Pages
@@ -45,9 +47,30 @@ namespace artshare_server.WebApp.Pages
 
 			if (response.IsSuccessStatusCode)
 			{
-				var responseContent = await response.Content.ReadAsStringAsync();
-				return RedirectToPage("./Creators/Index");
-			}
+                var jwtToken = await response.Content.ReadAsStringAsync();
+                HttpContext.Session.SetString("JWTToken", jwtToken);
+
+                // Decode the token
+                var handler = new JwtSecurityTokenHandler();
+                var tokenS = handler.ReadToken(jwtToken) as JwtSecurityToken;
+
+                // Extract the role claim
+                var role = tokenS.Claims.First(claim => claim.Type == ClaimTypes.Role).Value;
+                HttpContext.Session.SetString("Role", role);
+
+                // Redirect users based on their roles
+                switch (role)
+                {
+                    case "Audience":
+                        return RedirectToPage("./Index");
+                    case "Creator":
+                        return RedirectToPage("./Creators/Index");
+                    case "Admin":
+                        return RedirectToPage("./Admin/Index");
+                    default:
+                        return Page();
+                }
+            }
 			return Page();
 		}
 	}

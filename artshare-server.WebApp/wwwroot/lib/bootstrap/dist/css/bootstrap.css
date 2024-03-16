@@ -6047,7 +6047,7 @@ textarea.form-control-lg {
   background-size: 100% 100%;
 }
 
-/* rtl:options: {
+/* rtl:filter: {
   "autoRename": true,
   "stringMap":[ {
     "name"    : "prev-next",
