@@ -36,7 +36,6 @@ namespace artshare_server.Infrastructure
 
             connectionString = config.GetConnectionString("PhucDatabase");
 
-
             return connectionString;
         }
     }
