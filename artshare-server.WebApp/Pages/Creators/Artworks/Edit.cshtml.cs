@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace artshare_server.WebApp.Pages
+namespace artshare_server.WebApp.Pages.Creators.Artworks
 {
-    public class ProfileModel : PageModel
+    public class EditModel : PageModel
     {
         public void OnGet()
         {

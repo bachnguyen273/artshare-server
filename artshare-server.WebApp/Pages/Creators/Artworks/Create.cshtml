@@ -13,7 +13,7 @@
                         @foreach (var watermark in Model.Watermarks)
                         {
                             <div>
-                                <input type="radio" id="watermark_@(watermark.watermarkId)" asp-for="@Model.CreateArtworkViewModel.WatermarkId" value="@watermark.watermarkId" />
+                                <input type="radio" id="watermark_@(watermark.watermarkId)" asp-for="@Model.SelectedWatermarkId" value="@watermark.watermarkId" />
                                 <label for="watermark_@(watermark.watermarkId)">
                                     <img src="@watermark.watermarkUrl" alt="Watermark" />
                                 </label>
@@ -59,3 +59,4 @@
         </section>
     </div>
 </section>
+

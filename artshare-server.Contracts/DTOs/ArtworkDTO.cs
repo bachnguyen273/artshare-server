@@ -21,8 +21,7 @@ namespace artshare_server.ApiModels.DTOs
         public string? Status { get; set; }
         public int GenreId { get; set; }
         public required string OriginalArtUrl { get; set; }
-        public required string? WatermarkedArtUrl { get; set; }
-
+        public required string WatermarkedArtUrl { get; set; }
     }
 
     public class CreateArtworkDTO : ArtworkDTO

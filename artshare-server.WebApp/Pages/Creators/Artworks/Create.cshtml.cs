@@ -1,3 +1,4 @@
+using artshare_server.WebApp.Helpers;
 using artshare_server.WebApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -19,8 +20,10 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
 		private readonly HttpClient _httpClient;
 		private string _apiURL;
 		private string _jwtToken;
+        [BindProperty]
+        public int SelectedWatermarkId { get; set; }
 
-		public CreateModel()
+        public CreateModel()
 		{
 			_httpClient = new HttpClient();
 			IConfiguration config = new ConfigurationBuilder()
@@ -33,39 +36,17 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
 
 		public async Task OnGet()
 		{
-			await LoadWatermarkByCreatorIdAsync(GetAccountIdFromToken());
-			await LoadGenresAsync();
-		}
-
-        public async Task<string> UploadArtwork(IFormFile artworkFile)
-        {
+            // Load data
             try
             {
-                var content = new MultipartFormDataContent();
-                content.Add(new StreamContent(artworkFile.OpenReadStream()), "file", artworkFile.FileName);
-
-                var response = await _httpClient.PostAsync(_apiURL + "/Auth/UploadFile?containerName=1", content);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    // Read the response content as a string
-                    var responseContent = await response.Content.ReadAsStringAsync();
-                    dynamic responseData = JsonConvert.DeserializeObject(responseContent);
-                    return responseData.data.fileUri;
-                }
-                else
-                {
-                    // Handle non-successful response (e.g., log error or throw exception)
-                    var responseContent = await response.Content.ReadAsStringAsync();
-                    // You can log the error or handle it as per your application's requirements
-                    throw new Exception($"Failed to upload artwork: {response.StatusCode} - {responseContent}");
-                }
+                await LoadWatermarkByCreatorIdAsync(GetAccountIdFromToken());
+                await LoadGenresAsync();
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
-            }
-        }
+            }		
+		}
 
         public async Task<IActionResult> OnPost()
         {
@@ -73,16 +54,21 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
             _jwtToken = HttpContext.Session.GetString("JWTToken");
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _jwtToken);
 
+            // Load data
+            await LoadWatermarkByCreatorIdAsync(GetAccountIdFromToken());
+            await LoadGenresAsync();
+            
             // Create artwork
             var request = new
             {
                 creatorId = GetAccountIdFromToken(),
-                watermarkId = CreateArtworkViewModel.WatermarkId,
+                watermarkId = SelectedWatermarkId,
                 title = CreateArtworkViewModel.Title,
                 description = CreateArtworkViewModel.Description,
                 price = CreateArtworkViewModel.Price,
                 genreId = CreateArtworkViewModel.GenreId,
-                originalArtUrl = await UploadArtwork(CreateArtworkViewModel.OrginalArtworkFile)
+                originalArtUrl = await ImageHelpers.UploadOriginalArtworkFile(_apiURL, CreateArtworkViewModel.OrginalArtworkFile),
+                watermarkedArtUrl = await ImageHelpers.UploadWatermarkArtworkFile(_apiURL, CreateArtworkViewModel.OrginalArtworkFile, GetWatermarkUrl(SelectedWatermarkId))
             };
             var createUrl = _apiURL + "/Artwork/CreateArtwork?artworkStatus=" + CreateArtworkViewModel.Status;
             var jsonBody = JsonConvert.SerializeObject(request);
@@ -114,7 +100,6 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
 		private string GetAccountIdFromToken()
 		{
             _jwtToken = HttpContext.Session.GetString("JWTToken");
-            // Decode the token
             var handler = new JwtSecurityTokenHandler();
             var tokenS = handler.ReadToken(_jwtToken) as JwtSecurityToken;
             return tokenS.Claims.First(claim => claim.Type == "AccountId").Value;
@@ -129,5 +114,17 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
             dynamic genreObject = JsonConvert.DeserializeObject(genreContent);
             Genres = new List<dynamic>(genreObject.items);
         }
-	}
+
+        private string GetWatermarkUrl(int watermarkId)
+        {
+            foreach (var watermark in Watermarks)
+            {
+                if (watermark.watermarkId == watermarkId)
+                {
+                    return watermark.watermarkUrl;
+                }
+            }
+            return null;
+        }
+    }
 }

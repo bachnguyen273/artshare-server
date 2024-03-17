@@ -66,11 +66,6 @@ namespace artshare_server.Services.Services
             artwork.LikeCount = 0;
             artwork.DislikeCount = 0;
             artwork.CreatedDate = DateTime.Now;
-            artwork.OriginalArtUrl = createArtworkDTO.OriginalArtUrl;
-
-            // combine artwork with watermark
-            string watermarkUrl = _watermarkService.GetWatermarkByIdAsync(createArtworkDTO.WatermarkId).Result.WatermarkUrl;
-            artwork.WatermarkedArtUrl = await _azureBlobStorageService.UploadFileAsync(createArtworkDTO.OriginalArtUrl, watermarkUrl);
 
             await _unitOfWork.ArtworkRepo.AddAsync(artwork);
             var result = await _unitOfWork.SaveAsync() > 0;
