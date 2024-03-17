@@ -4,5 +4,7 @@ namespace artshare_server.Core.Interfaces
 {
     public interface ICommentRepository : IGenericRepository<Comment>
     {
+        Task<IEnumerable<Comment>> GetAllCommentsByArtworkIdAsync(int artworkId);
+
     }
 }

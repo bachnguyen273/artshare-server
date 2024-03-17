@@ -49,10 +49,6 @@ namespace artshare_server.Infrastructure.FluentAPIs
                 .WithOne(e => e.Artwork)
                 .HasForeignKey(x => x.ArtworkId)
                 .OnDelete(DeleteBehavior.NoAction);
-            builder.HasMany(t => t.Genres)
-                .WithMany(e => e.Artworks)
-                .UsingEntity(j => j
-                    .ToTable("ArtworkGenre"));
             builder.HasMany(t => t.Reports)
                 .WithOne(e => e.Artwork)
                 .HasForeignKey(x => x.ArtworkId)

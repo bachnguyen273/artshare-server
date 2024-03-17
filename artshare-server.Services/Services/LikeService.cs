@@ -31,17 +31,66 @@ namespace artshare_server.Services.Services
 
         public async Task<bool> CreateLikeAsync(Like like)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _unitOfWork.LikeRepo.AddAsync(like);
+                var result = await _unitOfWork.SaveAsync() > 0;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<bool> UpdateLikeAsync(Like like)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _unitOfWork.LikeRepo.Update(like);
+                var result = await _unitOfWork.SaveAsync() > 0;
+                return result;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        public async Task<bool> DeleteLikeAsync(int likeId)
+        public async Task<bool> DeleteLikeAsync(Like like)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _unitOfWork.LikeRepo.Delete(like);
+                var result = await _unitOfWork.SaveAsync() > 0;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
+
+        public async Task<IEnumerable<Like>> GetAllLikeByArtworkId(int artworkId)
+        {
+            return await _unitOfWork.LikeRepo.GetAllLikeByArtworkId(artworkId);
+        }
+
+        public async Task<Like> GetLikeByAccountIdAndArtworkId(int accountId, int artworkId)
+        {
+            return await _unitOfWork.LikeRepo.GetLikeByAccountIdAndArtworkId(accountId, artworkId);
+        }
+
+        public async Task<int> CountLikeByArtWorkId(int artworkId)
+        {
+            return await _unitOfWork.LikeRepo.CountLikeByArtWorkId(artworkId);
+        }
+
+        public async Task<int> CountDisLikeByArtWorkId(int artworkId)
+        {
+            return await _unitOfWork.LikeRepo.CountDisLikeByArtWorkId(artworkId);
+        }
+
+       
     }
 }
