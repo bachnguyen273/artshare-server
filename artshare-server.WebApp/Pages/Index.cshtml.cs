@@ -1,6 +1,7 @@
 ﻿using artshare_server.WebApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;
@@ -12,18 +13,15 @@ namespace artshare_server.WebApp.Pages
         [BindProperty]
         public List<dynamic> Artworks { get; set; }
         public List<dynamic> Genres { get; set; }
-        public string SearchString { get; set; }
-        public int PageNumber { get; set; }
-
 
 		public async Task<IActionResult> OnGetAsync() => await LoadData();
-		public async Task<IActionResult> OnPostAsync(string searchString, int pageNumber)
+		public async Task<IActionResult> OnPostAsync(string searchString, int pageNumber, string? selectedGenreId)
 		{
-			await LoadData(searchString, pageNumber);
+			await LoadData(searchString, pageNumber, selectedGenreId);
 			return Page();
 		}
 
-        private async Task<IActionResult> LoadData(string? searchString = null, int? pageNumber = null)
+        private async Task<IActionResult> LoadData(string? searchString = null, int? pageNumber = null, string? selectedGenreId = null)
         {
             IConfiguration config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -34,13 +32,17 @@ namespace artshare_server.WebApp.Pages
             try
             {
                 pageNumber = pageNumber == null ? 1 : pageNumber;
-                string artworkUrl = $"{apiUrl}/Artwork/GetArtworks?PageNumber={pageNumber}&PageSize=1";
+                string artworkUrl = $"{apiUrl}/Artwork/GetArtworks?PageNumber={pageNumber}&PageSize=8";
                 string genreUrl = $"{apiUrl}/Genre/GetGenres";
                 using (var httpClient = new HttpClient())
                 {
                     if (!string.IsNullOrEmpty(searchString))
                     {
                         artworkUrl += $"&Title={searchString}";
+                    }
+                    if (!string.IsNullOrEmpty(selectedGenreId))
+                    {
+                        artworkUrl += $"&GenreId={selectedGenreId}";
                     }
                     HttpResponseMessage artworkResponseMessage = await httpClient.GetAsync(artworkUrl);
                     HttpResponseMessage genreResponseMessage = await httpClient.GetAsync(genreUrl);

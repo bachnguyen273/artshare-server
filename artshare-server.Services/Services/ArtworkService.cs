@@ -84,6 +84,8 @@ namespace artshare_server.Services.Services
                 filteredItemsQuery = filteredItemsQuery.Where(item => item.CreatorId == filters.CreatorId);
             if (filters.ArtworkId != null)
                 filteredItemsQuery = filteredItemsQuery.Where(item => item.ArtworkId == filters.ArtworkId);
+            if (filters.GenreId != null)
+                filteredItemsQuery = filteredItemsQuery.Where(item => item.GenreId == filters.GenreId);
 
             // Apply sorting
             if (!string.IsNullOrEmpty(filters.SortBy))

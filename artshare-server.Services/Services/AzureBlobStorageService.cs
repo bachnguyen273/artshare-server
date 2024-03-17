@@ -31,7 +31,7 @@ namespace artshare_server.Services.Services
                 await containerClient.CreateIfNotExistsAsync();
 
                 // Get a reference to a blob
-                BlobClient blobClient = containerClient.GetBlobClient(Guid.NewGuid().ToString());
+                BlobClient blobClient = containerClient.GetBlobClient(Guid.NewGuid().ToString() + ".jpg");
 
                 // Open the file and upload its data
                 using (var stream = file.OpenReadStream())

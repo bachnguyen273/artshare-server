@@ -7,20 +7,23 @@
 	<div class="container">
 		<section class="gallery-area section-gap" id="gallery">
 			<a asp-page="./Create" class="primary-btn text-uppercase">CREATE NEW</a>
-			<div class="single-widget tags-widget">
-				<h4 class="title text-white">Genre</h4>
-				<ul>
-					@foreach (var genre in Model.Genres)
-					{
-						<a asp-page="/Artworks" asp-route-uniqueId="@genre.genreId">
-						<li><a href="#">@genre.name</a></li>
-						</a>
-					}
-				</ul>
-			</div>
 			<div class="single-widget search-widget">
-				<form class="example" action="" method="post" style="margin:auto;max-width:300px">
+				<form id="searchForm" method="post" style="margin:auto;max-width:300px">
+					<h4 class="title text-white">Genre</h4>
+					<ul>
+						@foreach (var genre in Model.Genres)
+						{
+							<div>
+								<input type="radio" id="genre_@(genre.genreId)" name="selectedGenreId" value="@genre.genreId" />
+								<label for="genre_@(genre.genreId)">
+									@genre.name
+								</label>
+							</div>
+						}
+					</ul>
 					<input type="text" placeholder="Search Posts" name="searchString">
+					<br />
+					<input type="number" id="pageNumber" placeholder="Page Number" name="pageNumber">
 					<button type="submit"><i class="fa fa-search"></i></button>
 				</form>
 			</div>

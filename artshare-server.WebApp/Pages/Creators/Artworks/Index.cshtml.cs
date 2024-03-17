@@ -31,13 +31,13 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
 		}
 
 		public async Task<IActionResult> OnGetAsync() => await LoadData();
-        public async Task<IActionResult> OnPostAsync(string searchString)
-        {
-            await LoadData(searchString);
-            return Page();
-        }
+		public async Task<IActionResult> OnPostAsync(string searchString, int pageNumber, string? selectedGenreId)
+		{
+			await LoadData(searchString, pageNumber, selectedGenreId);
+			return Page();
+		}
 
-        private async Task<IActionResult> LoadData(string? searchString = null, string? pageNumber = null)
+		private async Task<IActionResult> LoadData(string? searchString = null, int? pageNumber = null, string? selectedGenreId = null)
         {
            
             try
@@ -47,9 +47,30 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
                 var handler = new JwtSecurityTokenHandler();
                 var tokenS = handler.ReadToken(jwtToken) as JwtSecurityToken;
                 var accountId = tokenS.Claims.First(claim => claim.Type == "AccountId").Value;
-                await LoadArtworkByCreatorIAsyncd(accountId);
-                await LoadGenresAsync();
-                return Page();
+
+				pageNumber = pageNumber == null ? 1 : pageNumber;
+				string artworkUrl = _apiURL + $"/Artwork/GetArtworks?CreatorId={accountId}&PageNumber={pageNumber}&PageSize=8";
+				if (!string.IsNullOrEmpty(searchString))
+				{
+					artworkUrl += $"&Title={searchString}";
+				}
+				if (!string.IsNullOrEmpty(selectedGenreId))
+				{
+					artworkUrl += $"&GenreId={selectedGenreId}";
+				}
+				HttpResponseMessage artworkResponseMessage = await _httpClient.GetAsync(artworkUrl);
+				artworkResponseMessage.EnsureSuccessStatusCode();
+				string artworkContent = await artworkResponseMessage.Content.ReadAsStringAsync();
+				dynamic artworkObject = JsonConvert.DeserializeObject(artworkContent);
+				Artworks = new List<dynamic>(artworkObject.data.artwork.items);
+
+				string genreUrl = _apiURL + "/Genre/GetGenres";
+				HttpResponseMessage genreResponseMessage = await _httpClient.GetAsync(genreUrl);
+				genreResponseMessage.EnsureSuccessStatusCode();
+				string genreContent = await genreResponseMessage.Content.ReadAsStringAsync();
+				dynamic genreObject = JsonConvert.DeserializeObject(genreContent);
+				Genres = new List<dynamic>(genreObject.items);
+				return Page();
             }
             catch (HttpRequestException)
             {
@@ -57,29 +78,5 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
                 return NotFound();
             }
         }
-
-        private async Task LoadArtworkByCreatorIAsyncd(string creatorId, string searchString = null)
-        {
-			string artworkUrl = _apiURL + "/Artwork/GetArtworks?CreatorId=" + creatorId;
-			if (searchString != null)
-            {
-                
-            }
-			HttpResponseMessage artworkResponseMessage = await _httpClient.GetAsync(artworkUrl);
-			artworkResponseMessage.EnsureSuccessStatusCode();
-			string artworkContent = await artworkResponseMessage.Content.ReadAsStringAsync();
-			dynamic artworkObject = JsonConvert.DeserializeObject(artworkContent);
-			Artworks = new List<dynamic>(artworkObject.data.artwork.items);
-		}
-
-        private async Task LoadGenresAsync()
-        {
-			string genreUrl = _apiURL + "/Genre/GetGenres";
-			HttpResponseMessage genreResponseMessage = await _httpClient.GetAsync(genreUrl);
-			genreResponseMessage.EnsureSuccessStatusCode();
-			string genreContent = await genreResponseMessage.Content.ReadAsStringAsync();
-			dynamic genreObject = JsonConvert.DeserializeObject(genreContent);
-			Genres = new List<dynamic>(genreObject.items);
-		}
     }
 }

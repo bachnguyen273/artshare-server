@@ -4,48 +4,24 @@
     ViewData["Title"] = "Home page";
 }
 
-<!-- Banner Area -->
 <section class="banner-area relative" id="home">
-    <div class="overlay overlay-bg"></div>
     <div class="container">
-        <div class="row fullscreen d-flex align-items-center justify-content-center">
-            <div class="banner-content col-lg-8">
-                <h1 class="text-white">
-                    WELCOME TO ART SHARING
-                </h1>
-                <br />
-                <a asp-page="/Login" class="primary-btn text-uppercase">Get Start</a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Start upcoming-event Area -->
-<section class="upcoming-event-area section-gap" id="events">
-    <div class="container">
-        <div class="row d-flex justify-content-center">
-            <div class="menu-content pb-60 col-lg-10">
-                <div class="title text-center">
-                    <h1 class="mb-10">Checkout our art</h1>
-                    <p>Who are in extremely love with eco friendly system.</p>
-                </div>
-            </div>
-        </div>
-        <!-- Start gallery Area -->
         <section class="gallery-area section-gap" id="gallery">
-            <div class="single-widget tags-widget">
-                <h4 class="title text-white">Genre</h4>
-                <ul>
-                    @foreach (var genre in Model.Genres)
-                    {
-                        <a asp-page="/Artworks" asp-route-uniqueId="@genre.genreId">
-                        <li><a href="#">@genre.name</a></li>
-                        </a>
-                    }
-                </ul>
-            </div>
             <div class="single-widget search-widget">
                 <form id="searchForm" method="post" style="margin:auto;max-width:300px">
+                    <h4 class="title text-white">Genre</h4>
+                    <ul>
+                        @foreach (var genre in Model.Genres)
+                        {
+                            <li style="display: inline-block; margin-right: 10px;">
+                                <input type="radio" id="genre_@(genre.genreId)" name="selectedGenreId" value="@genre.genreId" />
+                                <label for="genre_@(genre.genreId)">
+                                    @genre.name
+                                </label>
+                            </li>
+                        }
+                    </ul>
+                    <br />
                     <input type="text" placeholder="Search Posts" name="searchString">
                     <br />
                     <input type="number" id="pageNumber" placeholder="Page Number" name="pageNumber">
@@ -72,6 +48,3 @@
         </section>
     </div>
 </section>
-<!-- End upcoming-event Area -->
-<!-- Pagination -->
-<

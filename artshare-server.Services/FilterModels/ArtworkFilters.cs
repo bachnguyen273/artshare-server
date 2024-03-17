@@ -14,5 +14,6 @@ namespace artshare_server.Services.FilterModels
         public int? ArtworkId { get; set; }
         public int? CreatorId { get; set; }
         public string? Title { get; set; }
+        public int? GenreId { get; set; }
     }
 }
