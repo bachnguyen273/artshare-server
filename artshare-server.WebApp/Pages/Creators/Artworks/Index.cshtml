@@ -6,35 +6,52 @@
 <section class="banner-area relative" id="home">
 	<div class="container">
 		<section class="gallery-area section-gap" id="gallery">
-			<a asp-page="./Create" class="primary-btn text-uppercase">CREATE NEW</a>
+			<div class="row d-flex justify-content-center">
+				 <div class="menu-content pb-70 col-lg-8">
+					 <div class="title text-center">
+						<a asp-page="./Create" class="primary-btn text-uppercase">CREATE NEW</a>
+					 </div>
+				 </div>
+			 </div> 		
 			<div class="single-widget search-widget">
-				<form id="searchForm" method="post" style="margin:auto;max-width:300px">
-					<h4 class="title text-white">Genre</h4>
-					<ul>
-						@foreach (var genre in Model.Genres)
-						{
-							<div>
-								<input type="radio" id="genre_@(genre.genreId)" name="selectedGenreId" value="@genre.genreId" />
-								<label for="genre_@(genre.genreId)">
-									@genre.name
-								</label>
+				<form id="searchForm" method="post" style="margin:auto;max-width:1000px">
+					<div style="display: flex; flex-wrap: wrap; justify-content: center;">
+						<div style="flex: 1; margin-right: 20px;">
+							<div class="single-blog" style="display: flex; justify-content: center;">
+								<ul>
+									@foreach (var genre in Model.Genres)
+									{
+										<li style="display: inline-block; margin-right: 10px;">
+											<input type="radio" id="genre_@(genre.genreId)" name="selectedGenreId" value="@genre.genreId" />
+											<label for="genre_@(genre.genreId)">
+												@genre.name
+											</label>
+										</li>
+									}
+								</ul>
 							</div>
-						}
-					</ul>
-					<input type="text" placeholder="Search Posts" name="searchString">
-					<br />
-					<input type="number" id="pageNumber" placeholder="Page Number" name="pageNumber">
-					<button type="submit"><i class="fa fa-search"></i></button>
+						</div>
+					</div>
+					<div style="display: flex; flex-wrap: wrap; justify-content: center;">
+						<div style="flex: 1; margin-top: 20px;">
+							<div class="thumb watermark-list" style="display: flex; flex-wrap: wrap; justify-content: center; max-width: 1000px;">
+								<input type="text" placeholder="Search Posts" name="searchString">
+								<br />
+								<input type="number" id="pageNumber" placeholder="Page Number" name="pageNumber">
+								<button type="submit"><i class="fa fa-search"></i></button>
+							</div>
+						</div>
+					</div>
 				</form>
 			</div>
 			<div class="container">
-				<div class="row d-flex justify-content-center">
+@* 				<div class="row d-flex justify-content-center">
 					<div class="menu-content pb-70 col-lg-8">
 						<div class="title text-center">
 							<h1 class="mb-10 text-white">YOUR GALERRY</h1>
 						</div>
 					</div>
-				</div>
+				</div> *@
 				<div id="grid-container" class="row">
 					@foreach (var artwork in Model.Artworks)
 					{
