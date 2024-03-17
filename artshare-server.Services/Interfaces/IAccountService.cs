@@ -6,6 +6,7 @@ namespace artshare_server.Services.Interfaces
     public interface IAccountService
     {
         Task<IEnumerable<ProfileDTO>> GetAllAccountsAsync();
+        Task<IEnumerable<ProfileDTO>> SearchAccountsAsync(string username);
 
         Task<ProfileDTO?> GetAccountByIdAsync(int accountId);
         Task<Account?> GetAccountByEmailAsync(string email);

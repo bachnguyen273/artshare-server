@@ -16,7 +16,7 @@ namespace artshare_server.WebApp.Pages.Setting
 	public class edit_profileModel : PageModel
 	{
 		[BindProperty]
-		public ProfileViewModel? ProfileViewModel1 { get; set; }
+		public ProfileViewModel ProfileViewModel1 { get; set; }
 		[BindProperty]
 		public int ProfileId { get; set; }
 		
@@ -29,12 +29,13 @@ namespace artshare_server.WebApp.Pages.Setting
 
 		public async Task OnGetAsync()
 		{
+			TempData["Role"] = HttpContext.Session.GetString("Role");
 			IConfiguration config = new ConfigurationBuilder()
 									   .SetBasePath(Directory.GetCurrentDirectory())
 									   .AddJsonFile("appsettings.json", true, true)
 									   .Build();
 			string apiUrl = config["API_URL"];
-			int id = int.Parse(HttpContext.Request.Query["id"].ToString());
+			int id = int.Parse(HttpContext.Request.Query["id"].ToString());			
 			var request = new HttpRequestMessage(HttpMethod.Get, $"{apiUrl}/Account/GetAccountById/{id}");
 			var response = await _httpClient.SendAsync(request);
 			if (response.IsSuccessStatusCode)
@@ -50,14 +51,15 @@ namespace artshare_server.WebApp.Pages.Setting
 
 		public async Task<IActionResult> OnPostProccessRequest(int id)
 		{
-			IConfiguration config = new ConfigurationBuilder()
+            ProfileId = id;
+            IConfiguration config = new ConfigurationBuilder()
 									   .SetBasePath(Directory.GetCurrentDirectory())
 									   .AddJsonFile("appsettings.json", true, true)
 									   .Build();
 			string apiUrl = config["API_URL"];
 			if (!ModelState.IsValid)
 			{
-				return Page();
+			  return Page();
 			}
 			ProfileId = id;
 			bool check = false;

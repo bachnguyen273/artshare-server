@@ -1,12 +1,14 @@
 using artshare_server.WebApp.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace artshare_server.WebApp.Pages.Admins
 {
-    public class UserProfileEditModel : PageModel
-    {
+	public class UserProfileEditModel : PageModel
+	{
 
 		[BindProperty]
 		public ProfileViewModel? ProfileViewModel1 { get; set; }
@@ -21,7 +23,7 @@ namespace artshare_server.WebApp.Pages.Admins
 		}
 
 		public async Task OnGet()
-        {
+		{
 			IConfiguration config = new ConfigurationBuilder()
 									   .SetBasePath(Directory.GetCurrentDirectory())
 									   .AddJsonFile("appsettings.json", true, true)
@@ -37,5 +39,48 @@ namespace artshare_server.WebApp.Pages.Admins
 				ProfileId = id;
 			}
 		}
-    }
+
+		public async Task<IActionResult> OnPostProccessRequest(int id)
+		{
+			IConfiguration config = new ConfigurationBuilder()
+									   .SetBasePath(Directory.GetCurrentDirectory())
+									   .AddJsonFile("appsettings.json", true, true)
+									   .Build();
+			string apiUrl = config["API_URL"];
+			//if (!ModelState.IsValid)
+			//{
+			//	return Page();
+			//}
+			ProfileId = id;
+			var requestBody = new ProfileViewModel
+			{
+				AccountId = id,
+				Email = Request.Form["Email"],
+				PasswordHash = null,
+				AvatarUrl = null,
+				UserName = Request.Form["UserName"],
+				FullName = Request.Form["FullName"],
+				PhoneNumber = Request.Form["PhoneNumber"],
+				JoinDate = DateTime.Parse(Request.Form["JoinDate"]),
+				Role = Request.Form["Role"],
+				Status = Request.Form["Status-Up"]
+			};
+
+			var jsonBody = JsonConvert.SerializeObject(requestBody);
+			var requestContent = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+
+
+			// Send the request
+			var response = await _httpClient.PutAsync($"{apiUrl}/Account/UpdateProfile/{id}", requestContent);
+
+			if (response.IsSuccessStatusCode)
+			{
+				var responseContent = await response.Content.ReadAsStringAsync();
+				TempData["AlertMessage"] = " Update Account Successfully...!";
+				return RedirectToPage("../Admins/UserProfileEdit", new { id = id });
+			}
+			TempData["AlertMessage1"] = " Update Account Fail...!";
+			return Page();
+		}
+	}
 }
