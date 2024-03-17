@@ -59,6 +59,43 @@ namespace artshare_server.Services.Services
             return _unitOfWork.ReportRepo.GetReportByAccountIdAndArtworkId(accountId, artworkId);
         }
 
-        
+        public async Task<bool> DenyReport(int reportId)
+        {
+            var report = await _unitOfWork.ReportRepo.GetByIdAsync(reportId);
+            if (report != null)
+            {
+                report.Status = ReportStatus.Processed;
+                _unitOfWork.ReportRepo.Update(report);
+                var result = await _unitOfWork.SaveAsync() > 0;
+                if (result)
+                {
+                    return true;
+                }
+                
+            }
+            return false;
+        }
+
+        public async Task<bool> AcceptReport(int reportId)
+        {
+            var report = await _unitOfWork.ReportRepo.GetByIdAsync(reportId);
+            if (report != null)
+            {
+                report.Status = ReportStatus.Processed;
+                _unitOfWork.ReportRepo.Update(report);
+                var result = await _unitOfWork.SaveAsync() > 0;
+                if (result)
+                {
+                    var artwork = await _unitOfWork.ArtworkRepo.GetByIdAsync(report.ArtworkId);
+                    artwork.Status = ArtworkStatus.Banned;
+                    _unitOfWork.ArtworkRepo.Update(artwork);
+                    var check = await _unitOfWork.SaveAsync() > 0;
+                    if (check)
+                        return true;
+                }
+
+            }
+            return false;
+        }
     }
 }
