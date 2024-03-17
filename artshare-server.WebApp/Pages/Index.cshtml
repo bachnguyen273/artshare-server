@@ -61,7 +61,7 @@
 					@foreach (var artwork in Model.Artworks)
 					{
 						<a asp-page="/Artworks" asp-route-artworkId="@artwork.artworkId">
-							<img class="grid-item" src="@artwork.originalArtUrl" alt="@artwork.title">
+							<img class="grid-item" src="@artwork.watermarkedArtUrl" alt="@artwork.title">
 						</a>
 					}
 				</div>

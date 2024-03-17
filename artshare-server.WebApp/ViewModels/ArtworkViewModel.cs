@@ -1,4 +1,6 @@
-﻿namespace artshare_server.WebApp.ViewModels
+﻿using System.Text.Json.Serialization;
+
+namespace artshare_server.WebApp.ViewModels
 {
     public class ArtworkViewModel
     {
@@ -17,6 +19,8 @@
         public required IFormFile OrginalArtworkFile { get; set; }
         public string? Description { get; set; }
         public required string Status { get; set; }
-        public required IEnumerable<int> GenreId { get; set; }
+        public required int GenreId { get; set; }
+        [JsonIgnore]
+        public string? WatermarkUrl { get; set; }
     }
 }

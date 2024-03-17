@@ -5,14 +5,14 @@ namespace artshare_server.Services.Interfaces
 {
     public interface IAccountService
     {
-        Task<IEnumerable<Account>> GetAllAccountsAsync();
+        Task<IEnumerable<GetAccountDTO>> GetAllAccountsAsync();
 
-        Task<Account?> GetAccountByIdAsync(int accountId);
-        Task<Account?> GetAccountByEmailAsync(string email);
-        Task<Account?> GetAccountByEmailAndPasswordAsync(string email, string password);
-        Task<Account?> GetAccountByUsernameAsync(string username);
+        Task<GetAccountDTO?> GetAccountByIdAsync(int accountId);
+        Task<GetAccountDTO?> GetAccountByEmailAsync(string email);
+        Task<GetAccountDTO?> GetAccountByEmailAndPasswordAsync(string email, string password);
+        Task<GetAccountDTO?> GetAccountByUsernameAsync(string username);
 
-        Task<bool> CreateAccountAsync(Account account);
+        Task<bool> CreateAccountAsync(CreateAccountDTO account);
 
         Task<bool> UpdateAccountAsync(int id, UpdateAccountDTO getAccountDTO);
 

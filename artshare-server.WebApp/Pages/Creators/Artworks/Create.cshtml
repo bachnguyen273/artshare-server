@@ -31,6 +31,7 @@
                     <input type="number" asp-for="@Model.CreateArtworkViewModel.Price" placeholder="Price" required class="single-input">
                 </div>
                 <div class="mt-10">
+                    <!-- Use ASP.NET Core Tag Helper for file input -->
                     <input type="file" asp-for="@Model.CreateArtworkViewModel.OrginalArtworkFile" required class="single-input">
                 </div>
                 <div class="mt-10">
@@ -46,8 +47,10 @@
                     @foreach (var genre in Model.Genres)
                     {
                         <div>
-                            <input type="checkbox" id="genre_@(genre.genreId)" name="selectedGenres" value="@genre.genreId" />
-                            <label for="genre_@(genre.genreId)">@genre.name</label>
+                            <input type="radio" id="genre_@(genre.genreId)" asp-for="@Model.CreateArtworkViewModel.GenreId" value="@genre.genreId" />
+                            <label for="genre_@(genre.genreId)">
+                                @genre.name
+                            </label>
                         </div>
                     }
                 </div>

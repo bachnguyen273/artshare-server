@@ -21,7 +21,6 @@ namespace artshare_server.Infrastructure.Repositories
         public async Task<List<GetArtworkDTO>> GetArtworks()
         {
             var list = await _dbContext.Artworks
-                        .Include(x => x.Genres)
                         .Include(x => x.OrderDetails)
                         .Include(x => x.Likes)
                         .Include(x => x.Comments)

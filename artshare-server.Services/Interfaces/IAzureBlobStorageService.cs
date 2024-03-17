@@ -16,5 +16,6 @@ namespace artshare_server.Services.Interfaces
         // 3. Watermark
         // 4. WatermarkArtwork
         Task<string> UploadFileAsync(string containerName, IFormFile file);
+        Task<string> UploadFileAsync(string artworkUrl, string watermarkUrl);
     }
 }

@@ -55,12 +55,13 @@ namespace artshare_server.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Creator")]
+        //[Authorize(Roles = "Creator")]
         public async Task<IActionResult> CreateArtwork([FromQuery] ArtworkStatus artworkStatus ,[FromBody] CreateArtworkDTO createArtworkDTO)
         {
             try
             {
                 createArtworkDTO.Status = artworkStatus.ToString();
+                
                 var requestResult = await _artworkService.CreateArtworkAsync(createArtworkDTO);
                 if (!requestResult)
                 {

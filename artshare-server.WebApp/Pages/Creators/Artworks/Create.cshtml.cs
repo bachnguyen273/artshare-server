@@ -37,16 +37,41 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
 			await LoadGenresAsync();
 		}
 
+        public async Task<string> UploadArtwork(IFormFile artworkFile)
+        {
+            try
+            {
+                var content = new MultipartFormDataContent();
+                content.Add(new StreamContent(artworkFile.OpenReadStream()), "file", artworkFile.FileName);
+
+                var response = await _httpClient.PostAsync(_apiURL + "/Auth/UploadFile?containerName=1", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Read the response content as a string
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    dynamic responseData = JsonConvert.DeserializeObject(responseContent);
+                    return responseData.data.fileUri;
+                }
+                else
+                {
+                    // Handle non-successful response (e.g., log error or throw exception)
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    // You can log the error or handle it as per your application's requirements
+                    throw new Exception($"Failed to upload artwork: {response.StatusCode} - {responseContent}");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task<IActionResult> OnPost()
         {
             // Authorize
             _jwtToken = HttpContext.Session.GetString("JWTToken");
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _jwtToken);
-
-            // Create artwork link
-            //var content = new MultipartFormDataContent();
-            //using var fileStream = CreateArtworkViewModel.OrginalArtworkFile.OpenReadStream();
-            //content.Add(new StreamContent(fileStream), "file", CreateArtworkViewModel.OrginalArtworkFile.FileName);
 
             // Create artwork
             var request = new
@@ -56,11 +81,10 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
                 title = CreateArtworkViewModel.Title,
                 description = CreateArtworkViewModel.Description,
                 price = CreateArtworkViewModel.Price,
-                //originalArtworkFile = fileStream,
-                genreId = Request.Form["selectedGenres"].Select(int.Parse).ToList()
+                genreId = CreateArtworkViewModel.GenreId,
+                originalArtUrl = await UploadArtwork(CreateArtworkViewModel.OrginalArtworkFile)
             };
             var createUrl = _apiURL + "/Artwork/CreateArtwork?artworkStatus=" + CreateArtworkViewModel.Status;
-            // http://localhost:5292/api/Artwork/CreateArtwork?artworkStatus=0
             var jsonBody = JsonConvert.SerializeObject(request);
             var content = new StringContent(jsonBody, System.Text.Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(createUrl, content);

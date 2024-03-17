@@ -16,52 +16,55 @@ namespace artshare_server.Services.Services
 
         private readonly IAzureBlobStorageService _azureBlobStorageService;
 
-        public AccountService(IUnitOfWork unitOfWork, IAzureBlobStorageService azureBlobStorageService)
+        public AccountService(IUnitOfWork unitOfWork
+                                , IAzureBlobStorageService azureBlobStorageService
+                                , IMapper mapper)
         {
+            _mapper = mapper;
             _unitOfWork = unitOfWork;
             _azureBlobStorageService = azureBlobStorageService;
         }
 
-        public async Task<IEnumerable<Account>> GetAllAccountsAsync()
+        public async Task<IEnumerable<GetAccountDTO>> GetAllAccountsAsync()
         {
             var accountList = await _unitOfWork.AccountRepo.GetAllAsync();
-            return accountList;
+            return _mapper.Map<IEnumerable<GetAccountDTO>>(accountList);
         }
 
-        public async Task<Account?> GetAccountByIdAsync(int accountId)
+        public async Task<GetAccountDTO?> GetAccountByIdAsync(int accountId)
         {
             if (accountId > 0)
             {
                 var account = await _unitOfWork.AccountRepo.GetByIdAsync(accountId);
-                return account;
+                return _mapper.Map<GetAccountDTO>(account);
             }
             return null;
         }
 
-        public async Task<Account?> GetAccountByEmailAsync(string email)
+        public async Task<GetAccountDTO?> GetAccountByEmailAsync(string email)
         {
             var account = await _unitOfWork.AccountRepo.GetByEmailAsync(email);
-            return account;
+            return _mapper.Map<GetAccountDTO>(account);
         }
 
-        public async Task<Account?> GetAccountByEmailAndPasswordAsync(string email, string password)
+        public async Task<GetAccountDTO?> GetAccountByEmailAndPasswordAsync(string email, string password)
         {
             var account = await _unitOfWork.AccountRepo.GetByEmailAsync(email);
             if(account != null)
             {
                 if(BCrypt.Net.BCrypt.Verify(password, account.PasswordHash))
                 {
-                    return account;
+                    return _mapper.Map<GetAccountDTO>(account);
                 }
             }
             return null;
         }
 
-        public async Task<bool> CreateAccountAsync(Account account)
+        public async Task<bool> CreateAccountAsync(CreateAccountDTO createAccountDTO)
         {
             try
             {
-                await _unitOfWork.AccountRepo.AddAsync(account);
+                await _unitOfWork.AccountRepo.AddAsync(_mapper.Map<Account>(createAccountDTO));
                 var result = await _unitOfWork.SaveAsync() > 0;
                 return result;
             }
@@ -104,10 +107,10 @@ namespace artshare_server.Services.Services
             throw new NotImplementedException();
         }
 
-        public async Task<Account?> GetAccountByUsernameAsync(string username)
+        public async Task<GetAccountDTO?> GetAccountByUsernameAsync(string username)
         {
             var account = await _unitOfWork.AccountRepo.GetByUsernameAsync(username);
-            return account;
+            return _mapper.Map<GetAccountDTO>(account);
         }
 
         public async Task<bool> UpdateAccountStatuslAsync(int accountId)

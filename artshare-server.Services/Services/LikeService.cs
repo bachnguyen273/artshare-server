@@ -1,30 +1,34 @@
-﻿using artshare_server.Core.Interfaces;
+﻿using artshare_server.ApiModels.DTOs;
+using artshare_server.Core.Interfaces;
 using artshare_server.Core.Models;
 using artshare_server.Services.Interfaces;
+using AutoMapper;
 
 namespace artshare_server.Services.Services
 {
     public class LikeService : ILikeService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public LikeService(IUnitOfWork unitOfWork)
+        public LikeService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Like>> GetAllLikesAsync()
+        public async Task<IEnumerable<GetLikeDTO>> GetAllLikesAsync()
         {
             var likeList = await _unitOfWork.LikeRepo.GetAllAsync();
-            return likeList;
+            return _mapper.Map<IEnumerable<GetLikeDTO>>(likeList);
         }
 
-        public async Task<Like?> GetLikeByIdAsync(int likeId)
+        public async Task<GetLikeDTO?> GetLikeByIdAsync(int likeId)
         {
             if (likeId > 0)
             {
                 var like = await _unitOfWork.LikeRepo.GetByIdAsync(likeId);
-                return like;
+                return _mapper.Map<GetLikeDTO>(like);
             }
             return null;
         }

@@ -4,8 +4,14 @@ using artshare_server.Core.Models;
 using artshare_server.Services.FilterModels;
 using artshare_server.Services.FilterModels.Helpers;
 using artshare_server.Services.Interfaces;
+using artshare_server.Services.Utils;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.Drawing;
+using System.Net;
 
 namespace artshare_server.Services.Services
 {
@@ -14,12 +20,17 @@ namespace artshare_server.Services.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IAzureBlobStorageService _azureBlobStorageService;
+        private readonly IWatermarkService _watermarkService;
 
-        public ArtworkService(IUnitOfWork unitOfWork, IMapper mapper, IAzureBlobStorageService azureBlobStorageService)
+        public ArtworkService(IUnitOfWork unitOfWork
+                                , IMapper mapper
+                                , IAzureBlobStorageService azureBlobStorageService
+                                , IWatermarkService watermarkService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _azureBlobStorageService = azureBlobStorageService;
+            _watermarkService = watermarkService;
         }
 
         //public async Task<IEnumerable<Artwork>> GetAllArtworksAsync()
@@ -56,6 +67,11 @@ namespace artshare_server.Services.Services
             artwork.DislikeCount = 0;
             artwork.CreatedDate = DateTime.Now;
             artwork.OriginalArtUrl = createArtworkDTO.OriginalArtUrl;
+
+            // combine artwork with watermark
+            string watermarkUrl = _watermarkService.GetWatermarkByIdAsync(createArtworkDTO.WatermarkId).Result.WatermarkUrl;
+            artwork.WatermarkedArtUrl = await _azureBlobStorageService.UploadFileAsync(createArtworkDTO.OriginalArtUrl, watermarkUrl);
+
             await _unitOfWork.ArtworkRepo.AddAsync(artwork);
             var result = await _unitOfWork.SaveAsync() > 0;
             return result;
@@ -107,8 +123,8 @@ namespace artshare_server.Services.Services
                     default:
                         // Handle other sorting filter using Utils.GetPropertyValue
                         filteredItemsQuery = filters.SortAscending ?
-                            filteredItemsQuery.OrderBy(item => Utils.GetPropertyValue(item, filters.SortBy)) :
-                            filteredItemsQuery.OrderByDescending(item => Utils.GetPropertyValue(item, filters.SortBy));
+                            filteredItemsQuery.OrderBy(item => Helpers.GetPropertyValue(item, filters.SortBy)) :
+                            filteredItemsQuery.OrderByDescending(item => Helpers.GetPropertyValue(item, filters.SortBy));
                         break;
                 }
             }

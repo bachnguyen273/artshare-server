@@ -4,6 +4,7 @@ using artshare_server.Core.Models;
 using artshare_server.Services.FilterModels;
 using artshare_server.Services.FilterModels.Helpers;
 using artshare_server.Services.Interfaces;
+using artshare_server.Services.Utils;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System.Net.WebSockets;
@@ -43,8 +44,8 @@ namespace artshare_server.Services.Services
 					default:
 						// Handle other sorting filter using Utils.GetPropertyValue
 						filteredItemsQuery = filters.SortAscending ?
-							filteredItemsQuery.OrderBy(item => Utils.GetPropertyValue(item, filters.SortBy)) :
-							filteredItemsQuery.OrderByDescending(item => Utils.GetPropertyValue(item, filters.SortBy));
+							filteredItemsQuery.OrderBy(item => Helpers.GetPropertyValue(item, filters.SortBy)) :
+							filteredItemsQuery.OrderByDescending(item => Helpers.GetPropertyValue(item, filters.SortBy));
 						break;
 				}
 			}

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace artshare_server.Services.FilterModels.Helpers
+namespace artshare_server.Services.Utils
 {
-    public static class Utils
+    public static class Helpers
     {
         public static object GetPropertyValue(object obj, string propertyName)
         {
