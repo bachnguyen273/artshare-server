@@ -46,21 +46,4 @@ public static class FileHelper
         var imageExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".tiff", ".bmp", ".svg" };
         return imageExtensions.Any(e => file.FileName.EndsWith(e, StringComparison.OrdinalIgnoreCase));
     }
-
-	public static async Task<IFormFile> DownloadImageAsFormFileAsync(string watermarkUrl)
-	{
-		using (HttpClient httpClient = new HttpClient())
-		{
-			// Download image data asynchronously
-			byte[] imageData = await httpClient.GetByteArrayAsync(watermarkUrl);
-
-			// Convert byte array to Stream
-			MemoryStream stream = new MemoryStream(imageData);
-
-			// Create IFormFile instance
-			IFormFile formFile = new FormFile(stream, 0, imageData.Length, "Watermark", "Watermark_" + watermarkUrl);
-
-			return formFile;
-		}
-	}
 }
