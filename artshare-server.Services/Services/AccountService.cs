@@ -125,5 +125,21 @@ namespace artshare_server.Services.Services
                 return false;
             }            
         }
+
+        public async Task<IEnumerable<ProfileDTO>> SearchAccountsAsync(string usename)
+        {
+            try
+            {
+                var account = await _unitOfWork.AccountRepo.SearchAccountByUsername(usename);
+                if(account != null)
+                {
+                    return _mapper.Map<IEnumerable<ProfileDTO>>(account);
+                }
+                return null;
+            }catch (Exception ex)
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }

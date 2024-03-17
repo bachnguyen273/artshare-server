@@ -1,25 +1,11 @@
 ﻿@page
-@model artshare_server.WebApp.Pages.Admins.UserProfileEditModel
+@model artshare_server.WebApp.Pages.Admins.AdminProfileDetailModel
 @{
-}
-
-@if (TempData["AlertMessage"] != null)
-{
-    <div class="alert alert-success">
-        <strong>Success !</strong>@TempData["AlertMessage"];
-    </div>
-}
-@if (TempData["AlertMessage1"] != null)
-{
-    <div class="alert alert-danger">
-        <strong>Fail !</strong>@TempData["AlertMessage1"];
-    </div>
 }
 <section class="quote-area pt-100">
     <div class="container">
         <div>
             <div>
-                <a class="primary-btn text-uppercase" href="./AllAccount">Back</a>
                 <h1 class="phucnvm-h1">
                     <span>Account management</span>
                 </h1>
@@ -57,24 +43,9 @@
                 <p style="margin-bottom: 0.1rem;margin-top: 1rem">Role</p>
                 <input asp-for="ProfileViewModel1.Role" name="Role" class="form-control1" placeholder="Enter PhoneNumber " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter PhoneNumber '" readonly="" type="text" />
                 <p style="margin-bottom: 0.1rem;margin-top: 1rem">Status</p>
-                <select name="Status-Up">
-                    <option>Active</option>
-                    <option>Inactive</option>
-                </select>
-                <button class="primary-btn text-uppercase" style="margin-top: 1rem; width:100%" type="submit" asp-route-id="@Model.ProfileId" asp-page-handler="ProccessRequest">Update</button>
+                <input asp-for="ProfileViewModel1.Status" name="Role" class="form-control1" placeholder="Enter PhoneNumber " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter PhoneNumber '" readonly="" type="text" />
+                <a class="primary-btn text-uppercase" style="margin-top: 1rem; width:100%; text-align:center" href="../Setting/edit-profile?id=@Model.ProfileId">Edit</a>
             </form>
         </div>
     </div>
 </section>
-
-@section Scripts{
-    <script>
-        window.setTimeout(function () {
-            $('.alert').fadeTo(500, 0).slideUp(500, function () {
-                $(this).remove();
-            });
-        }, 3000);
-
-
-    </script>
-}

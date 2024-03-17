@@ -81,7 +81,8 @@ namespace artshare_server.Services.Services
                 new Claim(JwtRegisteredClaimNames.Aud, 
                                   _configuration.GetSection("JwtSecurityToken:Audience").Value),
                 new Claim(ClaimTypes.Email, account.Email),
-                new Claim(ClaimTypes.Role, account.Role.ToString())
+                new Claim(ClaimTypes.Role, account.Role.ToString()),
+                new Claim(ClaimTypes.UserData, account.UserName.ToString())
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes
