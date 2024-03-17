@@ -1,4 +1,20 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@using System.IdentityModel.Tokens.Jwt
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var jwtToken = HttpContextAccessor.HttpContext.Session.GetString("JWTToken");
+    string username = null;
+    if (jwtToken != null)
+    {
+        // Decode the token
+        var handler = new JwtSecurityTokenHandler();
+        var tokenS = handler.ReadToken(jwtToken) as JwtSecurityToken;
+        username = tokenS.Claims.First(claim => claim.Type == "UserName").Value;
+    }
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Mobile Specific Meta -->
@@ -40,8 +56,24 @@
                 <nav id="nav-menu-container">
                     <ul class="nav-menu">
                         <li class="menu-active"><a href="../index">Home</a></li>
-                        <li><a asp-page="/Login">Login</a></li>
-                        <li><a asp-page="/Register">Register</a></li>
+                        @if (!string.IsNullOrEmpty(jwtToken))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-page="/Logout">Logout</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-page="/Profile">@username</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-page="/Login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-page="/Register">Register</a>
+                            </li>
+                        }
                         <li class="menu-has-children">
                             <a href="">Pages</a>
                             <ul>

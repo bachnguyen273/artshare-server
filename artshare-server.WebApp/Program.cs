@@ -10,7 +10,7 @@ namespace artshare_server.WebApp
             builder.Services.AddRazorPages();
 
             builder.Services.AddDistributedMemoryCache();
-
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromSeconds(600);
