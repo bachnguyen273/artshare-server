@@ -1,9 +1,15 @@
-﻿namespace artshare_server.WebApp.ViewModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace artshare_server.WebApp.ViewModels
 {
     public class ProfileViewModel
     {
 		public int AccountId { get; set; }
-		public string Email { get; set; }
+
+        [Required(ErrorMessage ="Please Enter email..!")]
+        [EmailAddress]
+        public string Email { get; set; }
+
         public string? PasswordHash { get; set; }
         public string? AvatarUrl { get; set; }
         public string UserName { get; set; }
