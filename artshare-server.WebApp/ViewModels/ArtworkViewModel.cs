@@ -30,9 +30,6 @@ namespace artshare_server.WebApp.ViewModels
         public required string Status { get; set; }
         [Required]
         public required int GenreId { get; set; }
-        [Required]
-        [JsonIgnore]
-        public string? WatermarkUrl { get; set; }
     }
 
     public class UpdateArtworkViewModel

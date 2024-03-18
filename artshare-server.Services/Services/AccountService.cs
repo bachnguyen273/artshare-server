@@ -35,7 +35,7 @@ namespace artshare_server.Services.Services
         {
             if (accountId > 0)
             {
-                var account = await _unitOfWork.AccountRepo.GetByIdAsync(accountId);
+                var account = await _unitOfWork.AccountRepo.GetAccountById(accountId);
                 return _mapper.Map<GetAccountDTO>(account);
             }
             return null;

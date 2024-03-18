@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -22,6 +23,7 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
 		private string _jwtToken;
         [BindProperty]
         public int SelectedWatermarkId { get; set; }
+        [BindProperty]
         public int SelectedGenreId { get; set; }
 
         public CreateModel()
@@ -58,6 +60,11 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
             // Load data
             await LoadWatermarkByCreatorIdAsync(GetAccountIdFromToken());
             await LoadGenresAsync();
+
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
             
             // Create artwork
             var request = new

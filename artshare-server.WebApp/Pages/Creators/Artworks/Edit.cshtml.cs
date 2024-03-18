@@ -77,6 +77,10 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
 
         public async Task<IActionResult> OnPost()
         {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
             // Authorize
             _jwtToken = HttpContext.Session.GetString("JWTToken");
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _jwtToken);
