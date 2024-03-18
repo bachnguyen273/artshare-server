@@ -57,6 +57,20 @@ namespace artshare_server.Controllers
             });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetArtworkIdsByAccountId(int accountId)
+        {
+            return Ok(new SucceededResponseModel()
+            {
+                Status = Ok().StatusCode,
+                Message = "Success",
+                Data = new
+                {
+                    ArtworkIds = await _artworkService.GetArtworkIdsByAccountIdAsync(accountId)
+                }
+            });
+        }
+
         [HttpPost]
         [Authorize(Roles = "Creator")]
         public async Task<IActionResult> CreateArtwork([FromQuery] ArtworkStatus artworkStatus ,[FromBody] CreateArtworkDTO createArtworkDTO)

@@ -126,5 +126,15 @@ namespace artshare_server.Services.Services
             };
         }
 
+        // OrderService.cs
+        public async Task<List<int>> GetArtworkIdsByAccountIdAsync(int accountId)
+        {
+            var orders = await _unitOfWork.OrderRepo.GetOrdersByAccountIdAsync(accountId);
+            var orderDetails = await _unitOfWork.OrderDetailsRepo.GetOrderDetailsByOrdersAsync(orders);
+            return orderDetails.Select(od => od.ArtworkId).Distinct().ToList();
+        }
+
+
+
     }
 }

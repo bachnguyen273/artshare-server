@@ -15,6 +15,8 @@ namespace artshare_server.WebApp.Pages
 		public dynamic Artwork { get; set; }
         public string Role { get; set; }
         private HttpClient _httpClient;
+        public bool IsBought { get; set; }
+
 
         public ArtworksModel()
         {
@@ -28,8 +30,10 @@ namespace artshare_server.WebApp.Pages
                 artworkId = (int)TempData["artworkId"]; // Store artworkId in TempData
             }
             Artwork = await GetArtworkById(artworkId);
+            IsBought = await IsBoughtArtwork(int.Parse(HttpContext.Session.GetString("UserId")), Convert.ToInt32(Artwork.artworkId));
             return Page();
         }
+
 
         public async Task<IActionResult> OnPostAddToCartAsync(int itemId)
         {
@@ -91,6 +95,24 @@ namespace artshare_server.WebApp.Pages
             var cart = HttpContext.Session.Get<List<dynamic>>("Cart");
             return cart != null && cart.Any(item => item.artworkId == artwork.artworkId);
         }
+
+        public async Task<bool> IsBoughtArtwork(int accountId, int artworkId)
+        {
+            IConfiguration config = new ConfigurationBuilder()
+                                        .SetBasePath(Directory.GetCurrentDirectory())
+                                        .AddJsonFile("appsettings.json", true, true)
+                                        .Build();
+            string apiUrl = config["API_URL"];
+
+            HttpResponseMessage artworkIdsResponseMessage = await _httpClient.GetAsync($"{apiUrl}/Artwork/GetArtworkIdsByAccountId?accountId={accountId}");
+            artworkIdsResponseMessage.EnsureSuccessStatusCode();
+            string artworkIdsContent = await artworkIdsResponseMessage.Content.ReadAsStringAsync();
+            dynamic artworkIdsObject = JsonConvert.DeserializeObject(artworkIdsContent);
+            List<int> artworkIds = artworkIdsObject.data.artworkIds.ToObject<List<int>>();
+
+            return artworkIds.Contains(artworkId);
+        }
+
 
     }
 }
