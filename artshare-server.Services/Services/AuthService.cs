@@ -4,6 +4,7 @@ using artshare_server.Core.Models;
 using artshare_server.Services.CustomExceptions;
 using artshare_server.Services.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -32,7 +33,7 @@ namespace artshare_server.Services.Services
             var account = await _accountService.GetAccountByEmailAndPasswordAsync(loginData.Email, loginData.Password);
             if (account == null)
             {
-                throw new NullReferenceException("Wrong email or password.");
+                return null;
             }
             return CreateToken(account);
         }

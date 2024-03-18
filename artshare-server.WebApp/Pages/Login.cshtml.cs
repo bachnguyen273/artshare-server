@@ -83,6 +83,10 @@ namespace artshare_server.WebApp.Pages
                         return Page();
                 }
             }
+            else
+            {
+                TempData["Message"] = "Wrong email or password";
+            }
 			return Page();
 		}
 	}

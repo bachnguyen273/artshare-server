@@ -29,16 +29,10 @@ namespace artshare_server.WebAPI.Controllers
             try
             {
                 var loginRequest = await _authService.LoginAsync(loginData);
-                //return Ok(new SucceededResponseModel()
-                //{
-                //    Status = Ok().StatusCode,
-                //    Message = "Success",
-                //    Data = new
-                //    {
-                //        Token = loginRequest,
-                //        Account = await _accountService.GetAccountByEmailAsync(loginData.Email)
-                //    }
-                //});
+                if (loginRequest == null)
+                {
+                    return NotFound();
+                }
                 return Ok(loginRequest);
             }
             catch (NullReferenceException ex)
