@@ -24,7 +24,7 @@ namespace artshare_server.Services.Services
         public async Task<PagedResult<GetOrderDTO>> GetAllOrdersAsync<T>(OrderFilters filters)
         {
             // Apply filtering
-            var items = await _unitOfWork.OrderRepo.GetAllAsync();
+            var items = await _unitOfWork.OrderRepo.GetOrders();
             IQueryable<GetOrderDTO> filteredItemsQuery = items.AsQueryable();
 
             if (filters.OrderId != null)

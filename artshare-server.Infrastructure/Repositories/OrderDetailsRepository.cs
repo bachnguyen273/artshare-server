@@ -24,5 +24,13 @@ namespace artshare_server.Infrastructure.Repositories
             var list = await _dbContext.OrderDetails.Where(t => t.OrderId == orderId).ToListAsync();
             return _mapper.Map<List<OrderDetailDTO>>(list);
         }
+
+        // OrderDetailsRepository.cs
+        public async Task<List<OrderDetails>> GetOrderDetailsByOrdersAsync(List<Order> orders)
+        {
+            var orderIds = orders.Select(o => o.OrderId);
+            return await _dbContext.OrderDetails.Where(od => orderIds.Contains(od.OrderId)).ToListAsync();
+        }
+
     }
 }

@@ -22,6 +22,7 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
         public int SelectedGenreId { get; set; }
         [BindProperty]
         public dynamic Artwork { get; private set; }
+        public dynamic _artworkId { get; set; }
 
         public EditModel()
         {
@@ -36,6 +37,7 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
 
         public async Task OnGet(int artworkId)
         {
+            TempData["ArtworkId"] = artworkId;
             UpdateArtworkViewModel = new UpdateArtworkViewModel();
             // Load data
             try
@@ -75,8 +77,12 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
             SelectedGenreId = Artwork.genreId;
         }
 
-        public async Task<IActionResult> OnPost()
+        public async Task<IActionResult> OnPost(int artworkId)
         {
+            await LoadWatermarkByCreatorIdAsync(GetAccountIdFromToken());
+            await LoadGenresAsync();
+            await LoadOldArtworkData(artworkId);
+
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -84,10 +90,6 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
             // Authorize
             _jwtToken = HttpContext.Session.GetString("JWTToken");
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _jwtToken);
-
-            // Load data
-            await LoadWatermarkByCreatorIdAsync(GetAccountIdFromToken());
-            await LoadGenresAsync();
 
             // Create artwork
             var request = new

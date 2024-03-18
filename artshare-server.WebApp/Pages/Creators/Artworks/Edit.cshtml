@@ -39,6 +39,9 @@
                         </div>
                     </div>
                     <div class="container">
+                        <div class="row text-white" style="display: flex; flex-wrap: wrap; justify-content: center">
+                            You are updating artworkId : @Model.Artwork.artworkId
+                        </div>
                         <div id="grid-container" class="row" style="display: flex; flex-wrap: wrap; justify-content: center; max-width: 1000px;">
                             <img class="grid-item" src="@Model.UpdateArtworkViewModel.OriginalArtUrl">
                             <img class="grid-item" src="@Model.UpdateArtworkViewModel.WatermarkedArtUrl">
@@ -65,6 +68,9 @@
                         <option value="0" selected="@(Model.UpdateArtworkViewModel.Status == "Public")">Public</option>
                         <option value="1" selected="@(Model.UpdateArtworkViewModel.Status == "Private")">Private</option>
                     </select>
+                </div>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center">
+                    <div asp-validation-summary="All" class="text-danger"></div>
                 </div>
                 <button type="submit" style="margin: auto" class="primary-btn text-uppercase d-flex justify-content-center">Submit</button>
             </form>

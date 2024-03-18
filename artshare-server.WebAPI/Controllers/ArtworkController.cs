@@ -132,5 +132,20 @@ namespace artshare_server.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetArtworkIdsByAccountId(int accountId)
+        {
+            return Ok(new SucceededResponseModel()
+            {
+                Status = Ok().StatusCode,
+                Message = "Success",
+                Data = new
+                {
+                    ArtworkIds = await _artworkService.GetArtworkIdsByAccountIdAsync(accountId)
+                }
+            });
+        }
+
     }
 }
