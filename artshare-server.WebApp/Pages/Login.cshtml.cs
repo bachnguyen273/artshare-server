@@ -56,7 +56,12 @@ namespace artshare_server.WebApp.Pages
 
                 // Extract the role claim
                 var role = tokenS.Claims.First(claim => claim.Type == ClaimTypes.Role).Value;
+                int id = int.Parse(tokenS.Claims.First(claim => claim.Type == "AccountId").Value);
                 HttpContext.Session.SetString("Role", role);
+                HttpContext.Session.SetInt32("AccountId", id);
+
+				var username = tokenS.Claims.First(claim => claim.Type == ClaimTypes.UserData).Value;
+				HttpContext.Session.SetString("Username", username);
 
 				var username = tokenS.Claims.First(claim => claim.Type == ClaimTypes.UserData).Value;
 				HttpContext.Session.SetString("Username", username);
@@ -70,7 +75,7 @@ namespace artshare_server.WebApp.Pages
                     case "Audience":
                         return RedirectToPage("./Index");
                     case "Creator":
-                        return RedirectToPage("./Creators/Index");
+                        return RedirectToPage("./Creators/CreatorDashboard");
                     case "Admin":
                         return RedirectToPage("./Admin/Index");
                     default:

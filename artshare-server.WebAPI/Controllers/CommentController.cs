@@ -1,4 +1,5 @@
 ﻿using artshare_server.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace artshare_server.Controllers

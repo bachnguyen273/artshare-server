@@ -1,5 +1,6 @@
 ﻿using artshare_server.Core.Models;
 using artshare_server.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection.Metadata.Ecma335;

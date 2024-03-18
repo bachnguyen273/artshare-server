@@ -15,5 +15,7 @@ namespace artshare_server.Services.Interfaces
         Task<bool> UpdateReportAsync(Report report);
 
         Task<bool> DeleteReportAsync(int reportId);
+        Task<bool> DenyReport(int reportId);
+        Task<bool> AcceptReport(int reportId);
     }
 }

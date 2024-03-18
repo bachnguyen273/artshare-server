@@ -34,7 +34,7 @@ namespace artshare_server.Infrastructure
                 .AddJsonFile("appsettings.json", true, true)
                 .Build();
 
-            connectionString = config.GetConnectionString("BachDatabase");
+            connectionString = config.GetConnectionString("PhucDatabase");
 
 
             return connectionString;

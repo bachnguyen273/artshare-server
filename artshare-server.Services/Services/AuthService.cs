@@ -58,6 +58,7 @@ namespace artshare_server.Services.Services
             }
         }
 
+       
         private string CreateToken(Account account)
         {
             var nowUtc = DateTime.UtcNow;
@@ -84,6 +85,8 @@ namespace artshare_server.Services.Services
                 new Claim(ClaimTypes.Role, account.Role.ToString()),
                 new Claim(ClaimTypes.UserData, account.UserName.ToString()),
                 new Claim(ClaimTypes.NameIdentifier, account.AccountId.ToString())
+                new Claim("AccountId", account.AccountId.ToString()),
+                new Claim(ClaimTypes.UserData, account.UserName.ToString())
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes
