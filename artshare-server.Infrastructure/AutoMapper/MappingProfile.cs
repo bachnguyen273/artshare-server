@@ -8,7 +8,7 @@ namespace artshare_server.Infrastructure.AutoMapper
 {
     public class MappingProfile : Profile
     {
-       public MappingProfile()
+        public MappingProfile()
         {
             CreateMap<RegisterDTO, Account>()
                 .ForMember(des => des.Role, src => src.MapFrom(src => EnumMapper<AccountRole>.MapType(src.Role)));
@@ -16,30 +16,29 @@ namespace artshare_server.Infrastructure.AutoMapper
             CreateMap<Order, OrderDTO>();
             CreateMap<OrderDetails, OrderDetailDTO>();
 
-
             // ARTWORK
-CreateMap<ArtworkDTO, Artwork>().ReverseMap();
-CreateMap<CreateArtworkDTO, Artwork>()
-    .ForMember(des => des.Status, src => src.MapFrom(src => EnumMapper<ArtworkStatus>.MapType(src.Status)));
-// GENRE
-CreateMap<Genre, GenreDTO>().ReverseMap();
-CreateMap<Genre, GetGenreDTO>().ReverseMap();
-CreateMap<Genre, CreateGenreDTO>().ReverseMap();
-CreateMap<Genre, UpdateGenreDTO>().ReverseMap();
-
+            CreateMap<ArtworkDTO, Artwork>().ReverseMap();
+            CreateMap<CreateArtworkDTO, Artwork>()
+                .ForMember(des => des.Status, src => src.MapFrom(src => EnumMapper<ArtworkStatus>.MapType(src.Status)));
+            // GENRE
+            CreateMap<Genre, GenreDTO>().ReverseMap();
+            CreateMap<Genre, GetGenreDTO>().ReverseMap();
+            CreateMap<Genre, CreateGenreDTO>().ReverseMap();
+            CreateMap<Genre, UpdateGenreDTO>().ReverseMap();
 
             CreateMap<Watermark, WatermarkDTO>();
             CreateMap<WatermarkCreateDTO, Watermark>();
 
             CreateMap<CreateOrderDTO, Order>();
-           
+
             CreateMap<ProfileDTO, Account>()
                .ForMember(des => des.Role, src => src.MapFrom(src => EnumMapper<AccountRole>.MapType(src.Role)))
                .ForMember(des => des.Status, src => src.MapFrom(src => EnumMapper<AccountStatus>.MapType(src.Status)))
                .ReverseMap();
             CreateMap<ReportDTO, Report>();
 
-
+            CreateMap<Order_OrderDetailsCreateDTO, Order>().ReverseMap();
+            CreateMap<OrderDetailsCreateDTO, OrderDetails>().ReverseMap();
         }
     }
 }

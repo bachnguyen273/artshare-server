@@ -101,18 +101,18 @@ namespace artshare_server.Services.Services
                 filteredItemsQuery = filteredItemsQuery.Where(item => item.Name.Contains(filters.Name, StringComparison.OrdinalIgnoreCase));
 
             // Apply sorting
-            if (!string.IsNullOrEmpty(filters.SortBy))
-            {
-                switch (filters.SortBy)
-                {
-                    default:
-                        // Handle other sorting filters using Utils.GetPropertyValue
-                        filteredItemsQuery = filters.SortAscending ?
-                            filteredItemsQuery.OrderBy(item => Utils.GetPropertyValue(item, filters.SortBy)) :
-                            filteredItemsQuery.OrderByDescending(item => Utils.GetPropertyValue(item, filters.SortBy));
-                        break;
-                }
-            }
+            //if (!string.IsNullOrEmpty(filters.SortBy))
+            //{
+            //    switch (filters.SortBy)
+            //    {
+            //        default:
+            //            // Handle other sorting filters using Utils.GetPropertyValue
+            //            filteredItemsQuery = filters.SortAscending ?
+            //                filteredItemsQuery.OrderBy(item => Utils.GetPropertyValue(item, filters.SortBy)) :
+            //                filteredItemsQuery.OrderByDescending(item => Utils.GetPropertyValue(item, filters.SortBy));
+            //            break;
+            //    }
+            //}
 
             // Materialize the query before paging
             var pagedItems = filteredItemsQuery

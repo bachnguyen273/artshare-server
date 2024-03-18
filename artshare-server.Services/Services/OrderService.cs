@@ -2,16 +2,20 @@
 using artshare_server.Core.Interfaces;
 using artshare_server.Core.Models;
 using artshare_server.Services.Interfaces;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace artshare_server.Services.Services
 {
     public class OrderService : IOrderService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public OrderService(IUnitOfWork unitOfWork)
+        public OrderService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<Order>> GetAllOrdersAsync()
@@ -33,8 +37,22 @@ namespace artshare_server.Services.Services
         public async Task<bool> CreateOrderAsync(Order order)
         {
             await _unitOfWork.OrderRepo.AddAsync(order);
-            _unitOfWork.SaveAsync();
+            await _unitOfWork.SaveAsync();
             return true;
+        }
+
+        public async Task<bool> CreateOrderWithOrderDetailsAsync(Order_OrderDetailsCreateDTO dto)
+        {
+            try
+            {
+                var createOrder = _mapper.Map<Order>(dto);
+                await _unitOfWork.OrderRepo.AddAsync(createOrder);
+                return await _unitOfWork.SaveAsync() > 0;
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new DbUpdateException(ex.Message);
+            }
         }
 
         public async Task<bool> UpdateOrderAsync(Order order)

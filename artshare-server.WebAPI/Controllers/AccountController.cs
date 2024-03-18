@@ -159,7 +159,7 @@ namespace artshare_server.Controllers
         {
             try
             {
-                var acc = await _accountService.SearchAccountsAsync(username);
+                var acc = await _accountService.GetAccountByUsernameAsync(username);
                 if(acc == null)
                 {
                     return NotFound();

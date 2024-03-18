@@ -102,12 +102,12 @@ namespace artshare_server.Services.Services
                             filteredItemsQuery.OrderBy(item => item.CreatedDate) :
                             filteredItemsQuery.OrderByDescending(item => item.CreatedDate);
                         break;
-                    default:
-                        // Handle other sorting filter using Utils.GetPropertyValue
-                        filteredItemsQuery = filters.SortAscending ?
-                            filteredItemsQuery.OrderBy(item => Utils.GetPropertyValue(item, filters.SortBy)) :
-                            filteredItemsQuery.OrderByDescending(item => Utils.GetPropertyValue(item, filters.SortBy));
-                        break;
+                    //default:
+                    //    // Handle other sorting filter using Utils.GetPropertyValue
+                    //    filteredItemsQuery = filters.SortAscending ?
+                    //        filteredItemsQuery.OrderBy(item => Utils.GetPropertyValue(item, filters.SortBy)) :
+                    //        filteredItemsQuery.OrderByDescending(item => Utils.GetPropertyValue(item, filters.SortBy));
+                    //    break;
                 }
             }
 
