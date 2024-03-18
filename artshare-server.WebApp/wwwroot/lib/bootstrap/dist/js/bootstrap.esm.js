@@ -2204,12 +2204,12 @@ class Dropdown extends BaseComponent {
       placement: this._getPlacement(),
       modifiers: [{
         name: 'preventOverflow',
-        options: {
+        filter: {
           boundary: this._config.boundary
         }
       }, {
         name: 'offset',
-        options: {
+        filter: {
           offset: this._getOffset()
         }
       }]
@@ -3938,22 +3938,22 @@ class Tooltip extends BaseComponent {
       placement: attachment,
       modifiers: [{
         name: 'flip',
-        options: {
+        filter: {
           fallbackPlacements: this._config.fallbackPlacements
         }
       }, {
         name: 'offset',
-        options: {
+        filter: {
           offset: this._getOffset()
         }
       }, {
         name: 'preventOverflow',
-        options: {
+        filter: {
           boundary: this._config.boundary
         }
       }, {
         name: 'arrow',
-        options: {
+        filter: {
           element: `.${this.constructor.NAME}-arrow`
         }
       }, {
@@ -3963,7 +3963,7 @@ class Tooltip extends BaseComponent {
         fn: data => this._handlePopperPlacementChange(data)
       }],
       onFirstUpdate: data => {
-        if (data.options.placement !== data.placement) {
+        if (data.filter.placement !== data.placement) {
           this._handlePopperPlacementChange(data);
         }
       }

@@ -1,12 +1,13 @@
-﻿using artshare_server.Core.Models;
+﻿using artshare_server.ApiModels.DTOs;
+using artshare_server.Core.Models;
 
 namespace artshare_server.Services.Interfaces
 {
     public interface ICommentService
     {
-        Task<IEnumerable<Comment>> GetAllCommentsAsync();
+        Task<IEnumerable<GetCommentDTO>> GetAllCommentsAsync();
 
-        Task<Comment?> GetCommentByIdAsync(int commentId);
+        Task<GetCommentDTO?> GetCommentByIdAsync(int commentId);
 
         Task<bool> CreateCommentAsync(Comment comment);
 

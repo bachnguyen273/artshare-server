@@ -1,0 +1,40 @@
+﻿@page
+@model artshare_server.WebApp.Pages.ArtworksModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<!-- start banner Area -->
+<section class="banner-area relative" id="home">
+    <div class="overlay overlay-bg"></div>
+    <div class="container">
+        <div class="container d-flex justify-content-center">
+            <div class="section-top-border text-white">
+                <div class="row align-items-center">
+                    <!-- Image Column -->
+                    <div class="col-md-4 text-center">
+                        <img src="@Model.Artwork.watermarkedArtUrl" alt="@Model.Artwork.title" class="img-fluid rounded-lg" style="max-width: 100%; height: 100%;">
+                    </div>
+                    <!-- Text Content Column -->
+                    <div class="col-md-8 text-white">
+                        <div class="input-container mt-10">
+                            <p>Artwork ID: <span>@Model.Artwork.artworkId</span></p>
+                            <p>Create Date: <span>@Model.Artwork.createdDate</span></p>
+                            <p>Like Count: <span>@Model.Artwork.likeCount</span></p>
+                            <p>Dislike Count: <span>@Model.Artwork.dislikeCount</span></p>
+                            <p>Comment Count: <span>@Model.Artwork.commentCount</span></p>
+                            <!-- <p>@Model.Artwork.reports</p> -->
+                            <p>Title: <span>@Model.Artwork.title</span></p>
+                            <p>Description: <span>@Model.Artwork.description</span></p>
+                            <p>Price: <span>@Model.Artwork.price</span> VND</p>
+                            <p>Genre: <span>@Model.Artwork.name</span></p>
+                        </div>
+                        <form method="post" asp-page-handler="AddToCart" asp-route-ItemId="@Model.Artwork.artworkId" >
+                            <button type="submit" class="primary-btn text-uppercase">Add to Cart</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

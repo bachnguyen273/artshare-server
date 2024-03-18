@@ -25,10 +25,10 @@
         adapters,
         data_validation = "unobtrusiveValidation";
 
-    function setValidationValues(options, ruleName, value) {
-        options.rules[ruleName] = value;
-        if (options.message) {
-            options.messages[ruleName] = options.message;
+    function setValidationValues(filter, ruleName, value) {
+        filter.rules[ruleName] = value;
+        if (filter.message) {
+            filter.messages[ruleName] = filter.message;
         }
     }
 
@@ -128,17 +128,17 @@
         var $form = $(form),
             result = $form.data(data_validation),
             onResetProxy = $.proxy(onReset, form),
-            defaultOptions = $jQval.unobtrusive.options || {},
+            defaultfilter = $jQval.unobtrusive.filter || {},
             execInContext = function (name, args) {
-                var func = defaultOptions[name];
+                var func = defaultfilter[name];
                 func && $.isFunction(func) && func.apply(form, args);
             };
 
         if (!result) {
             result = {
-                options: {  // options structure passed to jQuery Validate's validate() method
-                    errorClass: defaultOptions.errorClass || "input-validation-error",
-                    errorElement: defaultOptions.errorElement || "span",
+                filter: {  // filter structure passed to jQuery Validate's validate() method
+                    errorClass: defaultfilter.errorClass || "input-validation-error",
+                    errorElement: defaultfilter.errorElement || "span",
                     errorPlacement: function () {
                         onError.apply(form, arguments);
                         execInContext("errorPlacement", arguments);
@@ -158,7 +158,7 @@
                     $form
                         .off("reset." + data_validation, onResetProxy)
                         .on("reset." + data_validation, onResetProxy)
-                        .validate(this.options);
+                        .validate(this.filter);
                 },
                 validate: function () {  // a validation function that is called by unobtrusive Ajax
                     $form.validate();
@@ -192,8 +192,8 @@
             }
 
             valInfo = validationInfo(form);
-            valInfo.options.rules[element.name] = rules = {};
-            valInfo.options.messages[element.name] = messages = {};
+            valInfo.filter.rules[element.name] = rules = {};
+            valInfo.filter.messages[element.name] = messages = {};
 
             $.each(this.adapters, function () {
                 var prefix = "data-val-" + this.name,
@@ -283,8 +283,8 @@
         /// <param name="ruleName" type="String" optional="true">[Optional] The name of the jQuery Validate rule. If not provided, the value
         /// of adapterName will be used instead.</param>
         /// <returns type="jQuery.validator.unobtrusive.adapters" />
-        return this.add(adapterName, function (options) {
-            setValidationValues(options, ruleName || adapterName, true);
+        return this.add(adapterName, function (filter) {
+            setValidationValues(filter, ruleName || adapterName, true);
         });
     };
 
@@ -305,18 +305,18 @@
         /// <param name="maxAttribute" type="String" optional="true">[Optional] The name of the HTML attribute that
         /// contains the maximum value. The default is "max".</param>
         /// <returns type="jQuery.validator.unobtrusive.adapters" />
-        return this.add(adapterName, [minAttribute || "min", maxAttribute || "max"], function (options) {
-            var min = options.params.min,
-                max = options.params.max;
+        return this.add(adapterName, [minAttribute || "min", maxAttribute || "max"], function (filter) {
+            var min = filter.params.min,
+                max = filter.params.max;
 
             if (min && max) {
-                setValidationValues(options, minMaxRuleName, [min, max]);
+                setValidationValues(filter, minMaxRuleName, [min, max]);
             }
             else if (min) {
-                setValidationValues(options, minRuleName, min);
+                setValidationValues(filter, minRuleName, min);
             }
             else if (max) {
-                setValidationValues(options, maxRuleName, max);
+                setValidationValues(filter, maxRuleName, max);
             }
         });
     };
@@ -331,8 +331,8 @@
         /// <param name="ruleName" type="String" optional="true">[Optional] The name of the jQuery Validate rule. If not provided, the value
         /// of adapterName will be used instead.</param>
         /// <returns type="jQuery.validator.unobtrusive.adapters" />
-        return this.add(adapterName, [attribute || "val"], function (options) {
-            setValidationValues(options, ruleName || adapterName, options.params[attribute]);
+        return this.add(adapterName, [attribute || "val"], function (filter) {
+            setValidationValues(filter, ruleName || adapterName, filter.params[attribute]);
         });
     };
 
@@ -373,32 +373,32 @@
     adapters.addBool("creditcard").addBool("date").addBool("digits").addBool("email").addBool("number").addBool("url");
     adapters.addMinMax("length", "minlength", "maxlength", "rangelength").addMinMax("range", "min", "max", "range");
     adapters.addMinMax("minlength", "minlength").addMinMax("maxlength", "minlength", "maxlength");
-    adapters.add("equalto", ["other"], function (options) {
-        var prefix = getModelPrefix(options.element.name),
-            other = options.params.other,
+    adapters.add("equalto", ["other"], function (filter) {
+        var prefix = getModelPrefix(filter.element.name),
+            other = filter.params.other,
             fullOtherName = appendModelPrefix(other, prefix),
-            element = $(options.form).find(":input").filter("[name='" + escapeAttributeValue(fullOtherName) + "']")[0];
+            element = $(filter.form).find(":input").filter("[name='" + escapeAttributeValue(fullOtherName) + "']")[0];
 
-        setValidationValues(options, "equalTo", element);
+        setValidationValues(filter, "equalTo", element);
     });
-    adapters.add("required", function (options) {
+    adapters.add("required", function (filter) {
         // jQuery Validate equates "required" with "mandatory" for checkbox elements
-        if (options.element.tagName.toUpperCase() !== "INPUT" || options.element.type.toUpperCase() !== "CHECKBOX") {
-            setValidationValues(options, "required", true);
+        if (filter.element.tagName.toUpperCase() !== "INPUT" || filter.element.type.toUpperCase() !== "CHECKBOX") {
+            setValidationValues(filter, "required", true);
         }
     });
-    adapters.add("remote", ["url", "type", "additionalfields"], function (options) {
+    adapters.add("remote", ["url", "type", "additionalfields"], function (filter) {
         var value = {
-            url: options.params.url,
-            type: options.params.type || "GET",
+            url: filter.params.url,
+            type: filter.params.type || "GET",
             data: {}
         },
-            prefix = getModelPrefix(options.element.name);
+            prefix = getModelPrefix(filter.element.name);
 
-        $.each(splitAndTrim(options.params.additionalfields || options.element.name), function (i, fieldName) {
+        $.each(splitAndTrim(filter.params.additionalfields || filter.element.name), function (i, fieldName) {
             var paramName = appendModelPrefix(fieldName, prefix);
             value.data[paramName] = function () {
-                var field = $(options.form).find(":input").filter("[name='" + escapeAttributeValue(paramName) + "']");
+                var field = $(filter.form).find(":input").filter("[name='" + escapeAttributeValue(paramName) + "']");
                 // For checkboxes and radio buttons, only pick up values from checked fields.
                 if (field.is(":checkbox")) {
                     return field.filter(":checked").val() || field.filter(":hidden").val() || '';
@@ -410,21 +410,21 @@
             };
         });
 
-        setValidationValues(options, "remote", value);
+        setValidationValues(filter, "remote", value);
     });
-    adapters.add("password", ["min", "nonalphamin", "regex"], function (options) {
-        if (options.params.min) {
-            setValidationValues(options, "minlength", options.params.min);
+    adapters.add("password", ["min", "nonalphamin", "regex"], function (filter) {
+        if (filter.params.min) {
+            setValidationValues(filter, "minlength", filter.params.min);
         }
-        if (options.params.nonalphamin) {
-            setValidationValues(options, "nonalphamin", options.params.nonalphamin);
+        if (filter.params.nonalphamin) {
+            setValidationValues(filter, "nonalphamin", filter.params.nonalphamin);
         }
-        if (options.params.regex) {
-            setValidationValues(options, "regex", options.params.regex);
+        if (filter.params.regex) {
+            setValidationValues(filter, "regex", filter.params.regex);
         }
     });
-    adapters.add("fileextensions", ["extensions"], function (options) {
-        setValidationValues(options, "extension", options.params.extensions);
+    adapters.add("fileextensions", ["extensions"], function (filter) {
+        setValidationValues(filter, "extension", filter.params.extensions);
     });
 
     $(function () {

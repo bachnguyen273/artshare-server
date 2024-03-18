@@ -12,4 +12,19 @@ namespace artshare_server.ApiModels.DTOs
         public int ArtworkId { get; set; }
         public decimal UnitPrice { get; set; }
     }
+
+    public class CreateOrderDetailDTO : OrderDetailDTO
+    {
+
+    }
+
+    public class UpdateOrderDetailDTO : OrderDetailDTO
+    {
+
+    }
+
+    public class GetOrderDetailDTO : OrderDetailDTO
+    {
+
+    }
 }

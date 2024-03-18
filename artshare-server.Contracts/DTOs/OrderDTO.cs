@@ -8,9 +8,19 @@ namespace artshare_server.ApiModels.DTOs
 {
     public class OrderDTO
     {
-        public int OrderId { get; set; }
         public int CustomerId { get; set; }
         public DateTime OrderDate { get; set; }
         public decimal TotalPrice { get; set; }
+    }
+
+    public class CreateOrderDTO : OrderDTO
+    {
+        public required IList<CreateOrderDetailDTO> CreateOrderDetailDTOs { get; set; }
+    }
+
+    public class GetOrderDTO : OrderDTO
+    {
+        public int OrderId { get; set; }
+        public required IList<GetOrderDetailDTO> GetOrderDetailDTOs { get; set; }
     }
 }
