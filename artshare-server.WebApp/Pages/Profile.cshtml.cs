@@ -12,16 +12,21 @@ namespace artshare_server.WebApp.Pages
 		[BindProperty]
 		public ProfileViewModel? ProfileViewModel1 { get; set; }
 
+		[BindProperty]
+		public int Check {  get; set; }
+
 		private HttpClient _httpClient;
 
         public ProfileModel()
         {
 			_httpClient = new HttpClient();
         }
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
             string username = HttpContext.Request.Query["username"];
-            //string currentUser = HttpContext.Session.GetString("Username");
+
+            string currentUser = HttpContext.Session.GetString("Username");
+			Check = (currentUser == null) ? 0 : ((currentUser.Equals(username)) ? 1 : 0);
 
 
 			IConfiguration config = new ConfigurationBuilder()
@@ -34,8 +39,14 @@ namespace artshare_server.WebApp.Pages
 			if (response.IsSuccessStatusCode)
 			{
 				var responseContent = await response.Content.ReadAsStringAsync();
-				ProfileViewModel1 = JsonConvert.DeserializeObject<ProfileViewModel>(responseContent);
+				var acc = JsonConvert.DeserializeObject<ProfileViewModel>(responseContent);
+				if(acc.Status != "Inactive")
+				{
+					ProfileViewModel1 = acc;
+					return Page();
+				}
 			}
+			return NotFound();
 		}
     }
 }

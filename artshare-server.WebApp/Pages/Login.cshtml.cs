@@ -60,6 +60,9 @@ namespace artshare_server.WebApp.Pages
                 HttpContext.Session.SetString("Role", role);
                 HttpContext.Session.SetInt32("AccountId", id);
 
+				var username = tokenS.Claims.First(claim => claim.Type == ClaimTypes.UserData).Value;
+				HttpContext.Session.SetString("Username", username);
+
                 // Redirect users based on their roles
                 switch (role)
                 {

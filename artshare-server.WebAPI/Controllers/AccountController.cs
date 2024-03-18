@@ -5,6 +5,7 @@ using artshare_server.Services.Interfaces;
 using artshare_server.WebAPI.ResponseModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace artshare_server.Controllers
@@ -150,6 +151,23 @@ namespace artshare_server.Controllers
                     Status = 500,
                     Message = $"An error occurred while uploading the file: {ex.Message}"
                 });
+            }
+        }
+
+        [HttpGet("{username}")]
+        public async Task<IActionResult> SearchByUsername(string username)
+        {
+            try
+            {
+                var acc = await _accountService.SearchAccountsAsync(username);
+                if(acc == null)
+                {
+                    return NotFound();
+                }
+                return Ok(acc);
+            }catch(Exception e)
+            {
+                return BadRequest(e.Message);
             }
         }
     }
