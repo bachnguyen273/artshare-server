@@ -25,7 +25,7 @@ namespace artshare_server.Controllers
             {
                 return NotFound();
             }
-            return Ok(listReport.OrderBy(r => r.ReportDate).Where(r => r.Status.Equals(ReportStatus.Processing)).ToList());
+            return Ok(listReport.OrderBy(r => r.ReportDate).OrderBy(r => r.Status).ToList());
         }
         
         [HttpPost]

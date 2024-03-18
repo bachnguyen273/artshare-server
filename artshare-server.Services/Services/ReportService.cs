@@ -64,8 +64,11 @@ namespace artshare_server.Services.Services
             var report = await _unitOfWork.ReportRepo.GetByIdAsync(reportId);
             if (report != null)
             {
-                report.Status = ReportStatus.Processed;
-                _unitOfWork.ReportRepo.Update(report);
+                if (report.Status.Equals(ReportStatus.Processed))
+                {
+                    report.Status = ReportStatus.Processed;
+                    _unitOfWork.ReportRepo.Update(report);
+                }
                 var result = await _unitOfWork.SaveAsync() > 0;
                 if (result)
                 {
@@ -81,8 +84,11 @@ namespace artshare_server.Services.Services
             var report = await _unitOfWork.ReportRepo.GetByIdAsync(reportId);
             if (report != null)
             {
-                report.Status = ReportStatus.Processed;
-                _unitOfWork.ReportRepo.Update(report);
+                if(report.Status.Equals(ReportStatus.Processed))
+                {
+                    report.Status = ReportStatus.Processed;
+                    _unitOfWork.ReportRepo.Update(report);
+                }
                 var result = await _unitOfWork.SaveAsync() > 0;
                 if (result)
                 {
