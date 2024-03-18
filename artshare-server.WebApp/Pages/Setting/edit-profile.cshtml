@@ -16,6 +16,7 @@
         <strong>Fail !</strong>@TempData["AlertMessage1"];
     </div>
 }
+
 @if(role != null)
 {
     <section class="quote-area pt-100">
@@ -83,9 +84,7 @@
 }
 
 
-
 @section Scripts{
-    
     <script>
         $('.phucnvm-confirmPassword').hide();
         $('#oldPassword').prop('readonly', true);
@@ -100,7 +99,8 @@
             $('.alert').fadeTo(500, 0).slideUp(500, function () {
                 $(this).remove();
             });
-        }, 3000);      
+        }, 3000);
+
+
     </script>
-    
 }

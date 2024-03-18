@@ -2,6 +2,7 @@
 using artshare_server.Core.Enums;
 using artshare_server.Services.Interfaces;
 using artshare_server.Services.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,6 +41,28 @@ namespace artshare_server.Controllers
             {
                 return Ok();
             }return BadRequest("Create faile");
+        }
+        [HttpPut]
+        public async Task<IActionResult> DenyReport(int id)
+        {
+            
+            bool result = await _reportservice.DenyReport(id);
+            if (result)
+            {
+                return Ok();
+            }
+            return BadRequest("Update faile");
+        }
+        [HttpPut]
+        public async Task<IActionResult> AcceptReport(int id)
+        {
+
+            bool result = await _reportservice.AcceptReport(id);
+            if (result)
+            {
+                return Ok();
+            }
+            return BadRequest("Update faile");
         }
     }
 }
