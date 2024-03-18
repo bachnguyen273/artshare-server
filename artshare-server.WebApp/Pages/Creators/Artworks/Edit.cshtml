@@ -38,6 +38,12 @@
                             }
                         </div>
                     </div>
+                    <div class="container">
+                        <div id="grid-container" class="row" style="display: flex; flex-wrap: wrap; justify-content: center; max-width: 1000px;">
+                            <img class="grid-item" src="@Model.UpdateArtworkViewModel.OriginalArtUrl">
+                            <img class="grid-item" src="@Model.UpdateArtworkViewModel.WatermarkedArtUrl">
+                        </div>
+                    </div>
                 </div>
                 <div class="input-container mt-10">
                     <input type="text" asp-for="@Model.UpdateArtworkViewModel.Title" placeholder="Title" required class="single-input">
@@ -54,10 +60,10 @@
                 </div>
                 <div class="input-container mt-10">
                     <!-- Combo box for selecting public/private -->
-                    <select name="selectedStatus" asp-for="@Model.UpdateArtworkViewModel.Status" class="single-input" required>
+                    <select name="selectedStatus" asp-for="@Model.UpdateArtworkViewModel.Status" class="single-input" style="height: 40px" required>
                         <option value="">Select Status</option>
-                        <option value="0">Public</option>
-                        <option value="1">Private</option>
+                        <option value="0" selected="@(Model.UpdateArtworkViewModel.Status == "Public")">Public</option>
+                        <option value="1" selected="@(Model.UpdateArtworkViewModel.Status == "Private")">Private</option>
                     </select>
                 </div>
                 <button type="submit" style="margin: auto" class="primary-btn text-uppercase d-flex justify-content-center">Submit</button>
@@ -87,25 +93,6 @@
 
         // Get the selected watermark id
         var selectedWatermarkId = document.querySelector('input[name="@Model.SelectedWatermarkId"]:checked');
-
-        // Get the selected status
-        var selectedStatus = "@Model.UpdateArtworkViewModel.Status";
-
-        // If both genre, watermarkId, and status are selected
-        if (selectedGenreId && selectedWatermarkId && selectedStatus !== "") {
-            // Tick the corresponding checkboxes
-            document.getElementById('genre_' + selectedGenreId.value).checked = true;
-            document.getElementById('watermark_' + selectedWatermarkId.value).checked = true;
-
-            // Set the selected value for the status dropdown
-            var statusDropdown = document.querySelector('select[name="selectedStatus"]');
-
-            if (selectedStatus === "Public") {
-                statusDropdown.value = "0";
-            } else if (selectedStatus === "Private") {
-                statusDropdown.value = "1";
-            }
-        }
     }
 
     document.addEventListener('DOMContentLoaded', function () {
