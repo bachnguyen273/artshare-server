@@ -1,21 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Http
 @using System.IdentityModel.Tokens.Jwt
 @using System.Security.Claims
-@inject IHttpContextAccessor HttpContextAccessor
-
-@{
-    var jwtToken = HttpContextAccessor.HttpContext.Session.GetString("JWTToken");
-    string username = null;
-    string role = null;
-    if (jwtToken != null)
-    {
-        // Decode the token
-        var handler = new JwtSecurityTokenHandler();
-        var tokenS = handler.ReadToken(jwtToken) as JwtSecurityToken;
-        username = tokenS.Claims.First(claim => claim.Type == "UserName").Value;
-        role = tokenS.Claims.First(claim => claim.Type == ClaimTypes.Role).Value;
-    }
-}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -58,7 +43,7 @@
                 </div>
                 <nav id="nav-menu-container">
                     <ul class="nav-menu">
-                        <li class="menu-active"><a href="../index">Home</a></li>
+                        @* <li class="menu-active"><a href="../index">Home</a></li>
                         @if (!string.IsNullOrEmpty(jwtToken))
                         {
                             <li class="nav-item">
@@ -93,6 +78,34 @@
                             <li class="nav-item">
                                 <a class="nav-link" asp-page="/Register">Register</a>
                             </li>
+                        } *@
+                        @if (Context.Session.GetString("Role") == null)
+                        {
+                            <li class="menu-active"><a href="../Index">Home</a></li>
+                            <li><a href="../Login">Login</a></li>
+                            <li><a href="../Register">Register</a></li>
+                        }
+                        else
+                        {
+                            if (Context.Session.GetString("Role") == "Audience")
+                            {
+                                <li class="menu-active"><a href="../Index">Home</a></li>
+                                <li><a href="../Audiences/Cart">Cart</a></li>
+                                <li><a href="../Audiences/AudienceOrderList">Order</a></li>
+                            }
+                            else if (Context.Session.GetString("Role") == "Creator")
+                            {
+                                <li><a href="../Creators/Index">Dashboard</a></li>
+                                <li><a href="../Creators/Artworks/Index">Artwork</a></li>
+                                <li><a href="../Creators/AudienceOrderList">Order</a></li>
+                            }
+                            else if (Context.Session.GetString("Role") == "Admin")
+                            {
+                                <li><a href="../Admins/Index">Dashboard</a></li>
+                                <li><a href="../Admins/AllOrdersList">Order</a></li>
+                            }
+                            <li>@Context.Session.GetString("Username")</li>
+                            <li><a href="../Logout">Logout</a></li>
                         }
                         <li class="menu-has-children">
                             <a href="">Pages</a>

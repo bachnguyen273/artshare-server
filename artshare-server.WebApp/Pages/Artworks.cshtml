@@ -29,9 +29,18 @@
                             <p>Price: <span>@Model.Artwork.price</span> VND</p>
                             <p>Genre: <span>@Model.Artwork.name</span></p>
                         </div>
-                        <form method="post" asp-page-handler="AddToCart" asp-route-ItemId="@Model.Artwork.artworkId" >
-                            <button type="submit" class="primary-btn text-uppercase">Add to Cart</button>
-                        </form>
+                        @if (Model.IsProductInCart(Model.Artwork))
+                        {
+                            <form method="post" asp-page-handler="RemoveFromCart" asp-route-ItemId="@Model.Artwork.artworkId">
+                                <button type="submit" class="genric-btn danger radius">Remove from Cart</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form method="post" asp-page-handler="AddToCart" asp-route-ItemId="@Model.Artwork.artworkId">
+                                <button type="submit" class="genric-btn info radius">Add to Cart</button>
+                            </form>
+                        }
                     </div>
                 </div>
             </div>

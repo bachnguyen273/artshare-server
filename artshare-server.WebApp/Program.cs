@@ -10,12 +10,21 @@ namespace artshare_server.WebApp
             builder.Services.AddRazorPages();
 
             builder.Services.AddDistributedMemoryCache();
-            builder.Services.AddHttpContextAccessor();
+
             builder.Services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromSeconds(600);
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            });
+
+            builder.Services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+                options.Secure = CookieSecurePolicy.None; // Allow non-secure cookies
             });
 
             var app = builder.Build();

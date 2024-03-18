@@ -18,5 +18,6 @@ namespace artshare_server.Services.Interfaces
         Task<bool> DeleteOrderAsync(int orderId);
         Task<List<GetOrderDTO>> GetOrdersByCusIdAsync(int id);
         Task<List<GetOrderDTO>> GetOrdersByArtIdAsync(int id);
+        Task<bool> CreateOrderWithOrderDetailsAsync(Order_OrderDetailsCreateDTO dto);
     }
 }

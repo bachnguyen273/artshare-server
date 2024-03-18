@@ -66,24 +66,25 @@ namespace artshare_server.Services.Services
 
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, 
+                new Claim(JwtRegisteredClaimNames.Sub,
                         _configuration.GetSection("JwtSecurityToken:Subject").Value),
                 new Claim(JwtRegisteredClaimNames.Jti,
                                   Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Iat, 
-                                  EpochTime.GetIntDate(nowUtc).ToString(), 
+                new Claim(JwtRegisteredClaimNames.Iat,
+                                  EpochTime.GetIntDate(nowUtc).ToString(),
                                   ClaimValueTypes.Integer64),
-                new Claim(JwtRegisteredClaimNames.Exp, 
-                                  EpochTime.GetIntDate(expirationUtc).ToString(), 
+                new Claim(JwtRegisteredClaimNames.Exp,
+                                  EpochTime.GetIntDate(expirationUtc).ToString(),
                                   ClaimValueTypes.Integer64),
-                new Claim(JwtRegisteredClaimNames.Iss, 
+                new Claim(JwtRegisteredClaimNames.Iss,
                                   _configuration.GetSection("JwtSecurityToken:Issuer").Value),
-                new Claim(JwtRegisteredClaimNames.Aud, 
+                new Claim(JwtRegisteredClaimNames.Aud,
                                   _configuration.GetSection("JwtSecurityToken:Audience").Value),
                 new Claim(ClaimTypes.Email, account.Email),
                 new Claim(ClaimTypes.Role, account.Role.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, account.AccountId.ToString()),
                 new Claim("AccountId", account.AccountId.ToString()),
-                new Claim("UserName", account.FullName.ToString())
+                new Claim(ClaimTypes.UserData, account.UserName.ToString())
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes
