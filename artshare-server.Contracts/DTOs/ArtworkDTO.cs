@@ -45,7 +45,8 @@ namespace artshare_server.ApiModels.DTOs
 
     public class UpdateArtworkDTO : ArtworkDTO
     {
-
+        [JsonIgnore]
+        public string? Status { get; set; }
     }
 }
 

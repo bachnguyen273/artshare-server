@@ -6,7 +6,7 @@
 <section class="banner-area relative" id="home">
     <div class="container">
         <section class="gallery-area section-gap" id="gallery">
-            <form id="searchForm" method="post" style="margin:auto;max-width:1000px">
+            <form id="searchForm" method="post" enctype="multipart/form-data" style="margin:auto;max-width:1000px">
                 <div style="display: flex; flex-wrap: wrap; justify-content: center;">
                     <div style="flex: 1; margin-right: 20px;">
                         <div class="single-blog" style="display: flex; justify-content: center;">
@@ -43,8 +43,8 @@
                             You are updating artworkId : @Model.Artwork.artworkId
                         </div>
                         <div id="grid-container" class="row" style="display: flex; flex-wrap: wrap; justify-content: center; max-width: 1000px;">
-                            <img class="grid-item" src="@Model.UpdateArtworkViewModel.OriginalArtUrl">
-                            <img class="grid-item" src="@Model.UpdateArtworkViewModel.WatermarkedArtUrl">
+                            <img class="grid-item" src="@Model.Artwork.originalArtUrl">
+                            <img class="grid-item" src="@Model.Artwork.watermarkedArtUrl">
                         </div>
                     </div>
                 </div>
@@ -63,10 +63,10 @@
                 </div>
                 <div class="input-container mt-10">
                     <!-- Combo box for selecting public/private -->
-                    <select name="selectedStatus" asp-for="@Model.UpdateArtworkViewModel.Status" class="single-input" style="height: 40px" required>
+                    <select name="selectedStatus" asp-for="@Model.SelectedStatus" class="single-input" style="height: 40px">
                         <option value="">Select Status</option>
-                        <option value="0" selected="@(Model.UpdateArtworkViewModel.Status == "Public")">Public</option>
-                        <option value="1" selected="@(Model.UpdateArtworkViewModel.Status == "Private")">Private</option>
+                        <option value="0"  selected="@(Model.SelectedStatus == "Public")">Public</option>
+                        <option value="1" selected="@(Model.SelectedStatus == "Private")">Private</option>
                     </select>
                 </div>
                 <div style="display: flex; flex-wrap: wrap; justify-content: center">

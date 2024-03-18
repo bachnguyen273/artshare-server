@@ -55,13 +55,21 @@ namespace artshare_server.Services.Services
         {
             try
             {
-                GetArtworkDTO dto = await _unitOfWork.ArtworkRepo.GetArtworkById(id);
-                Artwork artwork = _mapper.Map<Artwork>(dto);
+                Artwork artwork = await _unitOfWork.ArtworkRepo.GetByIdAsync(id);
                 if (artwork == null)
                 {
                     return false;
                 }
 
+                artwork.CreatorId = updateArtworkDTO.CreatorId;
+                artwork.Description = updateArtworkDTO.Description;
+                artwork.GenreId = updateArtworkDTO.GenreId;
+                artwork.OriginalArtUrl = updateArtworkDTO.OriginalArtUrl;
+                artwork.Price = updateArtworkDTO.Price;
+                artwork.Status = (updateArtworkDTO.Status.Equals("Public")) ? ArtworkStatus.Public : ArtworkStatus.Private;
+                artwork.Title = updateArtworkDTO.Title;
+                artwork.WatermarkId = updateArtworkDTO.WatermarkId;
+                artwork.WatermarkedArtUrl = updateArtworkDTO.WatermarkedArtUrl;
                 _unitOfWork.ArtworkRepo.Update(artwork);
                 await _unitOfWork.SaveAsync();
                 return true;
@@ -76,9 +84,8 @@ namespace artshare_server.Services.Services
         {
             try
             {
-                GetArtworkDTO dto = await _unitOfWork.ArtworkRepo.GetArtworkById(artworkId);
-                Artwork artwork = _mapper.Map<Artwork>(dto);
-                if (dto == null)
+                Artwork artwork = await _unitOfWork.ArtworkRepo.GetByIdAsync(artworkId);
+                if (artwork == null)
                 {
                     throw new Exception("No genre found");
                 }
