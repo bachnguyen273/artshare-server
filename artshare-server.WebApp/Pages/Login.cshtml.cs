@@ -63,8 +63,6 @@ namespace artshare_server.WebApp.Pages
 				var username = tokenS.Claims.First(claim => claim.Type == ClaimTypes.UserData).Value;
 				HttpContext.Session.SetString("Username", username);
 
-				var username = tokenS.Claims.First(claim => claim.Type == ClaimTypes.UserData).Value;
-				HttpContext.Session.SetString("Username", username);
 
                 var userId = tokenS.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
                 HttpContext.Session.SetString("UserId", userId);
