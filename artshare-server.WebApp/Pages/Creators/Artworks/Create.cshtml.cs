@@ -22,6 +22,7 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
 		private string _jwtToken;
         [BindProperty]
         public int SelectedWatermarkId { get; set; }
+        public int SelectedGenreId { get; set; }
 
         public CreateModel()
 		{
