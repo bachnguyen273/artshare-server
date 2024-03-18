@@ -7,5 +7,6 @@ namespace artshare_server.Core.Interfaces
     {
         Task<Account?> GetByEmailAsync(string email);
         Task<Account?> GetByUsernameAsync(string username);
+        Task<IEnumerable<Account>> SearchAccountByUsername(string username);
     }
 }

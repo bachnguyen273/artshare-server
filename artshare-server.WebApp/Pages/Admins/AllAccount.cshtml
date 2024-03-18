@@ -8,6 +8,7 @@
     {
         pageNo =pager.CurrentPage;
     }
+    var search = TempData["SearchValue"];
 }
 @if (TempData["Alert"] != null)
 {
@@ -22,91 +23,109 @@
     </div>
 }
 
-<section class="quote-area pt-100">
-    <div class="container">
-        <h2 style="text-align:center;">Account Management</h2>
-        <div style="margin-top:20px;">
-            <form method="post" enctype="multipart/form-data">
-                <input class="form-control1" type="text" name="SearchValue" placeholder="Enter username" style="display:inline-block; width:40%" required=""/>
-                <button type="submit" class="primary-btn text-uppercase" asp-page-handler="Search" style="margin-left:10px; border-radius:10px"> Search </button>
-                <a href="./AllAccount?page=1" class="primary-btn text-uppercase" style="margin-left:20px; border-radius:10px"> ALL</a>
-            </form>
-        </div>
-        <div>
-            <table class="phucnvm-table">
-                <thead>
-                    <tr>
-                        <td>Account Id</td>
-                        <td>Email</td>
-                        <td>User Name</td>
-                        <td>Full Name</td>
-                        <td>Phone Number</td>
-                        <td>Status</td>
-                        <td>Role</td>
-                        <td>Join Date</td>
-                        <td>isDelete</td>
-                        <td>isEdit</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if(user == null)
-                    {
-                        @foreach (var account in Model.AccList)
-                        {
-                            <tr>
-                                <td>@account.AccountId</td>
-                                <td>@account.Email</td>
-                                <td>@account.UserName</td>
-                                <td>@account.FullName</td>
-                                <td>@account.PhoneNumber</td>
-                                <td class="phucnvm-status">
-                                    @if(account.Status == "Active"){
-                                        <p style="text-align:center;margin-top:10px; background-color:#F2FFE9;border-radius:70px; padding:5px;color:#88d200">@account.Status</p>
-                                    }else{
-                                        <p style="text-align:center;margin-top:10px; background-color:#FFDEDE;border-radius:70px; padding:5px;color:#EB4747">@account.Status</p>
-                                    }                                   
-                                </td>
-                                <td>@account.Role</td>
-                                <td>@account.JoinDate</td>
-                                <form method="post" enctype="multipart/form-data">
-                                <td><button type="submit" class="primary-btn text-uppercase" asp-page-handler="Delete" asp-route-id="@account.AccountId">Delete</button></td>
-                                <td><a class="primary-btn text-uppercase" href="./UserProfileEdit?id=@account.AccountId">Edit</a></td>
-                                </form>
-                            </tr>
-                        }
-                    }else{
-                        <tr>
-                            <td>@user.AccountId</td>
-                            <td>@user.Email</td>
-                            <td>@user.UserName</td>
-                            <td>@user.FullName</td>
-                            <td>@user.PhoneNumber</td>
-                            <td>@user.Status</td>
-                            <td>@user.Role</td>
-                            <td>@user.JoinDate</td>
-                            <form method="post" enctype="multipart/form-data">
-                            <td><button type="submit" class="primary-btn text-uppercase" asp-page-handler="Delete" asp-route-id="@user.AccountId">Delete</button></td>
-                            <td><a class="primary-btn text-uppercase" href="./UserProfileEdit?id=@user.AccountId">Edit</a></td>
-                            </form>
-                        </tr>
-                    }                  
-                </tbody>
-            </table>
+@if(Model.Check == 1)
+{
+    <section class="quote-area pt-100">
+        <div class="container">
+            <h2 style="text-align:center;">Account Management</h2>
+            <div style="margin-top:20px;">
+                <form method="post" enctype="multipart/form-data">
+                    <input class="form-control1" type="text" name="SearchValue" placeholder="Enter username" style="display:inline-block; width:40%" required="" />
+                    <button type="submit" class="primary-btn text-uppercase" asp-page-handler="Search" style="margin-left:10px; border-radius:10px"> Search </button>
+                    <a href="./AllAccount?page=1" class="primary-btn text-uppercase" style="margin-left:20px; border-radius:10px"> ALL</a>
+                </form>
+            </div>
             <div>
-                @if(pager.TotalPages > 0)
-                {
-                    <ul class="pagination justify-content-end">
-                        @for(var pge = pager.StartPage; pge <= pager.EndPage; pge++){
-                            <li class="page-item @(pge == pager.CurrentPage ? "active" : "")">
-                                <a class="page-link" href="./AllAccount?page=@pge">@pge</a>
-                            </li>
+                <table class="phucnvm-table">
+                    <thead>
+                        <tr>
+                            <td>Account Id</td>
+                            <td>Email</td>
+                            <td>User Name</td>
+                            <td>Full Name</td>
+                            <td>Phone Number</td>
+                            <td>Status</td>
+                            <td>Role</td>
+                            <td>Join Date</td>
+                            <td>isDelete</td>
+                            <td>isEdit</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (user == null)
+                        {
+                            @foreach (var account in Model.AccList)
+                            {
+                                <tr>
+                                    <td>@account.AccountId</td>
+                                    <td>@account.Email</td>
+                                    <td>@account.UserName</td>
+                                    <td>@account.FullName</td>
+                                    <td>@account.PhoneNumber</td>
+                                    <td class="phucnvm-status">
+                                        @if (account.Status == "Active")
+                                        {
+                                            <p style="text-align:center;margin-top:10px; background-color:#F2FFE9;border-radius:70px; padding:5px;color:#88d200">@account.Status</p>
+                                        }
+                                        else
+                                        {
+                                            <p style="text-align:center;margin-top:10px; background-color:#FFDEDE;border-radius:70px; padding:5px;color:#EB4747">@account.Status</p>
+                                        }
+                                    </td>
+                                    <td>@account.Role</td>
+                                    <td>@account.JoinDate</td>
+                                    <form method="post" enctype="multipart/form-data">
+                                    <td><button type="submit" class="primary-btn text-uppercase" asp-page-handler="Delete" asp-route-id="@account.AccountId">Delete</button></td>
+                                    <td><a class="primary-btn text-uppercase" href="./UserProfileEdit?id=@account.AccountId">Edit</a></td>
+                                    </form>
+                                </tr>
+                            }
                         }
-                    </ul>
-                }
+                        else
+                        {
+                            @foreach (var userSe in user)
+                            {
+                                <tr>
+                                    <td>@userSe.AccountId</td>
+                                    <td>@userSe.Email</td>
+                                    <td>@userSe.UserName</td>
+                                    <td>@userSe.FullName</td>
+                                    <td>@userSe.PhoneNumber</td>
+                                    <td>@userSe.Status</td>
+                                    <td>@userSe.Role</td>
+                                    <td>@userSe.JoinDate</td>
+                                    <form method="post" enctype="multipart/form-data">
+                                    <td><button type="submit" class="primary-btn text-uppercase" asp-page-handler="Delete" asp-route-id="@userSe.AccountId">Delete</button></td>
+                                    <td><a class="primary-btn text-uppercase" href="./UserProfileEdit?id=@userSe.AccountId">Edit</a></td>
+                                    </form>
+                                </tr>
+                            }                           
+                        }
+                    </tbody>
+                </table>
+                <div>
+                    @if (pager.TotalPages > 0)
+                    {
+                        <ul class="pagination justify-content-end">
+                            @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+                            {
+                                <li class="page-item @(pge == pager.CurrentPage ? "active" : "")">
+                                    @if(user == null)
+                                    {
+                                        <a class="page-link" href="./AllAccount?page=@pge">@pge</a>
+                                    }else{
+                                        <a class="page-link" href="./AllAccount?page=@pge&searchValue=@search">@pge</a>
+                                    }  
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+}
+
 
 <style>
     .phucnvm-table{      
