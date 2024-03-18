@@ -104,7 +104,7 @@
                                 <li><a href="../Admins/Index">Dashboard</a></li>
                                 <li><a href="../Admins/AllOrdersList">Order</a></li>
                             }
-                            <li>@Context.Session.GetString("Username")</li>
+                            <li><a asp-page="/Profile/Detail" />@Context.Session.GetString("Username")</li>
                             <li><a href="../Logout">Logout</a></li>
                         }
                         <li class="menu-has-children">
