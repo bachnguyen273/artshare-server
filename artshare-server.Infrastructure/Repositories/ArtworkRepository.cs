@@ -25,8 +25,21 @@ namespace artshare_server.Infrastructure.Repositories
                         .Include(x => x.Likes)
                         .Include(x => x.Comments)
                         .Include(x => x.Reports)
+                        .Include(x => x.Genre)
                         .ToListAsync();
             return _mapper.Map<List<GetArtworkDTO>>(list);
+        }
+
+        public async Task<GetArtworkDTO> GetArtworkById(int id)
+        {
+            var artwork = await _dbContext.Artworks
+                            .Include(x => x.OrderDetails)
+                            .Include(x => x.Likes)
+                            .Include(x => x.Comments)
+                            .Include(x => x.Reports)
+                            .Include(x => x.Genre)
+                            .FirstOrDefaultAsync(x => x.ArtworkId == id);
+            return _mapper.Map<GetArtworkDTO>(artwork);
         }
     }
 }

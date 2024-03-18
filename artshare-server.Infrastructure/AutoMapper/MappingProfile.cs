@@ -23,7 +23,10 @@ namespace artshare_server.Infrastructure.AutoMapper
                 .ForMember(src => src.Status, des => des.MapFrom(des => EnumMapper<ArtworkStatus>.MapType(des.Status.ToString())))
                 .ReverseMap();
             CreateMap<Artwork, UpdateArtworkDTO>().ReverseMap();
-            CreateMap<Artwork, GetArtworkDTO>().ReverseMap();
+            CreateMap<Artwork, GetArtworkDTO>()
+                .ForMember(x => x.Name, opt => opt.MapFrom(dest => dest.Genre.Name))
+                .ForMember(src => src.ArtworkStatus, des => des.MapFrom(des => EnumMapper<ArtworkStatus>.MapType(des.Status.ToString())))
+                .ReverseMap();
             // GENRE
             CreateMap<Genre, GenreDTO>().ReverseMap();
             CreateMap<Genre, GetGenreDTO>().ReverseMap();

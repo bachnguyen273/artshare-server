@@ -12,6 +12,8 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing;
 using System.Net;
+using artshare_server.Core.Enums;
+using System.Text.Json.Serialization;
 
 namespace artshare_server.Services.Services
 {
@@ -43,20 +45,50 @@ namespace artshare_server.Services.Services
         {
             if (artworkId > 0)
             {
-                var artwork = await _unitOfWork.ArtworkRepo.GetByIdAsync(artworkId);
+                var artwork = await _unitOfWork.ArtworkRepo.GetArtworkById(artworkId);
                 return _mapper.Map<GetArtworkDTO>(artwork);
             }
             return null;
         }
 
-        public async Task<bool> UpdateArtworkAsync(Artwork artwork)
+        public async Task<bool> UpdateArtworkAsync(int id, UpdateArtworkDTO updateArtworkDTO)
         {
-            throw new NotImplementedException();
+            try
+            {
+                GetArtworkDTO dto = await _unitOfWork.ArtworkRepo.GetArtworkById(id);
+                Artwork artwork = _mapper.Map<Artwork>(dto);
+                if (artwork == null)
+                {
+                    return false;
+                }
+
+                _unitOfWork.ArtworkRepo.Update(artwork);
+                await _unitOfWork.SaveAsync();
+                return true;
+            }
+            catch (DbUpdateException)
+            {
+                throw;
+            }
         }
 
         public async Task<bool> DeleteArtworkAsync(int artworkId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                GetArtworkDTO dto = await _unitOfWork.ArtworkRepo.GetArtworkById(artworkId);
+                Artwork artwork = _mapper.Map<Artwork>(dto);
+                if (dto == null)
+                {
+                    throw new Exception("No genre found");
+                }
+                _unitOfWork.ArtworkRepo.Delete(artwork);
+                return await _unitOfWork.SaveAsync() > 0;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<bool> CreateArtworkAsync(CreateArtworkDTO createArtworkDTO)
@@ -82,11 +114,10 @@ namespace artshare_server.Services.Services
                 filteredItemsQuery = filteredItemsQuery.Where(item => item.Title.Contains(filters.Title, StringComparison.OrdinalIgnoreCase));
             if (filters.CreatorId != null)
                 filteredItemsQuery = filteredItemsQuery.Where(item => item.CreatorId == filters.CreatorId);
-            if (filters.ArtworkId != null)
-                filteredItemsQuery = filteredItemsQuery.Where(item => item.ArtworkId == filters.ArtworkId);
             if (filters.GenreId != null)
                 filteredItemsQuery = filteredItemsQuery.Where(item => item.GenreId == filters.GenreId);
-
+            if (!string.IsNullOrEmpty(filters.ArtworkStatus.ToString()))
+                filteredItemsQuery = filteredItemsQuery.Where(item => item.ArtworkStatus == filters.ArtworkStatus.ToString());
             // Apply sorting
             if (!string.IsNullOrEmpty(filters.SortBy))
             {

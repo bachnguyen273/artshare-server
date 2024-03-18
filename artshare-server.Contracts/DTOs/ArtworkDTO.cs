@@ -17,8 +17,6 @@ namespace artshare_server.ApiModels.DTOs
         public required string Title { get; set; }
         public string? Description { get; set; }
         public decimal Price { get; set; }
-        [JsonIgnore]
-        public string? Status { get; set; }
         public int GenreId { get; set; }
         public required string OriginalArtUrl { get; set; }
         public required string WatermarkedArtUrl { get; set; }
@@ -26,16 +24,19 @@ namespace artshare_server.ApiModels.DTOs
 
     public class CreateArtworkDTO : ArtworkDTO
     {
-        
+        [JsonIgnore]
+        public string? Status { get; set; }
     }
 
     public class GetArtworkDTO : ArtworkDTO
     {
         public int ArtworkId { get; set; }
+        public string Name { get; set; }
         public DateTime CreatedDate { get; set; }
         public int LikeCount { get; set; }
         public int DislikeCount { get; set; }
         public int CommentCount { get; set; }
+        public string? ArtworkStatus { get; set; }
         public IEnumerable<GetOrderDetailDTO>? OrderDetails { get; set; }
         public IEnumerable<GetLikeDTO>? Likes { get; set; }
         public IEnumerable<GetCommentDTO> Comments { get; set; }

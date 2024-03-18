@@ -87,5 +87,50 @@ namespace artshare_server.Controllers
                 });
             }
         }
+
+        [HttpPut("{id}")]
+        [Authorize]
+        public async Task<IActionResult> UpdateArtwork(int id, UpdateArtworkDTO updateArtworkDTO)
+        {
+            try
+            {
+                var check = await _artworkService.GetArtworkByIdAsync(id);
+                if (check == null)
+                {
+                    return NotFound();
+                }
+                var up = await _artworkService.UpdateArtworkAsync(id, updateArtworkDTO);
+                if (up)
+                {
+                    return Ok("Update SUCCESS!");
+                }
+                return BadRequest("Update FAIL");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteArtwork(int id)
+        {
+            try
+            {
+                var check = await _artworkService.DeleteArtworkAsync(id);
+                if (!check)
+                {
+                    return BadRequest("Delete Fail");
+                }
+                return Ok("Delete Success");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

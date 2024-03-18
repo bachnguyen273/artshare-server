@@ -13,7 +13,7 @@ namespace artshare_server.Services.Interfaces
 
         //Task<bool> CreateArtworkAsync(Artwork artwork);
         Task<bool> CreateArtworkAsync(CreateArtworkDTO createArtworkDTO);
-        Task<bool> UpdateArtworkAsync(Artwork artwork);
+        Task<bool> UpdateArtworkAsync(int id, UpdateArtworkDTO updateArtworkDTO);
 
         Task<bool> DeleteArtworkAsync(int artworkId);
     }

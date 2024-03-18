@@ -9,7 +9,7 @@ namespace artshare_server.WebApp.Pages
 {
     public class ArtworksModel : PageModel
     {
-		public dynamic Artworks { get; set; }
+		public dynamic Artwork { get; set; }
         public string Role { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int artworkId)
@@ -27,12 +27,10 @@ namespace artshare_server.WebApp.Pages
                 artworkResponseMessage.EnsureSuccessStatusCode();
                 string artworkContent = await artworkResponseMessage.Content.ReadAsStringAsync();
                 dynamic artworkObject = JsonConvert.DeserializeObject(artworkContent);
-                Artworks = artworkObject.data.artwork;
+                Artwork = artworkObject.data.artwork;
 
                 return Page();
             }
-        }
-
-        
+        }     
     }
 }

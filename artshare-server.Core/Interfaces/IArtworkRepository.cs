@@ -6,5 +6,6 @@ namespace artshare_server.Core.Interfaces
     public interface IArtworkRepository : IGenericRepository<Artwork>
     {
         Task<List<GetArtworkDTO>> GetArtworks();
+        Task<GetArtworkDTO> GetArtworkById(int id);
     }
 }

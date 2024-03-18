@@ -32,7 +32,7 @@ namespace artshare_server.WebApp.Pages
             try
             {
                 pageNumber = pageNumber == null ? 1 : pageNumber;
-                string artworkUrl = $"{apiUrl}/Artwork/GetArtworks?PageNumber={pageNumber}&PageSize=8";
+                string artworkUrl = $"{apiUrl}/Artwork/GetArtworks?PageNumber={pageNumber}&PageSize=8&ArtworkStatus=0";
                 string genreUrl = $"{apiUrl}/Genre/GetGenres";
                 using (var httpClient = new HttpClient())
                 {

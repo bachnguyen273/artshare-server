@@ -45,17 +45,10 @@
 				</form>
 			</div>
 			<div class="container">
-@* 				<div class="row d-flex justify-content-center">
-					<div class="menu-content pb-70 col-lg-8">
-						<div class="title text-center">
-							<h1 class="mb-10 text-white">YOUR GALERRY</h1>
-						</div>
-					</div>
-				</div> *@
 				<div id="grid-container" class="row">
 					@foreach (var artwork in Model.Artworks)
 					{
-						<a asp-page="/Artworks" asp-route-artworkId="@artwork.artworkId">
+						<a asp-page="./Detail" asp-route-artworkId="@artwork.artworkId">
 							<img class="grid-item" src="@artwork.watermarkedArtUrl" alt="@artwork.title">
 						</a>
 					}
