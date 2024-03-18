@@ -8,7 +8,7 @@ using System.Data;
 using System.Net.Http.Headers;
 using System.Text;
 
-// ?? truy c?p v‡o trang n‡y RedirectToPage("../Setting/edit-profile", new { id = id })
+// ?? truy c?p v√†o trang n√†y RedirectToPage("../Setting/edit-profile", new { id = id })
 // Truy c?p b?i c? 3 role
 
 namespace artshare_server.WebApp.Pages.Setting
@@ -30,6 +30,12 @@ namespace artshare_server.WebApp.Pages.Setting
 		public async Task OnGetAsync()
 		{
 			TempData["Role"] = HttpContext.Session.GetString("Role");
+
+			if(TempData["Role"] == null)
+			{
+         TempData["AlertMessage1"] = " You're not sign in..!";
+      }
+
 			IConfiguration config = new ConfigurationBuilder()
 									   .SetBasePath(Directory.GetCurrentDirectory())
 									   .AddJsonFile("appsettings.json", true, true)
@@ -51,6 +57,9 @@ namespace artshare_server.WebApp.Pages.Setting
 
 		public async Task<IActionResult> OnPostProccessRequest(int id)
 		{
+
+           TempData["Role"] = HttpContext.Session.GetString("Role");
+
             ProfileId = id;
             IConfiguration config = new ConfigurationBuilder()
 									   .SetBasePath(Directory.GetCurrentDirectory())
