@@ -1,4 +1,5 @@
-﻿using artshare_server.Core.Models;
+﻿using artshare_server.ApiModels.DTOs;
+using artshare_server.Core.Models;
 
 namespace artshare_server.Services.Interfaces
 {
@@ -7,10 +8,12 @@ namespace artshare_server.Services.Interfaces
         Task<IEnumerable<Watermark>> GetAllWatermarksAsync();
 
         Task<Watermark?> GetWatermarkByIdAsync(int watermarkId);
+        
+        Task<Watermark?> GetByCreatorIdAsync(int creatorId);
 
-        Task<bool> CreateWatermarkAsync(Watermark watermark);
+        Task<WatermarkCreateDTO> CreateWatermarkAsync(WatermarkCreateDTO watermark);
 
-        Task<bool> UpdateWatermarkAsync(Watermark watermark);
+        Task<WatermarkDTO> UpdateWatermarkAsync(int id, WatermarkDTO newWatermark);
 
         Task<bool> DeleteWatermarkAsync(int watermarkId);
     }

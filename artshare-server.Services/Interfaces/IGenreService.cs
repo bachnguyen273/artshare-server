@@ -1,17 +1,24 @@
-﻿using artshare_server.Core.Models;
+﻿using artshare_server.ApiModels.DTOs;
+using artshare_server.Core.Models;
+using artshare_server.Services.FilterModels;
+using artshare_server.Services.FilterModels.Helpers;
 
 namespace artshare_server.Services.Interfaces
 {
     public interface IGenreService
     {
-        Task<IEnumerable<Genre>> GetAllGenresAsync();
+        // READ
+        Task<PagedResult<GetGenreDTO>> GetAllGenresAsync<Genre>(GenreFilters genreFilter);
 
-        Task<Genre?> GetGenreByIdAsync(int genreId);
+        Task<GetGenreDTO> GetGenreByIdAsync(int genreId);
 
-        Task<bool> CreateGenreAsync(Genre genre);
+        // CREATE
+        Task<bool> CreateGenreAsync(CreateGenreDTO genre);
 
-        Task<bool> UpdateGenreAsync(Genre genre);
+        // UPDATE
+        Task<bool> UpdateGenreAsync(int genreID, UpdateGenreDTO genre);
 
+        // DELETE
         Task<bool> DeleteGenreAsync(int genreId);
     }
 }

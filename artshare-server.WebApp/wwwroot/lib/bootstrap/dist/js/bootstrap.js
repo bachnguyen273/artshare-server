@@ -2230,12 +2230,12 @@
         placement: this._getPlacement(),
         modifiers: [{
           name: 'preventOverflow',
-          options: {
+          filter: {
             boundary: this._config.boundary
           }
         }, {
           name: 'offset',
-          options: {
+          filter: {
             offset: this._getOffset()
           }
         }]
@@ -3964,22 +3964,22 @@
         placement: attachment,
         modifiers: [{
           name: 'flip',
-          options: {
+          filter: {
             fallbackPlacements: this._config.fallbackPlacements
           }
         }, {
           name: 'offset',
-          options: {
+          filter: {
             offset: this._getOffset()
           }
         }, {
           name: 'preventOverflow',
-          options: {
+          filter: {
             boundary: this._config.boundary
           }
         }, {
           name: 'arrow',
-          options: {
+          filter: {
             element: `.${this.constructor.NAME}-arrow`
           }
         }, {
@@ -3989,7 +3989,7 @@
           fn: data => this._handlePopperPlacementChange(data)
         }],
         onFirstUpdate: data => {
-          if (data.options.placement !== data.placement) {
+          if (data.filter.placement !== data.placement) {
             this._handlePopperPlacementChange(data);
           }
         }

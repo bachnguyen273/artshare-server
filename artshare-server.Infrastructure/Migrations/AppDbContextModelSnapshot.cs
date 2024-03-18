@@ -22,21 +22,6 @@ namespace artshare_server.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ArtworkGenre", b =>
-                {
-                    b.Property<int>("ArtworksArtworkId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GenresGenreId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ArtworksArtworkId", "GenresGenreId");
-
-                    b.HasIndex("GenresGenreId");
-
-                    b.ToTable("ArtworkGenre", (string)null);
-                });
-
             modelBuilder.Entity("artshare_server.Core.Models.Account", b =>
                 {
                     b.Property<int>("AccountId")
@@ -124,6 +109,9 @@ namespace artshare_server.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasDefaultValue(0);
 
+                    b.Property<int?>("GenreId")
+                        .HasColumnType("int");
+
                     b.Property<int>("LikeCount")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
@@ -157,6 +145,8 @@ namespace artshare_server.Infrastructure.Migrations
                     b.HasKey("ArtworkId");
 
                     b.HasIndex("CreatorId");
+
+                    b.HasIndex("GenreId");
 
                     b.HasIndex("WatermarkId");
 
@@ -350,21 +340,6 @@ namespace artshare_server.Infrastructure.Migrations
                     b.ToTable("Watermarks");
                 });
 
-            modelBuilder.Entity("ArtworkGenre", b =>
-                {
-                    b.HasOne("artshare_server.Core.Models.Artwork", null)
-                        .WithMany()
-                        .HasForeignKey("ArtworksArtworkId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("artshare_server.Core.Models.Genre", null)
-                        .WithMany()
-                        .HasForeignKey("GenresGenreId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("artshare_server.Core.Models.Artwork", b =>
                 {
                     b.HasOne("artshare_server.Core.Models.Account", "Creator")
@@ -373,12 +348,19 @@ namespace artshare_server.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.HasOne("artshare_server.Core.Models.Genre", "Genre")
+                        .WithMany("Artworks")
+                        .HasForeignKey("GenreId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
                     b.HasOne("artshare_server.Core.Models.Watermark", "Watermark")
                         .WithMany("Artworks")
                         .HasForeignKey("WatermarkId")
                         .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Creator");
+
+                    b.Navigation("Genre");
 
                     b.Navigation("Watermark");
                 });
@@ -505,6 +487,11 @@ namespace artshare_server.Infrastructure.Migrations
                     b.Navigation("OrderDetails");
 
                     b.Navigation("Reports");
+                });
+
+            modelBuilder.Entity("artshare_server.Core.Models.Genre", b =>
+                {
+                    b.Navigation("Artworks");
                 });
 
             modelBuilder.Entity("artshare_server.Core.Models.Order", b =>

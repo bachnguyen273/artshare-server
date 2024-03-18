@@ -19,11 +19,11 @@
 $.extend( $.fn, {
 
 	// https://jqueryvalidation.org/validate/
-	validate: function( options ) {
+	validate: function( filter ) {
 
 		// If nothing is selected, return nothing; can't chain anyway
 		if ( !this.length ) {
-			if ( options && options.debug && window.console ) {
+			if ( filter && filter.debug && window.console ) {
 				console.warn( "Nothing selected, can't validate, returning nothing." );
 			}
 			return;
@@ -38,7 +38,7 @@ $.extend( $.fn, {
 		// Add novalidate tag if HTML5.
 		this.attr( "novalidate", "novalidate" );
 
-		validator = new $.validator( options, this[ 0 ] );
+		validator = new $.validator( filter, this[ 0 ] );
 		$.data( this[ 0 ], "validator", validator );
 
 		if ( validator.settings.onsubmit ) {
@@ -235,8 +235,8 @@ $.extend( $.expr.pseudos || $.expr[ ":" ], {		// '|| $.expr[ ":" ]' here enables
 } );
 
 // Constructor for validator
-$.validator = function( options, form ) {
-	this.settings = $.extend( true, {}, $.validator.defaults, options );
+$.validator = function( filter, form ) {
+	this.settings = $.extend( true, {}, $.validator.defaults, filter );
 	this.currentForm = form;
 	this.init();
 };

@@ -2024,7 +2024,7 @@
     var state = _ref2.state;
     var initialStyles = {
       popper: {
-        position: state.options.strategy,
+        position: state.filter.strategy,
         left: '0',
         top: '0',
         margin: '0'
@@ -2287,7 +2287,7 @@
 
     var state = _ref.state,
         name = _ref.name,
-        options = _ref.options;
+        filter = _ref.filter;
     var arrowElement = state.elements.arrow;
     var popperOffsets = state.modifiersData.popperOffsets;
     var basePlacement = getBasePlacement(state.placement);
@@ -2299,7 +2299,7 @@
       return;
     }
 
-    var paddingObject = toPaddingObject(options.padding, state);
+    var paddingObject = toPaddingObject(filter.padding, state);
     var arrowRect = getLayoutRect(arrowElement);
     var minProp = axis === 'y' ? top : left;
     var maxProp = axis === 'y' ? bottom : right;
@@ -2321,9 +2321,9 @@
 
   function effect$1(_ref2) {
     var state = _ref2.state,
-        options = _ref2.options;
-    var _options$element = options.element,
-        arrowElement = _options$element === void 0 ? '[data-popper-arrow]' : _options$element;
+        filter = _ref2.filter;
+    var _filter$element = filter.element,
+        arrowElement = _filter$element === void 0 ? '[data-popper-arrow]' : _filter$element;
 
     if (arrowElement == null) {
       return;
@@ -2448,13 +2448,13 @@
 
   function computeStyles(_ref4) {
     var state = _ref4.state,
-        options = _ref4.options;
-    var _options$gpuAccelerat = options.gpuAcceleration,
-        gpuAcceleration = _options$gpuAccelerat === void 0 ? true : _options$gpuAccelerat,
-        _options$adaptive = options.adaptive,
-        adaptive = _options$adaptive === void 0 ? true : _options$adaptive,
-        _options$roundOffsets = options.roundOffsets,
-        roundOffsets = _options$roundOffsets === void 0 ? true : _options$roundOffsets;
+        filter = _ref4.filter;
+    var _filter$gpuAccelerat = filter.gpuAcceleration,
+        gpuAcceleration = _filter$gpuAccelerat === void 0 ? true : _filter$gpuAccelerat,
+        _filter$adaptive = filter.adaptive,
+        adaptive = _filter$adaptive === void 0 ? true : _filter$adaptive,
+        _filter$roundOffsets = filter.roundOffsets,
+        roundOffsets = _filter$roundOffsets === void 0 ? true : _filter$roundOffsets;
 
     var commonStyles = {
       placement: getBasePlacement(state.placement),
@@ -2466,7 +2466,7 @@
     if (state.modifiersData.popperOffsets != null) {
       state.styles.popper = Object.assign({}, state.styles.popper, mapToStyles(Object.assign({}, commonStyles, {
         offsets: state.modifiersData.popperOffsets,
-        position: state.options.strategy,
+        position: state.filter.strategy,
         adaptive: adaptive,
         roundOffsets: roundOffsets
       })));
@@ -2502,11 +2502,11 @@
   function effect(_ref) {
     var state = _ref.state,
         instance = _ref.instance,
-        options = _ref.options;
-    var _options$scroll = options.scroll,
-        scroll = _options$scroll === void 0 ? true : _options$scroll,
-        _options$resize = options.resize,
-        resize = _options$resize === void 0 ? true : _options$resize;
+        filter = _ref.filter;
+    var _filter$scroll = filter.scroll,
+        scroll = _filter$scroll === void 0 ? true : _filter$scroll,
+        _filter$resize = filter.resize,
+        resize = _filter$resize === void 0 ? true : _filter$resize;
     var window = getWindow(state.elements.popper);
     var scrollParents = [].concat(state.scrollParents.reference, state.scrollParents.popper);
 
@@ -2829,24 +2829,24 @@
     return offsets;
   }
 
-  function detectOverflow(state, options) {
-    if (options === void 0) {
-      options = {};
+  function detectOverflow(state, filter) {
+    if (filter === void 0) {
+      filter = {};
     }
 
-    var _options = options,
-        _options$placement = _options.placement,
-        placement = _options$placement === void 0 ? state.placement : _options$placement,
-        _options$boundary = _options.boundary,
-        boundary = _options$boundary === void 0 ? clippingParents : _options$boundary,
-        _options$rootBoundary = _options.rootBoundary,
-        rootBoundary = _options$rootBoundary === void 0 ? viewport : _options$rootBoundary,
-        _options$elementConte = _options.elementContext,
-        elementContext = _options$elementConte === void 0 ? popper : _options$elementConte,
-        _options$altBoundary = _options.altBoundary,
-        altBoundary = _options$altBoundary === void 0 ? false : _options$altBoundary,
-        _options$padding = _options.padding,
-        padding = _options$padding === void 0 ? 0 : _options$padding;
+    var _filter = filter,
+        _filter$placement = _filter.placement,
+        placement = _filter$placement === void 0 ? state.placement : _filter$placement,
+        _filter$boundary = _filter.boundary,
+        boundary = _filter$boundary === void 0 ? clippingParents : _filter$boundary,
+        _filter$rootBoundary = _filter.rootBoundary,
+        rootBoundary = _filter$rootBoundary === void 0 ? viewport : _filter$rootBoundary,
+        _filter$elementConte = _filter.elementContext,
+        elementContext = _filter$elementConte === void 0 ? popper : _filter$elementConte,
+        _filter$altBoundary = _filter.altBoundary,
+        altBoundary = _filter$altBoundary === void 0 ? false : _filter$altBoundary,
+        _filter$padding = _filter.padding,
+        padding = _filter$padding === void 0 ? 0 : _filter$padding;
     var paddingObject = mergePaddingObject(typeof padding !== 'number' ? padding : expandToHashMap(padding, basePlacements));
     var altContext = elementContext === popper ? reference : popper;
     var referenceElement = state.elements.reference;
@@ -2884,19 +2884,19 @@
     return overflowOffsets;
   }
 
-  function computeAutoPlacement(state, options) {
-    if (options === void 0) {
-      options = {};
+  function computeAutoPlacement(state, filter) {
+    if (filter === void 0) {
+      filter = {};
     }
 
-    var _options = options,
-        placement = _options.placement,
-        boundary = _options.boundary,
-        rootBoundary = _options.rootBoundary,
-        padding = _options.padding,
-        flipVariations = _options.flipVariations,
-        _options$allowedAutoP = _options.allowedAutoPlacements,
-        allowedAutoPlacements = _options$allowedAutoP === void 0 ? placements : _options$allowedAutoP;
+    var _filter = filter,
+        placement = _filter.placement,
+        boundary = _filter.boundary,
+        rootBoundary = _filter.rootBoundary,
+        padding = _filter.padding,
+        flipVariations = _filter.flipVariations,
+        _filter$allowedAutoP = _filter.allowedAutoPlacements,
+        allowedAutoPlacements = _filter$allowedAutoP === void 0 ? placements : _filter$allowedAutoP;
     var variation = getVariation(placement);
     var placements$1 = variation ? flipVariations ? variationPlacements : variationPlacements.filter(function (placement) {
       return getVariation(placement) === variation;
@@ -2935,26 +2935,26 @@
 
   function flip(_ref) {
     var state = _ref.state,
-        options = _ref.options,
+        filter = _ref.filter,
         name = _ref.name;
 
     if (state.modifiersData[name]._skip) {
       return;
     }
 
-    var _options$mainAxis = options.mainAxis,
-        checkMainAxis = _options$mainAxis === void 0 ? true : _options$mainAxis,
-        _options$altAxis = options.altAxis,
-        checkAltAxis = _options$altAxis === void 0 ? true : _options$altAxis,
-        specifiedFallbackPlacements = options.fallbackPlacements,
-        padding = options.padding,
-        boundary = options.boundary,
-        rootBoundary = options.rootBoundary,
-        altBoundary = options.altBoundary,
-        _options$flipVariatio = options.flipVariations,
-        flipVariations = _options$flipVariatio === void 0 ? true : _options$flipVariatio,
-        allowedAutoPlacements = options.allowedAutoPlacements;
-    var preferredPlacement = state.options.placement;
+    var _filter$mainAxis = filter.mainAxis,
+        checkMainAxis = _filter$mainAxis === void 0 ? true : _filter$mainAxis,
+        _filter$altAxis = filter.altAxis,
+        checkAltAxis = _filter$altAxis === void 0 ? true : _filter$altAxis,
+        specifiedFallbackPlacements = filter.fallbackPlacements,
+        padding = filter.padding,
+        boundary = filter.boundary,
+        rootBoundary = filter.rootBoundary,
+        altBoundary = filter.altBoundary,
+        _filter$flipVariatio = filter.flipVariations,
+        flipVariations = _filter$flipVariatio === void 0 ? true : _filter$flipVariatio,
+        allowedAutoPlacements = filter.allowedAutoPlacements;
+    var preferredPlacement = state.filter.placement;
     var basePlacement = getBasePlacement(preferredPlacement);
     var isBasePlacement = basePlacement === preferredPlacement;
     var fallbackPlacements = specifiedFallbackPlacements || (isBasePlacement || !flipVariations ? [getOppositePlacement(preferredPlacement)] : getExpandedFallbackPlacements(preferredPlacement));
@@ -3146,10 +3146,10 @@
 
   function offset(_ref2) {
     var state = _ref2.state,
-        options = _ref2.options,
+        filter = _ref2.filter,
         name = _ref2.name;
-    var _options$offset = options.offset,
-        offset = _options$offset === void 0 ? [0, 0] : _options$offset;
+    var _filter$offset = filter.offset,
+        offset = _filter$offset === void 0 ? [0, 0] : _filter$offset;
     var data = placements.reduce(function (acc, placement) {
       acc[placement] = distanceAndSkiddingToXY(placement, state.rects, offset);
       return acc;
@@ -3205,20 +3205,20 @@
 
   function preventOverflow(_ref) {
     var state = _ref.state,
-        options = _ref.options,
+        filter = _ref.filter,
         name = _ref.name;
-    var _options$mainAxis = options.mainAxis,
-        checkMainAxis = _options$mainAxis === void 0 ? true : _options$mainAxis,
-        _options$altAxis = options.altAxis,
-        checkAltAxis = _options$altAxis === void 0 ? false : _options$altAxis,
-        boundary = options.boundary,
-        rootBoundary = options.rootBoundary,
-        altBoundary = options.altBoundary,
-        padding = options.padding,
-        _options$tether = options.tether,
-        tether = _options$tether === void 0 ? true : _options$tether,
-        _options$tetherOffset = options.tetherOffset,
-        tetherOffset = _options$tetherOffset === void 0 ? 0 : _options$tetherOffset;
+    var _filter$mainAxis = filter.mainAxis,
+        checkMainAxis = _filter$mainAxis === void 0 ? true : _filter$mainAxis,
+        _filter$altAxis = filter.altAxis,
+        checkAltAxis = _filter$altAxis === void 0 ? false : _filter$altAxis,
+        boundary = filter.boundary,
+        rootBoundary = filter.rootBoundary,
+        altBoundary = filter.altBoundary,
+        padding = filter.padding,
+        _filter$tether = filter.tether,
+        tether = _filter$tether === void 0 ? true : _filter$tether,
+        _filter$tetherOffset = filter.tetherOffset,
+        tetherOffset = _filter$tetherOffset === void 0 ? 0 : _filter$tetherOffset;
     var overflow = detectOverflow(state, {
       boundary: boundary,
       rootBoundary: rootBoundary,
@@ -3443,7 +3443,7 @@
     var merged = modifiers.reduce(function (merged, current) {
       var existing = merged[current.name];
       merged[current.name] = existing ? Object.assign({}, existing, current, {
-        options: Object.assign({}, existing.options, current.options),
+        filter: Object.assign({}, existing.filter, current.filter),
         data: Object.assign({}, existing.data, current.data)
       }) : current;
       return merged;
@@ -3454,7 +3454,7 @@
     });
   }
 
-  var DEFAULT_OPTIONS = {
+  var DEFAULT_filter = {
     placement: 'bottom',
     modifiers: [],
     strategy: 'absolute'
@@ -3470,25 +3470,25 @@
     });
   }
 
-  function popperGenerator(generatorOptions) {
-    if (generatorOptions === void 0) {
-      generatorOptions = {};
+  function popperGenerator(generatorfilter) {
+    if (generatorfilter === void 0) {
+      generatorfilter = {};
     }
 
-    var _generatorOptions = generatorOptions,
-        _generatorOptions$def = _generatorOptions.defaultModifiers,
-        defaultModifiers = _generatorOptions$def === void 0 ? [] : _generatorOptions$def,
-        _generatorOptions$def2 = _generatorOptions.defaultOptions,
-        defaultOptions = _generatorOptions$def2 === void 0 ? DEFAULT_OPTIONS : _generatorOptions$def2;
-    return function createPopper(reference, popper, options) {
-      if (options === void 0) {
-        options = defaultOptions;
+    var _generatorfilter = generatorfilter,
+        _generatorfilter$def = _generatorfilter.defaultModifiers,
+        defaultModifiers = _generatorfilter$def === void 0 ? [] : _generatorfilter$def,
+        _generatorfilter$def2 = _generatorfilter.defaultfilter,
+        defaultfilter = _generatorfilter$def2 === void 0 ? DEFAULT_filter : _generatorfilter$def2;
+    return function createPopper(reference, popper, filter) {
+      if (filter === void 0) {
+        filter = defaultfilter;
       }
 
       var state = {
         placement: 'bottom',
         orderedModifiers: [],
-        options: Object.assign({}, DEFAULT_OPTIONS, defaultOptions),
+        filter: Object.assign({}, DEFAULT_filter, defaultfilter),
         modifiersData: {},
         elements: {
           reference: reference,
@@ -3501,16 +3501,16 @@
       var isDestroyed = false;
       var instance = {
         state: state,
-        setOptions: function setOptions(options) {
+        setfilter: function setfilter(filter) {
           cleanupModifierEffects();
-          state.options = Object.assign({}, defaultOptions, state.options, options);
+          state.filter = Object.assign({}, defaultfilter, state.filter, filter);
           state.scrollParents = {
             reference: isElement(reference) ? listScrollParents(reference) : reference.contextElement ? listScrollParents(reference.contextElement) : [],
             popper: listScrollParents(popper)
           }; // Orders the modifiers based on their dependencies and `phase`
           // properties
 
-          var orderedModifiers = orderModifiers(mergeByName([].concat(defaultModifiers, state.options.modifiers))); // Strip out disabled modifiers
+          var orderedModifiers = orderModifiers(mergeByName([].concat(defaultModifiers, state.filter.modifiers))); // Strip out disabled modifiers
 
           state.orderedModifiers = orderedModifiers.filter(function (m) {
             return m.enabled;
@@ -3541,7 +3541,7 @@
 
 
           state.rects = {
-            reference: getCompositeRect(reference, getOffsetParent(popper), state.options.strategy === 'fixed'),
+            reference: getCompositeRect(reference, getOffsetParent(popper), state.filter.strategy === 'fixed'),
             popper: getLayoutRect(popper)
           }; // Modifiers have the ability to reset the current update cycle. The
           // most common use case for this is the `flip` modifier changing the
@@ -3550,7 +3550,7 @@
           // stale/incorrect
 
           state.reset = false;
-          state.placement = state.options.placement; // On each update cycle, the `modifiersData` property for each modifier
+          state.placement = state.filter.placement; // On each update cycle, the `modifiersData` property for each modifier
           // is filled with the initial data specified by the modifier. This means
           // it doesn't persist and is fresh on each update.
           // To ensure persistent data, use `${name}#persistent`
@@ -3569,14 +3569,14 @@
 
             var _state$orderedModifie = state.orderedModifiers[index],
                 fn = _state$orderedModifie.fn,
-                _state$orderedModifie2 = _state$orderedModifie.options,
-                _options = _state$orderedModifie2 === void 0 ? {} : _state$orderedModifie2,
+                _state$orderedModifie2 = _state$orderedModifie.filter,
+                _filter = _state$orderedModifie2 === void 0 ? {} : _state$orderedModifie2,
                 name = _state$orderedModifie.name;
 
             if (typeof fn === 'function') {
               state = fn({
                 state: state,
-                options: _options,
+                filter: _filter,
                 name: name,
                 instance: instance
               }) || state;
@@ -3602,9 +3602,9 @@
         return instance;
       }
 
-      instance.setOptions(options).then(function (state) {
-        if (!isDestroyed && options.onFirstUpdate) {
-          options.onFirstUpdate(state);
+      instance.setfilter(filter).then(function (state) {
+        if (!isDestroyed && filter.onFirstUpdate) {
+          filter.onFirstUpdate(state);
         }
       }); // Modifiers have the ability to execute arbitrary code before the first
       // update cycle runs. They will be executed in the same order as the update
@@ -3615,8 +3615,8 @@
       function runModifierEffects() {
         state.orderedModifiers.forEach(function (_ref3) {
           var name = _ref3.name,
-              _ref3$options = _ref3.options,
-              options = _ref3$options === void 0 ? {} : _ref3$options,
+              _ref3$filter = _ref3.filter,
+              filter = _ref3$filter === void 0 ? {} : _ref3$filter,
               effect = _ref3.effect;
 
           if (typeof effect === 'function') {
@@ -3624,7 +3624,7 @@
               state: state,
               name: name,
               instance: instance,
-              options: options
+              filter: filter
             });
 
             var noopFn = function noopFn() {};
@@ -3984,12 +3984,12 @@
         placement: this._getPlacement(),
         modifiers: [{
           name: 'preventOverflow',
-          options: {
+          filter: {
             boundary: this._config.boundary
           }
         }, {
           name: 'offset',
-          options: {
+          filter: {
             offset: this._getOffset()
           }
         }]
@@ -5718,22 +5718,22 @@
         placement: attachment,
         modifiers: [{
           name: 'flip',
-          options: {
+          filter: {
             fallbackPlacements: this._config.fallbackPlacements
           }
         }, {
           name: 'offset',
-          options: {
+          filter: {
             offset: this._getOffset()
           }
         }, {
           name: 'preventOverflow',
-          options: {
+          filter: {
             boundary: this._config.boundary
           }
         }, {
           name: 'arrow',
-          options: {
+          filter: {
             element: `.${this.constructor.NAME}-arrow`
           }
         }, {
@@ -5743,7 +5743,7 @@
           fn: data => this._handlePopperPlacementChange(data)
         }],
         onFirstUpdate: data => {
-          if (data.options.placement !== data.placement) {
+          if (data.filter.placement !== data.placement) {
             this._handlePopperPlacementChange(data);
           }
         }
