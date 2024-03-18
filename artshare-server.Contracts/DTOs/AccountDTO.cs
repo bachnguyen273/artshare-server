@@ -32,7 +32,8 @@ namespace artshare_server.ApiModels.DTOs
 
     public class UpdateAccountDTO : AccountDTO
     {
-        public IFormFile? AvatarFile { get; set; }
+        public int AccountId { get; set; }
+        public string? AvatarUrl { get; set; }
     }
 
     public class GetAccountDTO : AccountDTO

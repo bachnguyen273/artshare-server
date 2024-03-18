@@ -89,10 +89,7 @@ namespace artshare_server.Services.Services
                 account.FullName = updateAccountDTO.FullName;
                 account.PhoneNumber = updateAccountDTO.PhoneNumber;
                 account.Status = (updateAccountDTO.Status.Equals("Active")) ? AccountStatus.Active : AccountStatus.Inactive;
-                if (updateAccountDTO.AvatarFile != null)
-                {
-                    account.AvatarUrl = await _azureBlobStorageService.UploadFileAsync("Avatar", updateAccountDTO.AvatarFile);
-                }
+                account.AvatarUrl = updateAccountDTO.AvatarUrl;
                 _unitOfWork.AccountRepo.Update(account);
                 await _unitOfWork.SaveAsync();
                 return true;
