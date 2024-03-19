@@ -9,6 +9,8 @@ namespace artshare_server.Infrastructure.AutoMapper
     {
        public MappingProfile()
         {
+            CreateMap<RegisterDTO, Account>()
+                .ForMember(des => des.Role, src => src.MapFrom(src => EnumMapper<AccountRole>.MapType(src.Role)));
             // ACCOUNT
             CreateMap<Account, AccountDTO>().ReverseMap();
             CreateMap<Account, GetAccountDTO>().ReverseMap();

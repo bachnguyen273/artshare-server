@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -16,11 +18,11 @@ namespace artshare_server.ApiModels.DTOs
 
     public class AccountDTO
     {
-        public required string Email { get; set; }
-        public required string Password { get; set; }
-        public required string Role { get; set; }
-        public required string Status { get; set; }
-        public required string UserName { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string Role { get; set; }
+        public string Status { get; set; }
+        public string UserName { get; set; }
         public string? FullName { get; set; }
         public string? PhoneNumber { get; set; }
     }
@@ -49,5 +51,14 @@ namespace artshare_server.ApiModels.DTOs
         public string? AvatarUrl { get; set; }
     }
 
-
+    public class RegisterDTO
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string UserName { get; set; }
+        public string FullName { get; set; }
+        public string PhoneNumber { get; set; }
+        [JsonIgnore]
+        public string? Role { get; set; }
+    }
 }

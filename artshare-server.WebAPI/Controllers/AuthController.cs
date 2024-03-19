@@ -46,7 +46,7 @@ namespace artshare_server.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register([FromQuery] AccountRole accounrRole, [FromBody] CreateAccountDTO registerRequest)
+        public async Task<IActionResult> Register([FromQuery] AccountRole accounrRole, [FromBody] RegisterDTO registerRequest)
         {
             try
             {

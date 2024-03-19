@@ -18,6 +18,12 @@ namespace artshare_server.Infrastructure.Repositories
             _mapper = mapper;
         }
 
+        public async Task<IEnumerable<Account>> SearchAccountByUsername(string username)
+        {
+            return await _dbContext.Accounts.Where(x => x.UserName.Contains(username)).ToListAsync();
+        }
+
+
         public async Task<GetAccountDTO> GetAccountById(int id)
         {
             Account account = _dbContext.Accounts

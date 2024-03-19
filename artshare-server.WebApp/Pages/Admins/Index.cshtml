@@ -1,5 +1,5 @@
 ﻿@page
-@model artshare_server.WebApp.Pages.Admins.Accounts.IndexModel
+@model IndexModel
 @{
 
 }
@@ -37,7 +37,7 @@
                 <form method="post" enctype="multipart/form-data">
                     <input class="form-control1" type="text" name="SearchValue" placeholder="Enter username" style="display:inline-block; width:40%" required="" />
                     <button type="submit" class="primary-btn text-uppercase" asp-page-handler="Search" style="margin-left:10px; border-radius:10px"> Search </button>
-                    <a href="./AllAccount?page=1" class="primary-btn text-uppercase" style="margin-left:20px; border-radius:10px"> ALL</a>
+                    <a href="./Index?page=1" class="primary-btn text-uppercase" style="margin-left:20px; border-radius:10px"> ALL</a>
                 </form>
             </div>
             <div>
@@ -81,7 +81,7 @@
                                     <td>@account.JoinDate</td>
                                     <form method="post" enctype="multipart/form-data">
                                     <td><button type="submit" class="primary-btn text-uppercase" asp-page-handler="Delete" asp-route-id="@account.AccountId">Delete</button></td>
-                                    <td><a class="primary-btn text-uppercase" href="./UserProfileEdit?id=@account.AccountId">Edit</a></td>
+                                    <td><a class="primary-btn text-uppercase" href="/Admins/Edit?id=@account.AccountId">Edit</a></td>
                                     </form>
                                 </tr>
                             }
@@ -101,7 +101,7 @@
                                     <td>@userSe.JoinDate</td>
                                     <form method="post" enctype="multipart/form-data">
                                     <td><button type="submit" class="primary-btn text-uppercase" asp-page-handler="Delete" asp-route-id="@userSe.AccountId">Delete</button></td>
-                                    <td><a class="primary-btn text-uppercase" href="./UserProfileEdit?id=@userSe.AccountId">Edit</a></td>
+                                    <td><a class="primary-btn text-uppercase" href="../Edit?id=@userSe.AccountId">Edit</a></td>
                                     </form>
                                 </tr>
                             }
@@ -117,11 +117,11 @@
                                 <li class="page-item @(pge == pager.CurrentPage ? "active" : "")">
                                     @if (user == null)
                                     {
-                                        <a class="page-link" href="./AllAccount?page=@pge">@pge</a>
+                                        <a class="page-link" href="./Index?page=@pge">@pge</a>
                                     }
                                     else
                                     {
-                                        <a class="page-link" href="./AllAccount?page=@pge&searchValue=@search">@pge</a>
+                                        <a class="page-link" href="./Index?page=@pge&searchValue=@search">@pge</a>
                                     }
                                 </li>
                             }

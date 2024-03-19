@@ -28,6 +28,10 @@ namespace artshare_server.WebApp.Pages
                 artworkId = (int)TempData["artworkId"]; // Store artworkId in TempData
             }
             Artwork = await GetArtworkById(artworkId);
+            if (HttpContext.Session.GetString("UserId") == null)
+            {
+                return Page();
+            }
             IsBought = await IsBoughtArtwork(int.Parse(HttpContext.Session.GetString("UserId")), Convert.ToInt32(Artwork.artworkId));
             return Page();
         }

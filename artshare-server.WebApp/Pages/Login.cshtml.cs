@@ -78,7 +78,7 @@ namespace artshare_server.WebApp.Pages
                     case "Creator":
                         return RedirectToPage("./Creators/Artworks/Index");
                     case "Admin":
-                        return RedirectToPage("./Admin/Index");
+                        return RedirectToPage("./Admins/Index");
                     default:
                         return Page();
                 }

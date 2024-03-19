@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 
-namespace artshare_server.WebApp.Pages.Admins.Accounts
+namespace artshare_server.WebApp.Pages.Admins
 {
     public class IndexModel : PageModel
     {
@@ -65,7 +65,7 @@ namespace artshare_server.WebApp.Pages.Admins.Accounts
                                        .AddJsonFile("appsettings.json", true, true)
                                        .Build();
             string apiUrl = config["API_URL"];
-            if (username == null || String.IsNullOrEmpty(username))
+            if (username == null || string.IsNullOrEmpty(username))
             {
                 var request = new HttpRequestMessage(HttpMethod.Get, $"{apiUrl}/Account/GetAllAccount");
                 var response = await _httpClient.SendAsync(request);
@@ -107,7 +107,7 @@ namespace artshare_server.WebApp.Pages.Admins.Accounts
             if (response.IsSuccessStatusCode)
             {
                 TempData["Alert"] = " Delete Success...!";
-                return RedirectToPage("../Admins/AllAccount", new { page = 1 });
+                return RedirectToPage("../Admins/Index", new { page = 1 });
             }
             TempData["Alert1"] = " Delete Fail...!";
             return Page();
@@ -126,7 +126,7 @@ namespace artshare_server.WebApp.Pages.Admins.Accounts
                                        .Build();
             string apiUrl = config["API_URL"];
             string username = Request.Form["SearchValue"];
-            var request = new HttpRequestMessage(HttpMethod.Get, $"{apiUrl}/Account/SearchByUsername/{username}");
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{apiUrl}/Account/SearchByUsernameToList/{username}");
             var response = await _httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
             {

@@ -2,6 +2,7 @@ using artshare_server.WebApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace artshare_server.WebApp.Pages.Profile
 {
@@ -11,6 +12,8 @@ namespace artshare_server.WebApp.Pages.Profile
         public ProfileViewModel? ProfileViewModel1 { get; set; }
         [BindProperty]
         public int ProfileId { get; set; }
+        public List<string> OriginalArtUrl { get; set; }
+        public List<string> ArtworkUrls { get; set; } = new List<string>();
 
         private HttpClient _httpClient;
 
@@ -35,6 +38,35 @@ namespace artshare_server.WebApp.Pages.Profile
                 ProfileViewModel1 = JsonConvert.DeserializeObject<ProfileViewModel>(responseContent);
                 ProfileId = id;
             }
+
+            //var idsResponse = await _httpClient.GetAsync("http://localhost:5292/api/Artwork/GetArtworkIdsByAccountId?accountId=7");
+
+            //if (!idsResponse.IsSuccessStatusCode)
+            //{
+            //    ModelState.AddModelError(string.Empty, "Failed to retrieve artwork IDs.");
+            //}
+            //var idsContent = await idsResponse.Content.ReadAsStringAsync();
+            //var artworkIdsObject = JObject.Parse(idsContent);
+            //var artworkIdsArray = artworkIdsObject["data"]["artworkIds"].ToObject<int[]>();
+
+            //foreach (var aid in artworkIdsArray)
+            //{
+            //    var artworkResponse = await _httpClient.GetAsync($"http://localhost:5292/api/Artwork/GetArtworkById?id={aid}");
+            //    if (artworkResponse.IsSuccessStatusCode)
+            //    {
+            //        var artworkContent = await artworkResponse.Content.ReadAsStringAsync();
+            //        dynamic artworkData = JObject.Parse(artworkContent);
+            //        var artworkUrlsArray = artworkData.data.artwork.originalArtUrl;
+            //        foreach (var url in artworkUrlsArray)
+            //        {
+            //            ArtworkUrls.Add(url.ToString());
+            //        }
+            //    }
+            //    else
+            //    {
+            //        ModelState.AddModelError(string.Empty, $"Failed to retrieve artwork {id}.");
+            //    }
+            //}
         }
     }
 }

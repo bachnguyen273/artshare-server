@@ -134,7 +134,7 @@ namespace artshare_server.WebApp.Pages.Profile
 
 
             // Send the request
-            var response = await _httpClient.PutAsync($"{apiUrl}/Account/UpdateProfile", requestContent);
+            var response = await _httpClient.PutAsync($"{apiUrl}/Account/UpdateProfile/{id}", requestContent);
 
             if (response.IsSuccessStatusCode)
             {

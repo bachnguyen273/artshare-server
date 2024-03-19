@@ -38,19 +38,19 @@ namespace artshare_server.Services.Services
             return CreateToken(account);
         }
 
-        public async Task<bool> RegisterAsync(AccountRole accountRole, CreateAccountDTO createAccountDTO)
+        public async Task<bool> RegisterAsync(AccountRole accountRole, RegisterDTO registerData)
         {
             try
             {
-                createAccountDTO.Role = accountRole.ToString();
-                var _account = await _accountService.GetAccountByEmailAsync(createAccountDTO.Email);
-                if (_account != null)
+                registerData.Role = accountRole.ToString();
+                var account = await _accountService.GetAccountByEmailAsync(registerData.Email);
+                if (account != null)
                 {
                     throw new RegistrationException("Duplicate email.");
                 }
-                Account account = _mapper.Map<Account>(createAccountDTO);
-                account.PasswordHash = BCrypt.Net.BCrypt.HashPassword(createAccountDTO.Password);
-                var result = await _accountService.CreateAccountAsync(createAccountDTO);
+                account = _mapper.Map<Account>(registerData);
+                account.PasswordHash = BCrypt.Net.BCrypt.HashPassword(registerData.Password);
+                var result = await _accountService.CreateAccountAsync(account);
                 return result;
             }
             catch (DbUpdateException ex)
