@@ -1,4 +1,4 @@
-using artshare_server.Core.Models;
+
 using artshare_server.WebAPI.ResponseModels;
 using artshare_server.WebApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +12,7 @@ namespace artshare_server.WebApp.Pages.Admins;
 public class AllOrdersListModel : PageModel
 {
 
-	public IEnumerable<Order> Orders { get; set; }
+	public IEnumerable<OrderViewModel> Orders { get; set; }
 	public int Total { get; set; }
 	public int Page { get; set; }
 	public int Size { get; set; } = 5;
@@ -44,8 +44,8 @@ public class AllOrdersListModel : PageModel
 		{
 			var responseString = await response.Content.ReadAsStringAsync();
 			var obj = JsonConvert.DeserializeObject<SucceededResponseModel>(responseString);
-			Total = JsonConvert.DeserializeObject<IEnumerable<Order>>(obj.Data.ToString()).Count();
-			Orders = JsonConvert.DeserializeObject<IEnumerable<Order>>(obj.Data.ToString()).Skip((Page - 1) * Size).Take(Size);
+			Total = JsonConvert.DeserializeObject<IEnumerable<OrderViewModel>>(obj.Data.ToString()).Count();
+			Orders = JsonConvert.DeserializeObject<IEnumerable<OrderViewModel>>(obj.Data.ToString()).Skip((Page - 1) * Size).Take(Size);
 		}
 
 		return Page();
