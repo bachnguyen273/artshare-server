@@ -13,7 +13,7 @@
 						<div style="flex: 1; margin-right: 20px;">
 							<div class="single-blog" style="display: flex; justify-content: center;">
 								<ul>
-									@foreach (var genre in Model.Genres)
+@* 									@foreach (var genre in Model.Genres)
 									{
 										<li style="display: inline-block; margin-right: 10px;">
 											<input type="radio" id="genre_@(genre.genreId)" name="selectedGenreId" value="@genre.genreId" />
@@ -21,7 +21,7 @@
 												@genre.name
 											</label>
 										</li>
-									}
+									} *@
 								</ul>
 							</div>
 						</div>
@@ -40,12 +40,12 @@
             </div>
             <div class="container">
                 <div id="grid-container" class="row">
-                    @foreach (var artwork in Model.Artworks)
+@*                     @foreach (var artwork in Model.Artworks)
                     {
                         <a asp-page="/Artworks" asp-route-artworkId="@artwork.artworkId">
                             <img class="grid-item" src="@artwork.watermarkedArtUrl" alt="@artwork.title">
                         </a>
-                    }
+                    } *@
                 </div>
             </div>
         </section>
