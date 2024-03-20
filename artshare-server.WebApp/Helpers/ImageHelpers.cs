@@ -38,9 +38,9 @@ namespace artshare_server.WebApp.Helpers
         }
 
         public static async Task<string> UploadWatermarkArtworkFile(string apiUrl,  
-                                                                        IFormFile artworkFile, 
-                                                                        string watermarkUrl)
+                                                                        IFormFile artworkFile)
         {
+            var watermarkUrl = "\"https://artsharing.blob.core.windows.net/watermark/c9da60b1-48e9-4a0e-8175-7fb8e2105de4.jpg";
             HttpClient httpClient = new HttpClient();
             string combinedArtworkAndWatermarkUri = "";
             try

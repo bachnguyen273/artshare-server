@@ -16,7 +16,6 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
     {
         [BindProperty]
         public CreateArtworkViewModel CreateArtworkViewModel { get; set; }
-        public List<dynamic> Watermarks { get; set; }
 		public List<dynamic> Genres { get; set; }
 		private readonly HttpClient _httpClient;
 		private string _apiURL;
@@ -42,7 +41,6 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
             // Load data
             try
             {
-                await LoadWatermarkByCreatorIdAsync(GetAccountIdFromToken());
                 await LoadGenresAsync();
             }
             catch (Exception ex)
@@ -58,7 +56,6 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _jwtToken);
 
             // Load data
-            await LoadWatermarkByCreatorIdAsync(GetAccountIdFromToken());
             await LoadGenresAsync();
 
             if (!ModelState.IsValid)
@@ -76,7 +73,7 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
                 price = CreateArtworkViewModel.Price,
                 genreId = CreateArtworkViewModel.GenreId,
                 originalArtUrl = await ImageHelpers.UploadOriginalArtworkFile(_apiURL, CreateArtworkViewModel.OrginalArtworkFile),
-                watermarkedArtUrl = await ImageHelpers.UploadWatermarkArtworkFile(_apiURL, CreateArtworkViewModel.OrginalArtworkFile, GetWatermarkUrl(SelectedWatermarkId))
+                watermarkedArtUrl = await ImageHelpers.UploadWatermarkArtworkFile(_apiURL, CreateArtworkViewModel.OrginalArtworkFile)
             };
             var createUrl = _apiURL + "/Artwork/CreateArtwork?artworkStatus=" + CreateArtworkViewModel.Status;
             var jsonBody = JsonConvert.SerializeObject(request);
@@ -92,18 +89,6 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
                 return BadRequest(errorMessage);
             }
         }
-
-		private async Task LoadWatermarkByCreatorIdAsync(string creatorId)
-		{
-			string watermarkUrl = _apiURL + "/Watermark/GetWatermakrs?CreatorId=" + creatorId;
-			var request = new HttpRequestMessage(HttpMethod.Get, watermarkUrl);
-			request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _jwtToken);
-			HttpResponseMessage watermarkResponseMessage = await _httpClient.SendAsync(request);
-			watermarkResponseMessage.EnsureSuccessStatusCode();
-			string watermarkContent = await watermarkResponseMessage.Content.ReadAsStringAsync();
-			dynamic watermarkObject = JsonConvert.DeserializeObject(watermarkContent);
-			Watermarks = new List<dynamic>(watermarkObject.items);
-		}
 
 		private string GetAccountIdFromToken()
 		{
@@ -121,18 +106,6 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
             string genreContent = await genreResponseMessage.Content.ReadAsStringAsync();
             dynamic genreObject = JsonConvert.DeserializeObject(genreContent);
             Genres = new List<dynamic>(genreObject.items);
-        }
-
-        private string GetWatermarkUrl(int watermarkId)
-        {
-            foreach (var watermark in Watermarks)
-            {
-                if (watermark.watermarkId == watermarkId)
-                {
-                    return watermark.watermarkUrl;
-                }
-            }
-            return null;
         }
     }
 }
