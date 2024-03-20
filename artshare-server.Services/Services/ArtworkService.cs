@@ -22,17 +22,14 @@ namespace artshare_server.Services.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IAzureBlobStorageService _azureBlobStorageService;
-        private readonly IWatermarkService _watermarkService;
 
         public ArtworkService(IUnitOfWork unitOfWork
                                 , IMapper mapper
-                                , IAzureBlobStorageService azureBlobStorageService
-                                , IWatermarkService watermarkService)
+                                , IAzureBlobStorageService azureBlobStorageService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _azureBlobStorageService = azureBlobStorageService;
-            _watermarkService = watermarkService;
         }
 
         //public async Task<IEnumerable<Artwork>> GetAllArtworksAsync()
@@ -68,7 +65,6 @@ namespace artshare_server.Services.Services
                 artwork.Price = updateArtworkDTO.Price;
                 artwork.Status = (updateArtworkDTO.Status.Equals("Public")) ? ArtworkStatus.Public : ArtworkStatus.Private;
                 artwork.Title = updateArtworkDTO.Title;
-                artwork.WatermarkId = updateArtworkDTO.WatermarkId;
                 artwork.WatermarkedArtUrl = updateArtworkDTO.WatermarkedArtUrl;
                 _unitOfWork.ArtworkRepo.Update(artwork);
                 await _unitOfWork.SaveAsync();

@@ -14,7 +14,6 @@ namespace artshare_server.Core.Models
         public DateTime JoinDate { get; set; }
         public AccountRole Role { get; set; }
         public AccountStatus Status { get; set; }
-        public ICollection<Watermark>? Watermarks { get; set; }
         public ICollection<Artwork>? Artworks { get; set; }
         public ICollection<Order>? Orders { get; set; }
         public ICollection<Like>? Likes { get; set; }

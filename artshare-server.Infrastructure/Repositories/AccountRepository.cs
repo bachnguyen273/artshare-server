@@ -29,7 +29,6 @@ namespace artshare_server.Infrastructure.Repositories
             Account account = _dbContext.Accounts
                                         .Include(x => x.Orders)
                                         .Include(x => x.Artworks)
-                                        .Include(x => x.Watermarks)
                                         .Include(x => x.Comments)
                                         .Include(x => x.Likes)
                                         .FirstOrDefault(x => x.AccountId == id);

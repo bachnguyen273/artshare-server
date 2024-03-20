@@ -6,7 +6,6 @@ namespace artshare_server.Core.Models
     {
         public int ArtworkId { get; set; }
         public int? CreatorId { get; set; }
-        public int? WatermarkId { get; set; }
         public int? GenreId { get; set; }
         public string Title { get; set; }
         public string OriginalArtUrl { get; set; }
@@ -19,7 +18,6 @@ namespace artshare_server.Core.Models
         public int CommentCount { get; set; }
         public ArtworkStatus Status { get; set; }
         public virtual Account? Creator { get; set; }
-        public virtual Watermark? Watermark { get; set; }
         public virtual Genre? Genre { get; set; }
         public ICollection<Order>? Orders { get; set; }
         public ICollection<Like>? Likes { get; set; }

@@ -9,7 +9,6 @@
         ILikeRepository LikeRepo { get; }
         IOrderRepository OrderRepo { get; }
         IReportRepository ReportRepo { get; }
-        IWatermarkRepository WatermarkRepo { get; }
 
         Task<int> SaveAsync();
     }

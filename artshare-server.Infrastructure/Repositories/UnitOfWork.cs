@@ -13,7 +13,6 @@ namespace artshare_server.Infrastructure.Repositories
         private readonly ILikeRepository _likeRepo;
         private readonly IOrderRepository _orderRepo;
         private readonly IReportRepository _reportRepo;
-        private readonly IWatermarkRepository _watermarkRepo;
         private readonly IMapper _mapper;
         public UnitOfWork(IMapper mapper)
         {
@@ -26,7 +25,6 @@ namespace artshare_server.Infrastructure.Repositories
             _likeRepo = new LikeRepository(_dbContext);
             _orderRepo = new OrderRepository(_dbContext,_mapper);
             _reportRepo = new ReportRepository(_dbContext);
-            _watermarkRepo = new WatermarkRepository(_dbContext,_mapper);
         }
 
         public IAccountRepository AccountRepo => _accountRepo;
@@ -36,7 +34,6 @@ namespace artshare_server.Infrastructure.Repositories
         public ILikeRepository LikeRepo => _likeRepo;
         public IOrderRepository OrderRepo => _orderRepo;
         public IReportRepository ReportRepo => _reportRepo;
-        public IWatermarkRepository WatermarkRepo => _watermarkRepo;
 
         public async Task<int> SaveAsync()
         {

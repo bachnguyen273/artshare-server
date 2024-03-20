@@ -13,7 +13,6 @@ namespace artshare_server.ApiModels.DTOs
     public class ArtworkDTO
     {
         public int CreatorId { get; set; }
-        public int WatermarkId { get; set; }
         public required string Title { get; set; }
         public string? Description { get; set; }
         public decimal Price { get; set; }

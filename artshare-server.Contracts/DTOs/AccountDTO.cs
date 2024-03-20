@@ -42,7 +42,6 @@ namespace artshare_server.ApiModels.DTOs
     {
         public int AccountId { get; set; }
         public DateTime JoinDate { get; set; }
-        public IEnumerable<GetWatermarkDTO>? Watermarks { get; set; }
         public IEnumerable<GetArtworkDTO>? Artworks { get; set; }
         public IEnumerable<GetOrderDTO>? Orders { get; set; }
         public IEnumerable<GetLikeDTO>? Likes { get; set; }

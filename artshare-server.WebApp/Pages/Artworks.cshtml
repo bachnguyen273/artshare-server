@@ -11,6 +11,7 @@
         <div class="container d-flex justify-content-center">
             <div class="section-top-border text-white">
                 <div class="row align-items-center">
+<<<<<<< HEAD
                     @if (Model.IsBought)
                     {
                         <!-- Image Column -->
@@ -25,9 +26,15 @@
                             <img src="@Model.Artwork.watermarkedArtUrl" alt="@Model.Artwork.title" class="img-fluid rounded-lg" style="max-width: 100%; height: 100%;">
                         </div>
                     }
+=======
+                    <!-- Image Column -->
+                    <div class="col-md-4 text-center">
+                        @* <img src="@Model.Artwork.watermarkedArtUrl" alt="@Model.Artwork.title" class="img-fluid rounded-lg" style="max-width: 100%; height: 100%;"> *@
+                    </div>
+>>>>>>> Branch_Feat/Artwork/phucnvm-bao
                     <!-- Text Content Column -->
                     <div class="col-md-8 text-white">
-                        <div class="input-container mt-10">
+@*                         <div class="input-container mt-10">
                             <p>Artwork ID: <span>@Model.Artwork.artworkId</span></p>
                             <p>Create Date: <span>@Model.Artwork.createdDate</span></p>
                             <p>Like Count: <span>@Model.Artwork.likeCount</span></p>
@@ -39,6 +46,7 @@
                             <p>Price: <span>@Model.Artwork.price</span> VND</p>
                             <p>Genre: <span>@Model.Artwork.name</span></p>
                         </div>
+<<<<<<< HEAD
                         @if (Model.IsBought)
                         {
                             <a class="genric-btn success" href="@Model.Artwork.originalArtUrl" download />
@@ -58,6 +66,11 @@
                                 </form>
                             }
                         }
+=======
+                        <form method="post" asp-page-handler="AddToCart" asp-route-ItemId="@Model.Artwork.artworkId" >
+                            <button type="submit" class="primary-btn text-uppercase">Add to Cart</button>
+                        </form> *@
+>>>>>>> Branch_Feat/Artwork/phucnvm-bao
                     </div>
                 </div>
             </div>

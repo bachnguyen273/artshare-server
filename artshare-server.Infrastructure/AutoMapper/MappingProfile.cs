@@ -35,12 +35,6 @@ namespace artshare_server.Infrastructure.AutoMapper
             CreateMap<Genre, CreateGenreDTO>().ReverseMap();
             CreateMap<Genre, UpdateGenreDTO>().ReverseMap();
 
-            // WATERMARK
-            CreateMap<Watermark, WatermarkDTO>();
-            CreateMap<Watermark, GetWatermarkDTO>();
-            CreateMap<Watermark, CreateWatermarkDTO>();
-            CreateMap<Watermark, GetWatermarkDTO>();
-
             // ORDER
             CreateMap<Order, OrderDTO>().ReverseMap();
             CreateMap<Order, GetOrderDTO>().ReverseMap();
