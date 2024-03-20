@@ -38,11 +38,10 @@ namespace artshare_server.Services.Services
             return CreateToken(account);
         }
 
-        public async Task<bool> RegisterAsync(AccountRole accountRole, RegisterDTO registerData)
+        public async Task<bool> RegisterAsync(RegisterDTO registerData)
         {
             try
             {
-                registerData.Role = accountRole.ToString();
                 var account = await _accountService.GetAccountByEmailAsync(registerData.Email);
                 if (account != null)
                 {
