@@ -46,11 +46,11 @@ namespace artshare_server.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register([FromQuery] AccountRole accounrRole, [FromBody] RegisterDTO registerRequest)
+        public async Task<IActionResult> Register([FromBody] RegisterDTO registerRequest)
         {
             try
             {
-                var requestResult = await _authService.RegisterAsync(accounrRole, registerRequest);
+                var requestResult = await _authService.RegisterAsync(registerRequest);
                 if (!requestResult)
                 {
                     return StatusCode(500, new FailedResponseModel
