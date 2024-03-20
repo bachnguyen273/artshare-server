@@ -49,64 +49,35 @@
     <link rel="stylesheet" href="~/css/main.css">
 </head>
 <body>
-    <header id="header" id="home" style="background: black; opacity: 70%" >
-        <hr>
-        <div class="container">
-            <div class="row align-items-center justify-content-between d-flex">
-                <div id="logo">
-                    <a href="index.html"><img src="~/img/logo.png" alt="" title="" /></a>
-                </div>
-                <nav id="nav-menu-container">
-                    <ul class="nav-menu">
-                        <li class="menu-active"><a href="../index">Home</a></li>
-                        @if (!string.IsNullOrEmpty(jwtToken))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-page="/Logout">Logout</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-page="/">@username</a>
-                            </li>
-                            if (role == "Creator")
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-page="/Creators/Artworks/Index">Artworks</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-page="/Creators/Orders/Index">Audience order</a>
-                                </li>
-                            }
-                            else if (role == "Admin")
-                            {
-
-                            }
-                            else
-                            {
-                                
-                            }
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-page="/Login">Login</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-page="/Register">Register</a>
-                            </li>
-                        }
-                        <li class="menu-has-children">
-                            <a href="">Pages</a>
-                            <ul>
-                                <li><a href="blog-single.html">Blog Single</a></li>
-                                <li><a href="category.html">Category</a></li>
-                                <li><a href="elements.html">Elements</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </nav><!-- #nav-menu-container -->
+    <!-- header navbar -->
+    <header class="phucnvm-head">
+        <nav class="phucnvm-nav">
+            <div id="main">
+                <button class="openbtn" onclick="openNav()">☰</button>
             </div>
-        </div>
-    </header><!-- #header -->
+            <div id="logo" style="margin-left: 50px">
+                <a href="index.html"><img src="~/img/logo.png" alt="" title="" /></a>
+            </div>
+
+            <form class="search-box" method="post">
+                <button type="submit"><span class="fa fa-search"></span></button>
+                <input type="text" name="SearchValue" placeholder="Search" id="myInput" />
+            </form>
+            <ul class="phucnvm-ul">
+                <li><a><span class="phucnvm-a"> Log In</span></a></li>
+                <li><a><span class="phucnvm-btn"> Submit </span></a></li>
+            </ul>
+            <hr />
+        </nav>
+    </header>
+
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Clients</a>
+        <a href="#">Contact</a>
+    </div>
     @RenderBody()
     <!-- start footer Area -->
     <footer class="footer-area section-gap">
@@ -147,6 +118,158 @@
     <script src="~/js/mail-script.js"></script>
     <script src="~/js/main.js"></script>
 
+    <script>
+        function openNav() {
+            document.getElementById("mySidebar").style.width = "250px";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidebar").style.width = "0";
+        }
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+<style>
+    .phucnvm-nav {
+        background-color: #000000;
+        top: 0;
+        left: 0;
+        right: 0;
+        position: fixed;
+        height: 60px;
+        display: flex;
+        padding-left: 20px;
+        align-items: center;
+        width: 100%;
+        text-align: center;
+        z-index: 20;
+        border-bottom: 1px solid #363a42;
+    }
+
+    .search-box {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        box-sizing: border-box;
+        min-height: 34px;
+        border: 2px solid #363a42;
+        border-radius: 3px;
+        margin-left: 180px;
+        padding: 6px 8px;
+        background: #06070d;
+    }
+
+        .search-box:hover {
+            border-color: #5d5d6c;
+        }
+
+        .search-box:focus-within {
+            border-color: #00e59b;
+        }
+
+        .search-box button {
+            outline: none;
+            background: none;
+            border: none;
+            color: #5d5d6c;
+            cursor: pointer;
+        }
+
+        .search-box input {
+            box-sizing: border-box;
+            min-width: 300px;
+            border: none;
+            margin-left: 8px;
+            background-color: #06070d;
+            color: #fafafa;
+        }
+
+            .search-box input:focus {
+                outline: none;
+            }
+
+    .phucnvm-ul {
+        display: flex;
+        margin-left: auto;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+        .phucnvm-ul li {
+            margin-right: 50px;
+        }
+
+    .phucnvm-a {
+        color: white;
+        font-weight: 700;
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+        .phucnvm-a:hover {
+            color: #00e59b;
+        }
+
+    .phucnvm-btn {
+        font-weight: 700;
+        font-size: 18px;
+        cursor: pointer;
+        color: black;
+        background: linear-gradient(121deg, #00f2ff, #00ff8a);
+        padding: 5px 20px 5px 20px;
+        text-align: center;
+        border-radius: 5px;
+    }
+
+    .sidebar {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 60px;
+        left: 0;
+        background-color: #06070d;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+    }
+
+        .sidebar a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight:400;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+            .sidebar a:hover {
+                color: #f1f1f1;
+                background-color: #444;
+            }
+
+        .sidebar .closebtn {
+            position: absolute;
+            top: 0;
+            right: 0px;
+            font-size: 36px;
+        }
+
+    .openbtn {
+        font-size: 20px;
+        cursor: pointer;
+        background-color: #06070d;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+    }
+
+        .openbtn:hover {
+            background-color: #444;
+        }
+</style>
