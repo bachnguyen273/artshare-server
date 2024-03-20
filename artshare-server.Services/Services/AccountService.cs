@@ -27,7 +27,7 @@ namespace artshare_server.Services.Services
 
         public async Task<IEnumerable<GetAccountDTO>> GetAllAccountsAsync()
         {
-            var accountList = await _unitOfWork.AccountRepo.GetAllAsync();
+            var accountList = await _unitOfWork.AccountRepo.GetAccounts();
             return _mapper.Map<IEnumerable<GetAccountDTO>>(accountList);
         }
 

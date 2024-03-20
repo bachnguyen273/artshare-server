@@ -3,6 +3,7 @@ using artshare_server.Core.Interfaces;
 using artshare_server.Core.Models;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System.Collections;
 
 namespace artshare_server.Infrastructure.Repositories
 {
@@ -46,5 +47,16 @@ namespace artshare_server.Infrastructure.Repositories
             return await _dbContext.Accounts.Where(x => x.UserName == username).FirstOrDefaultAsync();
         }
 
+        public async Task<List<GetAccountDTO>> GetAccounts()
+        {
+            List<Account> account = await _dbContext.Accounts
+                                       .Include(x => x.Orders)
+                                            .ThenInclude(o => o.Artwork)
+                                       .Include(x => x.Artworks)
+                                       .Include(x => x.Comments)
+                                       .Include(x => x.Likes)
+                                       .ToListAsync();
+            return _mapper.Map<List<GetAccountDTO>>(account);
+        }
     }
 }
