@@ -50,27 +50,6 @@ namespace artshare_server.WebAPI.Controllers
 
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateOrderWithOrderDetails(Order_OrderDetailsCreateDTO dto)
-        {
-            var result = await _orderService.CreateOrderWithOrderDetailsAsync(dto);
-            if (result)
-            {
-                return Ok(new SucceededResponseModel()
-                {
-                    Status = Ok().StatusCode,
-                    Message = "Success"
-                });
-            }
-            else
-            {
-                return BadRequest(new FailedResponseModel()
-                {
-                    Status = BadRequest().StatusCode,
-                    Message = "Failed"
-                });
-            }
-        }
 
         [HttpGet]
         public async Task<IActionResult> GetOrdersByArtId([FromQuery] int artId)

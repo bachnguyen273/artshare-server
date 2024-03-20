@@ -12,7 +12,6 @@ namespace artshare_server.Infrastructure.Repositories
         private readonly IGenreRepository _genreRepo;
         private readonly ILikeRepository _likeRepo;
         private readonly IOrderRepository _orderRepo;
-        private readonly IOrderDetailsRepository _orderDetailsRepo;
         private readonly IReportRepository _reportRepo;
         private readonly IWatermarkRepository _watermarkRepo;
         private readonly IMapper _mapper;
@@ -26,7 +25,6 @@ namespace artshare_server.Infrastructure.Repositories
             _genreRepo = new GenreRepository(_dbContext, _mapper);
             _likeRepo = new LikeRepository(_dbContext);
             _orderRepo = new OrderRepository(_dbContext,_mapper);
-            _orderDetailsRepo = new OrderDetailsRepository(_dbContext,_mapper);
             _reportRepo = new ReportRepository(_dbContext);
             _watermarkRepo = new WatermarkRepository(_dbContext,_mapper);
         }
@@ -37,7 +35,6 @@ namespace artshare_server.Infrastructure.Repositories
         public IGenreRepository GenreRepo => _genreRepo;
         public ILikeRepository LikeRepo => _likeRepo;
         public IOrderRepository OrderRepo => _orderRepo;
-        public IOrderDetailsRepository OrderDetailsRepo => _orderDetailsRepo;
         public IReportRepository ReportRepo => _reportRepo;
         public IWatermarkRepository WatermarkRepo => _watermarkRepo;
 

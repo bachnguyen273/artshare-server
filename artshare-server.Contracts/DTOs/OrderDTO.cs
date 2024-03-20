@@ -21,6 +21,5 @@ namespace artshare_server.ApiModels.DTOs
     public class GetOrderDTO : OrderDTO
     {
         public int OrderId { get; set; }
-        public required IList<GetOrderDetailDTO> OrderDetails { get; set; }
     }
 }

@@ -124,18 +124,18 @@ namespace artshare_server.Services.Services
             return orderList;
         }
 
-        public async Task<bool> CreateOrderWithOrderDetailsAsync(Order_OrderDetailsCreateDTO dto)
-        {
-            try
-            {
-                var createOrder = _mapper.Map<Order>(dto);
-                await _unitOfWork.OrderRepo.AddAsync(createOrder);
-                return await _unitOfWork.SaveAsync() > 0;
-            }
-            catch (DbUpdateException ex)
-            {
-                throw new DbUpdateException(ex.Message);
-            }
-        }
+        //public async Task<bool> CreateOrderWithOrderDetailsAsync(Order_OrderDetailsCreateDTO dto)
+        //{
+        //    try
+        //    {
+        //        var createOrder = _mapper.Map<Order>(dto);
+        //        await _unitOfWork.OrderRepo.AddAsync(createOrder);
+        //        return await _unitOfWork.SaveAsync() > 0;
+        //    }
+        //    catch (DbUpdateException ex)
+        //    {
+        //        throw new DbUpdateException(ex.Message);
+        //    }
+        //}
     }
 }

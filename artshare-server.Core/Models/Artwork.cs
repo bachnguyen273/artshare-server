@@ -5,7 +5,7 @@ namespace artshare_server.Core.Models
     public class Artwork
     {
         public int ArtworkId { get; set; }
-        public int CreatorId { get; set; }
+        public int? CreatorId { get; set; }
         public int? WatermarkId { get; set; }
         public int? GenreId { get; set; }
         public string Title { get; set; }
@@ -18,12 +18,12 @@ namespace artshare_server.Core.Models
         public int DislikeCount { get; set; }
         public int CommentCount { get; set; }
         public ArtworkStatus Status { get; set; }
-        public Account Creator { get; set; }
-        public Watermark? Watermark { get; set; }
-        public Genre? Genre { get; set; }
-        public ICollection<OrderDetails> OrderDetails { get; set; }
-        public ICollection<Like> Likes { get; set; }
-        public ICollection<Comment> Comments { get; set; }
-        public ICollection<Report> Reports { get; set; }
+        public virtual Account? Creator { get; set; }
+        public virtual Watermark? Watermark { get; set; }
+        public virtual Genre? Genre { get; set; }
+        public ICollection<Order>? Orders { get; set; }
+        public ICollection<Like>? Likes { get; set; }
+        public ICollection<Comment>? Comments { get; set; }
+        public ICollection<Report>? Reports { get; set; }
     }
 }

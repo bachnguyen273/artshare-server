@@ -47,11 +47,6 @@ namespace artshare_server.Infrastructure.AutoMapper
             CreateMap<Order, CreateOrderDTO>().ReverseMap();
         
 
-            // ORDER DETAIL
-            CreateMap<OrderDetails, OrderDetailDTO>();
-            CreateMap<OrderDetails, CreateOrderDetailDTO>();
-            CreateMap<OrderDetails, GetOrderDetailDTO>();
-
             // REPORT
             CreateMap<Report, ReportDTO>();
             CreateMap<Report, CreateReportDTO>();
@@ -59,8 +54,6 @@ namespace artshare_server.Infrastructure.AutoMapper
             CreateMap<Report, GetReportDTO>();
 
             // Order_OrderDetails
-            CreateMap<Order_OrderDetailsCreateDTO, Order>().ReverseMap();
-            CreateMap<OrderDetailsCreateDTO, OrderDetails>().ReverseMap();
         }
     }
 }

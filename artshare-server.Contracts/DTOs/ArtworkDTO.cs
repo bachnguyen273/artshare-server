@@ -37,7 +37,6 @@ namespace artshare_server.ApiModels.DTOs
         public int DislikeCount { get; set; }
         public int CommentCount { get; set; }
         public string? ArtworkStatus { get; set; }
-        public IEnumerable<GetOrderDetailDTO>? OrderDetails { get; set; }
         public IEnumerable<GetLikeDTO>? Likes { get; set; }
         public IEnumerable<GetCommentDTO> Comments { get; set; }
         public IEnumerable<GetReportDTO> Reports { get; set; }

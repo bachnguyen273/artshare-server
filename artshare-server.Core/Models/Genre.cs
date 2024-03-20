@@ -4,6 +4,6 @@
     {
         public int GenreId { get; set; }
         public string Name { get; set; }
-        public ICollection<Artwork> Artworks { get; set; }
+        public ICollection<Artwork>? Artworks { get; set; }
     }
 }

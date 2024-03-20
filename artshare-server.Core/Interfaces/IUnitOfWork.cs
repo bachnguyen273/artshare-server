@@ -8,7 +8,6 @@
         IGenreRepository GenreRepo { get; }
         ILikeRepository LikeRepo { get; }
         IOrderRepository OrderRepo { get; }
-        IOrderDetailsRepository OrderDetailsRepo { get; }
         IReportRepository ReportRepo { get; }
         IWatermarkRepository WatermarkRepo { get; }
 

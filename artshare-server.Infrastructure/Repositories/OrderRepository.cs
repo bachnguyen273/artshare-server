@@ -22,9 +22,10 @@ namespace artshare_server.Infrastructure.Repositories
 
         public async Task<List<GetOrderDTO>> GetOrdersByArtIdAsync(int id)
         {
-            var list = await _dbContext.OrderDetails.Where(x => x.ArtworkId == id).Include(x => x.Order).Select(x => x.Order).ToListAsync();
-            var distinct = list.DistinctBy(x => x.OrderId).ToList();
-            return _mapper.Map<List<GetOrderDTO>>(distinct);
+            //var list = await _dbContext.OrderDetails.Where(x => x.ArtworkId == id).Include(x => x.Order).Select(x => x.Order).ToListAsync();
+            //var distinct = list.DistinctBy(x => x.OrderId).ToList();
+            //return _mapper.Map<List<GetOrderDTO>>(distinct);
+            throw new NotImplementedException();
         }
 
         public async Task<List<GetOrderDTO>> GetOrdersByCusIdAsync(int id)
