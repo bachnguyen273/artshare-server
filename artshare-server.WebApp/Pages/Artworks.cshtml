@@ -13,11 +13,11 @@
                 <div class="row align-items-center">
                     <!-- Image Column -->
                     <div class="col-md-4 text-center">
-                        <img src="@Model.Artwork.watermarkedArtUrl" alt="@Model.Artwork.title" class="img-fluid rounded-lg" style="max-width: 100%; height: 100%;">
+                        @* <img src="@Model.Artwork.watermarkedArtUrl" alt="@Model.Artwork.title" class="img-fluid rounded-lg" style="max-width: 100%; height: 100%;"> *@
                     </div>
                     <!-- Text Content Column -->
                     <div class="col-md-8 text-white">
-                        <div class="input-container mt-10">
+@*                         <div class="input-container mt-10">
                             <p>Artwork ID: <span>@Model.Artwork.artworkId</span></p>
                             <p>Create Date: <span>@Model.Artwork.createdDate</span></p>
                             <p>Like Count: <span>@Model.Artwork.likeCount</span></p>
@@ -31,7 +31,7 @@
                         </div>
                         <form method="post" asp-page-handler="AddToCart" asp-route-ItemId="@Model.Artwork.artworkId" >
                             <button type="submit" class="primary-btn text-uppercase">Add to Cart</button>
-                        </form>
+                        </form> *@
                     </div>
                 </div>
             </div>
