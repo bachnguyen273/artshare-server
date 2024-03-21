@@ -9,6 +9,8 @@ namespace artshare_server.Infrastructure.AutoMapper
     {
        public MappingProfile()
         {
+            CreateMap<RegisterDTO, Account>()
+                .ForMember(des => des.Role, src => src.MapFrom(src => EnumMapper<AccountRole>.MapType(src.Role)));
             // ACCOUNT
             CreateMap<Account, AccountDTO>().ReverseMap();
             CreateMap<Account, GetAccountDTO>().ReverseMap();
@@ -33,28 +35,19 @@ namespace artshare_server.Infrastructure.AutoMapper
             CreateMap<Genre, CreateGenreDTO>().ReverseMap();
             CreateMap<Genre, UpdateGenreDTO>().ReverseMap();
 
-            // WATERMARK
-            CreateMap<Watermark, WatermarkDTO>();
-            CreateMap<Watermark, GetWatermarkDTO>();
-            CreateMap<Watermark, CreateWatermarkDTO>();
-            CreateMap<Watermark, GetWatermarkDTO>();
-
             // ORDER
             CreateMap<Order, OrderDTO>().ReverseMap();
             CreateMap<Order, GetOrderDTO>().ReverseMap();
             CreateMap<Order, CreateOrderDTO>().ReverseMap();
         
 
-            // ORDER DETAIL
-            CreateMap<OrderDetails, OrderDetailDTO>();
-            CreateMap<OrderDetails, CreateOrderDetailDTO>();
-            CreateMap<OrderDetails, GetOrderDetailDTO>();
-
             // REPORT
             CreateMap<Report, ReportDTO>();
             CreateMap<Report, CreateReportDTO>();
             CreateMap<Report, UpdateReportDTO>();
             CreateMap<Report, GetReportDTO>();
+
+            // Order_OrderDetails
         }
     }
 }

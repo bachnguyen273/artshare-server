@@ -11,6 +11,6 @@ namespace artshare_server.Services.Interfaces
     public interface IAuthService
     {
         Task<string> LoginAsync(LoginDTO loginData);
-        Task<bool> RegisterAsync(AccountRole accountRole, CreateAccountDTO registerData);
+        Task<bool> RegisterAsync(AccountRole accountRole, RegisterDTO registerData);
     }
 }

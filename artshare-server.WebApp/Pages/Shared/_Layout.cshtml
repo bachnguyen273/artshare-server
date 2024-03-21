@@ -1,21 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Http
 @using System.IdentityModel.Tokens.Jwt
 @using System.Security.Claims
-@inject IHttpContextAccessor HttpContextAccessor
-
-@{
-    var jwtToken = HttpContextAccessor.HttpContext.Session.GetString("JWTToken");
-    string username = null;
-    string role = null;
-    if (jwtToken != null)
-    {
-        // Decode the token
-        var handler = new JwtSecurityTokenHandler();
-        var tokenS = handler.ReadToken(jwtToken) as JwtSecurityToken;
-        username = tokenS.Claims.First(claim => claim.Type == "UserName").Value;
-        role = tokenS.Claims.First(claim => claim.Type == ClaimTypes.Role).Value;
-    }
-}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -49,6 +34,7 @@
     <link rel="stylesheet" href="~/css/main.css">
 </head>
 <body>
+
     <!-- header navbar -->
     <header class="phucnvm-head">
         <nav class="phucnvm-nav">
@@ -63,6 +49,7 @@
                 <button type="submit"><span class="fa fa-search"></span></button>
                 <input type="text" name="SearchValue" placeholder="Search" id="myInput" />
             </form>
+
             <ul class="phucnvm-ul">
                 <li><a><span class="phucnvm-a"> Log In</span></a></li>
                 <li><a><span class="phucnvm-btn"> Submit </span></a></li>

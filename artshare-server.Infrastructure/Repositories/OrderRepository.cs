@@ -3,6 +3,7 @@ using artshare_server.Core.Interfaces;
 using artshare_server.Core.Models;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 
 namespace artshare_server.Infrastructure.Repositories
 {
@@ -19,25 +20,30 @@ namespace artshare_server.Infrastructure.Repositories
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper)); ;
         }
 
-        public async Task<List<GetOrderDTO>> GetAllAsync()
-        {
-            var list = await _dbContext.Orders
-                .Include(x => x.Customer)
-                .Include(x => x.OrderDetails)
-                .ToListAsync();
-            return _mapper.Map<List<GetOrderDTO>>(list);
-        }
-
         public async Task<List<GetOrderDTO>> GetOrdersByArtIdAsync(int id)
         {
-            var list= await _dbContext.OrderDetails.Where(x=>x.ArtworkId==id).Include(x=>x.Order).Select(x=>x.Order).ToListAsync();
-            var distinct = list.DistinctBy(x => x.OrderId).ToList();
-            return _mapper.Map<List<GetOrderDTO>>(distinct);
+            //var list = await _dbContext.OrderDetails.Where(x => x.ArtworkId == id).Include(x => x.Order).Select(x => x.Order).ToListAsync();
+            //var distinct = list.DistinctBy(x => x.OrderId).ToList();
+            //return _mapper.Map<List<GetOrderDTO>>(distinct);
+            throw new NotImplementedException();
         }
 
         public async Task<List<GetOrderDTO>> GetOrdersByCusIdAsync(int id)
         {
             var list = await _dbContext.Orders.Where(x => x.CustomerId == id).ToListAsync();
+            return _mapper.Map<List<GetOrderDTO>>(list);
+        }
+
+        // OrderRepository.cs
+        public async Task<List<GetOrderDTO>> GetOrdersByAccountIdAsync(int accountId)
+        {
+            List<Order> list = await _dbContext.Orders.Where(o => o.CustomerId == accountId).ToListAsync();
+            return _mapper.Map<List<GetOrderDTO>>(list);
+        }
+
+        public async Task<List<GetOrderDTO>> GetOrders()
+        {
+            List<Order> list = await _dbContext.Orders.ToListAsync();
             return _mapper.Map<List<GetOrderDTO>>(list);
         }
     }

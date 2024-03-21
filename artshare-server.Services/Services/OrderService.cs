@@ -6,6 +6,7 @@ using artshare_server.Services.FilterModels.Helpers;
 using artshare_server.Services.Interfaces;
 using artshare_server.Services.Utils;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace artshare_server.Services.Services
 {
@@ -23,7 +24,7 @@ namespace artshare_server.Services.Services
         public async Task<PagedResult<GetOrderDTO>> GetAllOrdersAsync<T>(OrderFilters filters)
         {
             // Apply filtering
-            var items = await _unitOfWork.OrderRepo.GetAllAsync();
+            var items = await _unitOfWork.OrderRepo.GetOrders();
             IQueryable<GetOrderDTO> filteredItemsQuery = items.AsQueryable();
 
             if (filters.OrderId != null)
@@ -122,5 +123,19 @@ namespace artshare_server.Services.Services
             var orderList = await _unitOfWork.OrderRepo.GetOrdersByArtIdAsync(id);
             return orderList;
         }
+
+        //public async Task<bool> CreateOrderWithOrderDetailsAsync(Order_OrderDetailsCreateDTO dto)
+        //{
+        //    try
+        //    {
+        //        var createOrder = _mapper.Map<Order>(dto);
+        //        await _unitOfWork.OrderRepo.AddAsync(createOrder);
+        //        return await _unitOfWork.SaveAsync() > 0;
+        //    }
+        //    catch (DbUpdateException ex)
+        //    {
+        //        throw new DbUpdateException(ex.Message);
+        //    }
+        //}
     }
 }

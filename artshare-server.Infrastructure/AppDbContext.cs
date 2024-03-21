@@ -13,9 +13,7 @@ namespace artshare_server.Infrastructure
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Like> Likes { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderDetails> OrderDetails { get; set; }
         public DbSet<Report> Reports { get; set; }
-        public DbSet<Watermark> Watermarks { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

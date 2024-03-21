@@ -22,17 +22,14 @@ namespace artshare_server.Services.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IAzureBlobStorageService _azureBlobStorageService;
-        private readonly IWatermarkService _watermarkService;
 
         public ArtworkService(IUnitOfWork unitOfWork
                                 , IMapper mapper
-                                , IAzureBlobStorageService azureBlobStorageService
-                                , IWatermarkService watermarkService)
+                                , IAzureBlobStorageService azureBlobStorageService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _azureBlobStorageService = azureBlobStorageService;
-            _watermarkService = watermarkService;
         }
 
         //public async Task<IEnumerable<Artwork>> GetAllArtworksAsync()
@@ -55,13 +52,20 @@ namespace artshare_server.Services.Services
         {
             try
             {
-                GetArtworkDTO dto = await _unitOfWork.ArtworkRepo.GetArtworkById(id);
-                Artwork artwork = _mapper.Map<Artwork>(dto);
+                Artwork artwork = await _unitOfWork.ArtworkRepo.GetByIdAsync(id);
                 if (artwork == null)
                 {
                     return false;
                 }
 
+                artwork.CreatorId = updateArtworkDTO.CreatorId;
+                artwork.Description = updateArtworkDTO.Description;
+                artwork.GenreId = updateArtworkDTO.GenreId;
+                artwork.OriginalArtUrl = updateArtworkDTO.OriginalArtUrl;
+                artwork.Price = updateArtworkDTO.Price;
+                artwork.Status = (updateArtworkDTO.Status.Equals("Public")) ? ArtworkStatus.Public : ArtworkStatus.Private;
+                artwork.Title = updateArtworkDTO.Title;
+                artwork.WatermarkedArtUrl = updateArtworkDTO.WatermarkedArtUrl;
                 _unitOfWork.ArtworkRepo.Update(artwork);
                 await _unitOfWork.SaveAsync();
                 return true;
@@ -76,9 +80,8 @@ namespace artshare_server.Services.Services
         {
             try
             {
-                GetArtworkDTO dto = await _unitOfWork.ArtworkRepo.GetArtworkById(artworkId);
-                Artwork artwork = _mapper.Map<Artwork>(dto);
-                if (dto == null)
+                Artwork artwork = await _unitOfWork.ArtworkRepo.GetByIdAsync(artworkId);
+                if (artwork == null)
                 {
                     throw new Exception("No genre found");
                 }
@@ -170,6 +173,14 @@ namespace artshare_server.Services.Services
                 PageSize = filters.PageSize,
                 TotalItems = pagedItems.Count()
             };
+        }
+
+        public async Task<List<int>> GetArtworkIdsByAccountIdAsync(int accountId)
+        {
+            //var orders = await _unitOfWork.OrderRepo.GetOrdersByAccountIdAsync(accountId);
+            //var orderDetails = await _unitOfWork.OrderDetailsRepo.GetOrderDetailsByOrdersAsync(_mapper.Map<List<Order>>(orders));
+            //return orderDetails.Select(od => od.ArtworkId).Distinct().ToList();
+            throw new NotImplementedException();
         }
     }
 }

@@ -36,5 +36,15 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
             Artwork = artworkObject.data.artwork;
             return Page();
         }
+
+        public async Task<IActionResult> OnPostAsync(int artworkId)
+        {
+            HttpResponseMessage artworkResponseMessage = await _httpClient.DeleteAsync(_apiURL + $"/Artwork/DeleteArtwork/{artworkId}");
+            if (artworkResponseMessage.IsSuccessStatusCode)
+            {
+                return RedirectToPage("/Index");
+            }
+            return Page();
+        }
     }
 }

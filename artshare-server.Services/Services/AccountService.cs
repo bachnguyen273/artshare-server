@@ -31,20 +31,36 @@ namespace artshare_server.Services.Services
             return _mapper.Map<IEnumerable<GetAccountDTO>>(accountList);
         }
 
+        public async Task<IEnumerable<UpdateAccountDTO>> SearchAccountsAsync(string usename)
+        {
+            try
+            {
+                var account = await _unitOfWork.AccountRepo.SearchAccountByUsername(usename);
+                if (account != null)
+                {
+                    return _mapper.Map<IEnumerable<UpdateAccountDTO>>(account);
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new NotImplementedException();
+            }
+        }
         public async Task<GetAccountDTO?> GetAccountByIdAsync(int accountId)
         {
             if (accountId > 0)
             {
-                var account = await _unitOfWork.AccountRepo.GetByIdAsync(accountId);
+                var account = await _unitOfWork.AccountRepo.GetAccountById(accountId);
                 return _mapper.Map<GetAccountDTO>(account);
             }
             return null;
         }
 
-        public async Task<GetAccountDTO?> GetAccountByEmailAsync(string email)
+        public async Task<Account?> GetAccountByEmailAsync(string email)
         {
             var account = await _unitOfWork.AccountRepo.GetByEmailAsync(email);
-            return _mapper.Map<GetAccountDTO>(account);
+            return account;
         }
 
         public async Task<GetAccountDTO?> GetAccountByEmailAndPasswordAsync(string email, string password)
@@ -60,7 +76,7 @@ namespace artshare_server.Services.Services
             return null;
         }
 
-        public async Task<bool> CreateAccountAsync(CreateAccountDTO createAccountDTO)
+        public async Task<bool> CreateAccountAsync(Account createAccountDTO)
         {
             try
             {
@@ -74,25 +90,23 @@ namespace artshare_server.Services.Services
             }
         }
 
-        public async Task<bool> UpdateAccountAsync(int id, UpdateAccountDTO updateAccountDTO)
+        public async Task<bool> UpdateAccountAsync(UpdateAccountDTO updateAccountDTO)
         {
             try
             {
-                var account = await _unitOfWork.AccountRepo.GetByIdAsync(id);
+                var account = await _unitOfWork.AccountRepo.GetByIdAsync(updateAccountDTO.AccountId);
                 if (account == null)
                 {
                     return false;
                 }
                 account.Email = updateAccountDTO.Email;
+                updateAccountDTO.Password = "123";
                 account.PasswordHash = BCrypt.Net.BCrypt.HashPassword(updateAccountDTO.Password);          
                 account.UserName = updateAccountDTO.UserName;
                 account.FullName = updateAccountDTO.FullName;
                 account.PhoneNumber = updateAccountDTO.PhoneNumber;
                 account.Status = (updateAccountDTO.Status.Equals("Active")) ? AccountStatus.Active : AccountStatus.Inactive;
-                if (updateAccountDTO.AvatarFile != null)
-                {
-                    account.AvatarUrl = await _azureBlobStorageService.UploadFileAsync("Avatar", updateAccountDTO.AvatarFile);
-                }
+                account.AvatarUrl = updateAccountDTO.AvatarUrl;
                 _unitOfWork.AccountRepo.Update(account);
                 await _unitOfWork.SaveAsync();
                 return true;

@@ -15,12 +15,11 @@ namespace artshare_server.ApiModels.DTOs
 
     public class CreateOrderDTO : OrderDTO
     {
-        public required IList<CreateOrderDetailDTO> CreateOrderDetailDTOs { get; set; }
+
     }
 
     public class GetOrderDTO : OrderDTO
     {
         public int OrderId { get; set; }
-        public required IList<GetOrderDetailDTO> GetOrderDetailDTOs { get; set; }
     }
 }

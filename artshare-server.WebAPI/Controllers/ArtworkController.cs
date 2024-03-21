@@ -89,11 +89,11 @@ namespace artshare_server.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize]
-        public async Task<IActionResult> UpdateArtwork(int id, UpdateArtworkDTO updateArtworkDTO)
+        public async Task<IActionResult> UpdateArtwork(int id, ArtworkStatus artworkStatus, UpdateArtworkDTO updateArtworkDTO)
         {
             try
             {
+                updateArtworkDTO.Status = artworkStatus.ToString();
                 var check = await _artworkService.GetArtworkByIdAsync(id);
                 if (check == null)
                 {
@@ -115,7 +115,6 @@ namespace artshare_server.Controllers
 
 
         [HttpDelete("{id}")]
-        [Authorize]
         public async Task<IActionResult> DeleteArtwork(int id)
         {
             try
@@ -132,5 +131,20 @@ namespace artshare_server.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetArtworkIdsByAccountId(int accountId)
+        {
+            return Ok(new SucceededResponseModel()
+            {
+                Status = Ok().StatusCode,
+                Message = "Success",
+                Data = new
+                {
+                    ArtworkIds = await _artworkService.GetArtworkIdsByAccountIdAsync(accountId)
+                }
+            });
+        }
+
     }
 }

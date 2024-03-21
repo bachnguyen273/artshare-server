@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
+using System.Reflection;
 
 namespace artshare_server.WebApp.Pages.Creators.Artworks
 {
@@ -19,9 +20,14 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
         private string _jwtToken;
         [BindProperty]
         public int SelectedWatermarkId { get; set; }
+        [BindProperty]
         public int SelectedGenreId { get; set; }
         [BindProperty]
+        public string SelectedStatus { get; set; }
+        [BindProperty]
         public dynamic Artwork { get; private set; }
+        public dynamic _artworkId { get; set; }
+ 
 
         public EditModel()
         {
@@ -36,10 +42,11 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
 
         public async Task OnGet(int artworkId)
         {
-            UpdateArtworkViewModel = new UpdateArtworkViewModel();
+            TempData["ArtworkId"] = artworkId;
             // Load data
             try
             {
+                await LoadArtwork(artworkId);
                 await LoadWatermarkByCreatorIdAsync(GetAccountIdFromToken());
                 await LoadGenresAsync();
                 await LoadOldArtworkData(artworkId);
@@ -52,38 +59,33 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
 
         private async Task LoadOldArtworkData(int artworkId)
         {
-            _jwtToken = HttpContext.Session.GetString("JWTToken");
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _jwtToken);
-            HttpResponseMessage artworkResponseMessage = await _httpClient.GetAsync(_apiURL + "/Artwork/GetArtworkById?id=" + artworkId);
-            artworkResponseMessage.EnsureSuccessStatusCode();
-            string artworkContent = await artworkResponseMessage.Content.ReadAsStringAsync();
-            dynamic artworkObject = JsonConvert.DeserializeObject(artworkContent);
-
-            Artwork = artworkObject.data.artwork;
-
-            UpdateArtworkViewModel.ArtworkId = Artwork.artworkId;
-            UpdateArtworkViewModel.GenreId = Artwork.genreId;
-            UpdateArtworkViewModel.WatermarkId = Artwork.watermarkId;
+            UpdateArtworkViewModel = new UpdateArtworkViewModel();
+            UpdateArtworkViewModel.ArtworkId = artworkId;
+            UpdateArtworkViewModel.CreatorId = Int32.Parse(GetAccountIdFromToken());
             UpdateArtworkViewModel.Title = Artwork.title;
             UpdateArtworkViewModel.Description = Artwork.description;
             UpdateArtworkViewModel.Price = Artwork.price;
-            UpdateArtworkViewModel.OriginalArtUrl = Artwork.originalArtUrl;
-            UpdateArtworkViewModel.WatermarkedArtUrl = Artwork.watermarkedArtUrl;
-            UpdateArtworkViewModel.Status = Artwork.artworkStatus;
+            SelectedStatus = Artwork.artworkStatus;
+            
 
             SelectedWatermarkId = Artwork.watermarkId;
             SelectedGenreId = Artwork.genreId;
         }
 
-        public async Task<IActionResult> OnPost()
+        public async Task<IActionResult> OnPost(int artworkId)
         {
+            await LoadWatermarkByCreatorIdAsync(GetAccountIdFromToken());
+            await LoadGenresAsync();
+            await LoadArtwork(artworkId);
+
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
             // Authorize
             _jwtToken = HttpContext.Session.GetString("JWTToken");
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _jwtToken);
-
-            // Load data
-            await LoadWatermarkByCreatorIdAsync(GetAccountIdFromToken());
-            await LoadGenresAsync();
 
             // Create artwork
             var request = new
@@ -93,15 +95,15 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
                 title = UpdateArtworkViewModel.Title,
                 description = UpdateArtworkViewModel.Description,
                 price = UpdateArtworkViewModel.Price,
-                genreId = UpdateArtworkViewModel.GenreId,
+                genreId = SelectedGenreId,
                 originalArtUrl = await ImageHelpers.UploadOriginalArtworkFile(_apiURL, UpdateArtworkViewModel.OrginalArtworkFile),
                 watermarkedArtUrl = await ImageHelpers.UploadWatermarkArtworkFile(_apiURL, UpdateArtworkViewModel.OrginalArtworkFile, GetWatermarkUrl(SelectedWatermarkId))
             };
 
-            var createUrl = _apiURL + "/Artwork/UpdateArtwork?artworkStatus=" + UpdateArtworkViewModel.Status;
+            var updateUrl = _apiURL + $"/Artwork/UpdateArtwork/{artworkId}?artworkStatus={SelectedStatus}";
             var jsonBody = JsonConvert.SerializeObject(request);
             var content = new StringContent(jsonBody, System.Text.Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync(createUrl, content);
+            var response = await _httpClient.PutAsync(updateUrl, content);
             if (response.IsSuccessStatusCode)
             {
                 return RedirectToPage("./Index");
@@ -153,6 +155,18 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
                 }
             }
             return null;
+        }
+
+        private async Task LoadArtwork(int artworkId)
+        {
+            _jwtToken = HttpContext.Session.GetString("JWTToken");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _jwtToken);
+            HttpResponseMessage artworkResponseMessage = await _httpClient.GetAsync(_apiURL + "/Artwork/GetArtworkById?id=" + artworkId);
+            artworkResponseMessage.EnsureSuccessStatusCode();
+            string artworkContent = await artworkResponseMessage.Content.ReadAsStringAsync();
+            dynamic artworkObject = JsonConvert.DeserializeObject(artworkContent);
+
+            Artwork = artworkObject.data.artwork;
         }
     }
 }

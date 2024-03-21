@@ -4,6 +4,7 @@ using artshare_server.Core.Models;
 using artshare_server.Services.CustomExceptions;
 using artshare_server.Services.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -32,24 +33,24 @@ namespace artshare_server.Services.Services
             var account = await _accountService.GetAccountByEmailAndPasswordAsync(loginData.Email, loginData.Password);
             if (account == null)
             {
-                throw new NullReferenceException("Wrong email or password.");
+                return null;
             }
             return CreateToken(account);
         }
 
-        public async Task<bool> RegisterAsync(AccountRole accountRole, CreateAccountDTO createAccountDTO)
+        public async Task<bool> RegisterAsync(AccountRole accountRole, RegisterDTO registerData)
         {
             try
             {
-                createAccountDTO.Role = accountRole.ToString();
-                var _account = await _accountService.GetAccountByEmailAsync(createAccountDTO.Email);
-                if (_account != null)
+                registerData.Role = accountRole.ToString();
+                var account = await _accountService.GetAccountByEmailAsync(registerData.Email);
+                if (account != null)
                 {
                     throw new RegistrationException("Duplicate email.");
                 }
-                Account account = _mapper.Map<Account>(createAccountDTO);
-                account.PasswordHash = BCrypt.Net.BCrypt.HashPassword(createAccountDTO.Password);
-                var result = await _accountService.CreateAccountAsync(createAccountDTO);
+                account = _mapper.Map<Account>(registerData);
+                account.PasswordHash = BCrypt.Net.BCrypt.HashPassword(registerData.Password);
+                var result = await _accountService.CreateAccountAsync(account);
                 return result;
             }
             catch (DbUpdateException ex)
@@ -66,24 +67,25 @@ namespace artshare_server.Services.Services
 
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, 
+                new Claim(JwtRegisteredClaimNames.Sub,
                         _configuration.GetSection("JwtSecurityToken:Subject").Value),
                 new Claim(JwtRegisteredClaimNames.Jti,
                                   Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Iat, 
-                                  EpochTime.GetIntDate(nowUtc).ToString(), 
+                new Claim(JwtRegisteredClaimNames.Iat,
+                                  EpochTime.GetIntDate(nowUtc).ToString(),
                                   ClaimValueTypes.Integer64),
-                new Claim(JwtRegisteredClaimNames.Exp, 
-                                  EpochTime.GetIntDate(expirationUtc).ToString(), 
+                new Claim(JwtRegisteredClaimNames.Exp,
+                                  EpochTime.GetIntDate(expirationUtc).ToString(),
                                   ClaimValueTypes.Integer64),
-                new Claim(JwtRegisteredClaimNames.Iss, 
+                new Claim(JwtRegisteredClaimNames.Iss,
                                   _configuration.GetSection("JwtSecurityToken:Issuer").Value),
-                new Claim(JwtRegisteredClaimNames.Aud, 
+                new Claim(JwtRegisteredClaimNames.Aud,
                                   _configuration.GetSection("JwtSecurityToken:Audience").Value),
                 new Claim(ClaimTypes.Email, account.Email),
                 new Claim(ClaimTypes.Role, account.Role.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, account.AccountId.ToString()),
                 new Claim("AccountId", account.AccountId.ToString()),
-                new Claim("UserName", account.FullName.ToString())
+                new Claim(ClaimTypes.UserData, account.UserName.ToString())
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes

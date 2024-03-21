@@ -7,7 +7,7 @@
 <section class="banner-area relative" id="home">
     <div class="container">
         <section class="gallery-area section-gap" id="gallery">
-            <form id="searchForm" method="post" style="margin:auto;max-width:1000px">            
+            <form id="searchForm" method="post" enctype="multipart/form-data" style="margin:auto;max-width:1000px">
                 <div style="display: flex; flex-wrap: wrap; justify-content: center;">
                     <div style="flex: 1; margin-right: 20px;">
                         <div class="single-blog" style="display: flex; justify-content: center;">
@@ -15,7 +15,7 @@
                                 @foreach (var genre in Model.Genres)
                                 {
                                     <li style="display: inline-block; margin-right: 10px;">
-                                        <input type="radio" id="genre_@(genre.genreId)" name="selectedGenreId" value="@genre.genreId" />
+                                        <input type="radio" asp-for="@Model.CreateArtworkViewModel.GenreId" id="genre_@(genre.genreId)" value="@genre.genreId" />
                                         <label for="genre_@(genre.genreId)">
                                             @genre.name
                                         </label>
@@ -55,11 +55,14 @@
                 </div>
                 <div class="input-container mt-10">
                     <!-- Combo box for selecting public/private -->
-                    <select asp-for="@Model.CreateArtworkViewModel.Status" class="single-input" required>
+                    <select asp-for="@Model.CreateArtworkViewModel.Status" class="single-input" style="height: 40px" required>
                         <option value="">Select Status</option>
                         <option value="0">Public</option>
                         <option value="1">Private</option>
                     </select>
+                </div>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center">
+                    <div asp-validation-summary="All" class="text-danger"></div>
                 </div>
                 <button type="submit" style="margin: auto" class="primary-btn text-uppercase d-flex justify-content-center">Submit</button>
             </form>
