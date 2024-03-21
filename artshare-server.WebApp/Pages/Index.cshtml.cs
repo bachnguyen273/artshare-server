@@ -14,17 +14,13 @@ namespace artshare_server.WebApp.Pages
         public List<dynamic> Artworks { get; set; }
         public List<dynamic> Genres { get; set; }
 
-		//public async Task<IActionResult> OnGetAsync() => await LoadData();
-		//public async Task<IActionResult> OnPostAsync(string searchString, int pageNumber, string? selectedGenreId)
-		//{
-		//	await LoadData(searchString, pageNumber, selectedGenreId);
-		//	return Page();
-		//}
+        //public async Task<IActionResult> OnGetAsync() => await LoadData();
+        //public async Task<IActionResult> OnPostAsync(string searchString, int pageNumber, string? selectedGenreId)
+        //{
+        //	await LoadData(searchString, pageNumber, selectedGenreId);
+        //	return Page();
+        //}
 
-        public void OnGet()
-        {
-
-        }
 
         //private async Task<IActionResult> LoadData(string? searchString = null, int? pageNumber = null, string? selectedGenreId = null)
         //{
@@ -69,5 +65,43 @@ namespace artshare_server.WebApp.Pages
         //        return NotFound();
         //    }
         //}
+
+        public async Task<IActionResult> OnGetAsync() => await LoadData();
+        public async Task<IActionResult> OnPostAsync(int? id = null)
+        {
+            await LoadData(id);
+            return Page();
+        }
+
+        private async Task<IActionResult> LoadData(int? id = null)
+        {
+            IConfiguration config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", true, true)
+                .Build();
+
+            string apiUrl = config["API_URL"];
+            string artworkUrl = $"{apiUrl}/Artwork/GetArtworks";
+            string genreUrl = $"{apiUrl}/Genre/GetGenres";
+            using (var httpClient = new HttpClient())
+            {
+                if (!string.IsNullOrEmpty(id.ToString()))
+                {
+                    artworkUrl += $"?GenreId={id}";
+                }
+                HttpResponseMessage artworkResponseMessage = await httpClient.GetAsync(artworkUrl);
+                artworkResponseMessage.EnsureSuccessStatusCode();
+                string artworkContent = await artworkResponseMessage.Content.ReadAsStringAsync();
+                dynamic artworkObject = JsonConvert.DeserializeObject(artworkContent);
+                Artworks = new List<dynamic>(artworkObject.data.artwork.items);
+
+                HttpResponseMessage genreResponseMessage = await httpClient.GetAsync(genreUrl);
+                genreResponseMessage.EnsureSuccessStatusCode();
+                string genreContent = await genreResponseMessage.Content.ReadAsStringAsync();
+                dynamic genreObject = JsonConvert.DeserializeObject(genreContent);
+                Genres = new List<dynamic>(genreObject.items);
+            }
+            return Page();
+        }
     }
 }
