@@ -1,0 +1,371 @@
+﻿@page
+@model artshare_server.WebApp.Pages.ArtworkDetailModel
+@{
+}
+
+<div class="phucnvm-main">
+    <div class="ioCwG">
+        <header class="phucnvm-head">
+            <div class="BJiPW">
+                <a asp-page="Index" class="a-back" style="display:flex;align-content:center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" style="color:white;width:20px;height:20px;display:inline-block;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                    </svg>
+                    <span style="color:white; display:inline-block;text-align:center;">Home</span>
+                </a>
+            </div>
+        </header>
+    </div>
+
+    <div class="phucnvm-art">
+        <img src="https://blog.celtalks.com/2024/03/aIaTXK5p-news-post.png" />
+        <!--Art work image-->
+    </div>
+
+    <!--Like vs Dislike-->
+    <div class="post-rating-container">
+        <div class="post-rating">
+            <span class="post-rating-button material-symbols-outlined">thumb_up</span>
+            <span class="post-rating-count">0</span>
+        </div>
+        <div class="post-rating">
+            <span class="post-rating-button material-symbols-outlined"> thumb_down </span>
+            <span class="post-rating-count">0</span>
+        </div>
+    </div>
+
+    <!--Art Info-->
+    <div class="art-info">
+        <div class="u-info">
+            <div class="cre-info">
+                <div class="_1WZVN">
+
+                    <div class="cre-avatar">
+                        <div class="_4GW" style="display:inline-flex">
+                            <a href="./Index">
+                                <img src="https://i.pinimg.com/originals/25/78/61/25786134576ce0344893b33a051160b1.jpg" class="avatar" />
+                                <!--Creator avatar-->
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="d30Ee">
+                        <div class="U2aSH" style="display: flex;align-items: baseline;">
+                            <h1 class="_33gAi_3HLSN">Wojciech Korda</h1> <!--Artwork Title-->
+                        </div>
+                        <div class="_2_1t">
+                            <div class="_31DYV" style="display: flex;align-items: center; align-content:center">
+                                <span style="margin-right:10px;text-transform: lowercase;color:white;text-align:center;">by</span>
+                                <span style="color:white;text-align:center;font-size:20px;font-weight:800">PaulWokker</span>
+                                <!--Creator name-->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="_1mcmq">
+                        <span class="_1lf7Q">
+                            Published: Nov 28,2023
+                        </span>
+                        <!--Artwork create date-->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Comment-->
+    <div class="phucnvm-commnent">
+        <div class="vJeu0">
+            <div>
+                <div class="_2YlGm">
+                    <div>
+                        <span style="margin-right:5px; color: #f2f2f2; font-weight:800; font-size:18px">Comments</span>
+                        <span style="color: #f2f2f2; font-size:18px">15</span>
+                        <!--Artwork Comment count-->
+                    </div>
+                </div>
+                <div class="phucnvm-comment-list">
+                    <div>
+
+                        <!--Chưa Login-->
+                        <div style="margin-bottom:16px">
+                            <div>
+                                <div class="_2p7n" style="margin:0;display: grid;grid-template-columns: auto minmax(0, 1fr);gap:8px;">
+                                    <div style="display: inline-flex">
+                                        <img src="https://as2.ftcdn.net/v2/jpg/03/31/69/91/1000_F_331699188_lRpvqxO5QRtwOM05gR50ImaaJgBx68vi.jpg" class="avatar" />
+                                    </div>
+                                    <div style="display: grid; grid-auto-flow: row;grid-template-columns: minmax(0, 1fr);gap: 4px;">
+                                        <div class="vwya0">
+                                            <div style="margin-top:10px;">
+                                                <p style="color:white">Join the community to add your comment. Already a deviant? <a href="./Login">Log In</a></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--Đã Login-->
+                        <div class="_1LomQ" style="margin-left: 0;position: relative;margin-bottom: 16px;">
+                            <div>
+                                <div class="_2p7n" style="margin:0;display: grid;grid-template-columns: auto minmax(0, 1fr);gap:8px;">
+                                    <div style="display: inline-flex">
+                                        <a href="./Index">
+                                            <img src="https://i.pinimg.com/originals/25/78/61/25786134576ce0344893b33a051160b1.jpg" class="avatar" />
+                                            <!--Creator avatar-->
+                                        </a>
+                                    </div>
+                                    <div style="display: grid; grid-auto-flow: row;grid-template-columns: minmax(0, 1fr);gap: 4px;">
+                                        <div class="vwya0">
+                                            <form method="post">
+                                                <input type="text" required="" style="color:#fafafa; background:none; outline:none; border:none;width:100%;" placeholder="Add a new comment.." />
+                                                <button class="phucnvm-comment">Comment</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--Bắt đầu vòng for-->
+                        <div class="_1LomQ" style="margin-left: 0;position: relative;margin-bottom: 16px;">
+                            <div>
+                                <div class="_2p7n" style="margin:0;display: grid;grid-template-columns: auto minmax(0, 1fr);gap:8px;">
+                                    <div style="display: inline-flex">
+                                        <a href="./Index">
+                                            <img src="https://i.pinimg.com/originals/25/78/61/25786134576ce0344893b33a051160b1.jpg" class="avatar" />
+                                            <!--Creator avatar-->
+                                        </a>
+                                    </div>
+                                    <div style="display: grid; grid-auto-flow: row;grid-template-columns: minmax(0, 1fr);gap: 4px;">
+                                        <div class="vwya0">
+                                            <h3 style="color:white">TheFulkrum</h3>
+                                            <!--Creater username-->
+                                            <div style="margin-top:10px;">
+                                                <p style="color:white">Congratulations for your well deserved DD :clap:& thank you for sharing your talent with our sweet dA community!  </p>
+                                                <!--Comment Text-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<style>
+    .phucnvm-main {
+        background: #06070d;
+    }
+
+    .phucnvm-head {
+        position: relative;
+        height: 60px;
+        padding: 0 40px;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        grid-template-rows: auto min-content;
+        grid-template-areas:
+            "leftside navigation rightside"
+            "subheader subheader subheader";
+        align-items: center;
+    }
+
+
+    .phucnvm-art {
+        width: 100%;
+        height: 567px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .phucnvm-art img {
+            max-width: 100%;
+            max-height: 100%;
+            position: relative;
+        }
+
+    .art-info {
+        position: relative;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .u-info {
+        position: relative;
+        width: 780px;
+    }
+
+    .cre-info {
+        margin: 16px 0 32px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    ._1WZVN {
+        width: 100%;
+        display: grid;
+        grid-template-columns: min-content 1fr max-content;
+    }
+
+    .cre-avatar {
+        margin-right: 16px;
+        display: flex;
+        align-items: center;
+    }
+
+    ._4G a {
+        text-decoration: none;
+        color: inherit;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: block;
+        position: relative;
+    }
+
+    .avatar {
+        display: block;
+        width: 50px;
+        height: 50px;
+        border-radius: 4px;
+    }
+
+    .d30Ee {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    ._33gAi_3HLSN {
+        font-weight: 800;
+        font-size: 25px;
+        line-height: 32px;
+        letter-spacing: .3px;
+        overflow-wrap: break-word;
+        max-width: none;
+        overflow: hidden;
+        color: #fafafa;
+        transform: none;
+    }
+
+    ._2_1t {
+        flex: 1 1 auto;
+        flex-direction: row;
+        display: flex;
+        align-items: center;
+    }
+
+    ._1mcmq {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding-left: 94px;
+    }
+
+    ._1lf7Q {
+        display: inline-flex;
+        align-items: flex-end;
+        gap: 2px;
+        margin-left: 0;
+        padding-left: 0;
+        white-space: nowrap;
+        color: #c9cacf;
+    }
+
+    .phucnvm-commnent {
+        width: calc(100% - 356px);
+        position: relative;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        margin-left: 60px;
+    }
+
+    .vJeu0 {
+        width: 780px;
+        margin-top: 56px;
+        padding: 0;
+        position: relative;
+    }
+
+    ._2YlGm {
+        display: flex;
+        align-items: center;
+        height: 24px;
+        margin-bottom: 16px;
+    }
+
+    .vwya0 {
+        background: #161a1f;
+        border: 1px solid #21271b;
+        border-radius: 4px;
+        box-sizing: border-box;
+        position: relative;
+        padding: 8px 12px 16px 12px;
+        transition: all .6s ease-out;
+        border-radius: 3px;
+    }
+
+    .phucnvm-comment {
+        float: right;
+        background: none;
+        outline: none;
+        border: none;
+        color: #fafafa;
+    }
+
+        .phucnvm-comment:hover {
+            color: #00e59b;
+        }
+
+    .BJiPW svg:hover {
+        color: #00e59b;
+    }
+
+    .post-rating-container {
+        display: flex;
+        justify-content: end;
+        padding: 12px 0;
+        margin-right: 370px;
+        margin-top: 15px;
+    }
+
+    .post-rating {
+        display: flex;
+        align-items: center;
+        color: #DDDDDD;
+        cursor: default;
+    }
+
+        .post-rating:not(:last-child) {
+            margin-right: 12px;
+        }
+
+    .post-rating-button {
+        margin-right: 6px;
+        cursor: pointer;
+    }
+
+    .post-rating-selected > .post-rating-button,
+    .post-rating-selected > .post-rating-count {
+        color: #00e59b;
+    }
+
+    .post-rating:not(.post-rating-selected) > .post-rating-button:hover {
+        color: #fafafa;
+    }
+</style>
