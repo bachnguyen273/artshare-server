@@ -8,7 +8,7 @@ namespace artshare_server.Services.Interfaces
     public interface IArtworkService
     {
         //Task<IEnumerable<Artwork>> GetAllArtworksAsync();
-        Task<PagedResult<GetArtworkDTO>> GetAllArtworksAsync<T>(ArtworkFilters filter);
+        Task<List<GetArtworkDTO>> GetAllArtworksAsync<T>(ArtworkFilters filter);
         Task<GetArtworkDTO?> GetArtworkByIdAsync(int artworkId);
 
         //Task<bool> CreateArtworkAsync(Artwork artwork);
