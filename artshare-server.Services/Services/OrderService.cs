@@ -112,13 +112,13 @@ public class OrderService : IOrderService
         throw new NotImplementedException();
     }
 
-    public async Task<List<GetOrderDTO>> GetOrdersByCusIdAsync(int id)
+    public async Task<List<GetUserOrderDTO>> GetOrdersByCusIdAsync(int id)
     {
         var orderList = await _unitOfWork.OrderRepo.GetOrdersByCusIdAsync(id);
         return orderList;
     }
 
-    public async Task<List<GetOrderDTO>> GetOrdersByArtIdAsync(int id)
+    public async Task<List<GetUserOrderDTO>> GetOrdersByArtIdAsync(int id)
     {
         var orderList = await _unitOfWork.OrderRepo.GetOrdersByArtIdAsync(id);
         return orderList;
@@ -137,10 +137,10 @@ public class OrderService : IOrderService
     //        throw new DbUpdateException(ex.Message);
     //    }
     //}
-    public async Task<List<GetOrderDTO>> GetAllOrdersOfCreator(int id)
+    public async Task<List<GetUserOrderDTO>> GetAllOrdersOfCreator(int id)
     {
         var artList = await _unitOfWork.ArtworkRepo.GetArtworksByCreatorId(id);
-        List<GetOrderDTO> orders=new();
+        List<GetUserOrderDTO> orders=new();
         foreach(var art in artList)
         {
             var orderList = await _unitOfWork.OrderRepo.GetOrdersByArtIdAsync(art.ArtworkId);

@@ -21,8 +21,8 @@
                             <tr>
                                 <td></td>
                                 <td>Order Id</td>
-                                <td>Customer Id</td>
-                                <td>Artwork Id</td>
+                                <td>Customer </td>
+                                <td>Artwork Title</td>
                                 <td>Price</td>
                                 <td>Create Date</td>
                             </tr>
@@ -36,10 +36,10 @@
                                     <tr>
                                         <td>@i</td>
                                         <td>@order.OrderId</td>
-                                        <td>@order.CustomerId</td>
-                                        <td>@order.ArtworkId</td>
+                                        <td>@order.FullName</td>
+                                        <td>@order.Title</td>
                                         <td>@order.Price</td>
-                                        <td>@order.CreateDate</td>
+                                        <td>@order.CreateDate.ToShortDateString()</td>
                                     </tr>
                                 }
                             }

@@ -11,7 +11,7 @@ namespace artshare_server.WebApp.Pages.Audiences.Orders
         public IEnumerable<OrderViewModel> Orders { get; set; }
         public int Total { get; set; }
         public int Page { get; set; }
-        public int Size { get; set; } = 5;
+        public int Size { get; set; } = 7;
         public int? CustomerId { get; set; }
 
         private HttpClient _httpClient = new();
