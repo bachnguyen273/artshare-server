@@ -18,7 +18,7 @@ namespace artshare_server.WebApp.Pages
         public int? GenreID { get; set; }
         public string Search { get; set; }
 
-        private const int pageSize = 5;
+        private const int pageSize = 10;
 
         //public async Task<IActionResult> OnGetAsync() => await LoadData();
         //public async Task<IActionResult> OnPostAsync(string searchString, int pageNumber, string? selectedGenreId)
@@ -105,6 +105,7 @@ namespace artshare_server.WebApp.Pages
                 }
                 else if (!HttpContext.Request.Query["genre"].IsNullOrEmpty())
                 {
+                    GenreID = int.Parse(HttpContext.Request.Query["genre"]);
                     artworkUrl += $"?GenreId={HttpContext.Request.Query["genre"]}";
                 }
                 else if (!Search.IsNullOrEmpty())

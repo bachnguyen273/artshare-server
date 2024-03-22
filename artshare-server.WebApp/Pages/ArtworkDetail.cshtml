@@ -1,6 +1,10 @@
 ﻿@page
 @model artshare_server.WebApp.Pages.ArtworkDetailModel
 @{
+    var artwork = Model.Artwork;
+    //int likeCount = artwork.likeCount;
+    // DateTime dt = DateTime.Parse(artwork.createdDate);
+    // string createDate = dt.ToString("MMM dd,yyyy");
 }
 
 <div class="phucnvm-main">
@@ -18,7 +22,7 @@
     </div>
 
     <div class="phucnvm-art">
-        <img src="https://blog.celtalks.com/2024/03/aIaTXK5p-news-post.png" />
+        <img src="@artwork.originalArtUrl" />
         <!--Art work image-->
     </div>
 
@@ -26,11 +30,11 @@
     <div class="post-rating-container">
         <div class="post-rating">
             <span class="post-rating-button material-symbols-outlined">thumb_up</span>
-            <span class="post-rating-count">0</span>
+            <span class="post-rating-count">@artwork.likeCount</span>
         </div>
         <div class="post-rating">
             <span class="post-rating-button material-symbols-outlined"> thumb_down </span>
-            <span class="post-rating-count">0</span>
+            <span class="post-rating-count">@artwork.dislikeCount</span>
         </div>
     </div>
 
@@ -43,7 +47,15 @@
                     <div class="cre-avatar">
                        <div class="_4GW" style="display:inline-flex">
                            <a href="./Index">
-                                <img src="https://i.pinimg.com/originals/25/78/61/25786134576ce0344893b33a051160b1.jpg" class="avatar"/>
+                                @if (artwork.creator.avatarUrl == null)
+                                {
+                                    <img src="https://th.bing.com/th/id/R.ccfd669479d5d5ba603835bc82f41215?rik=c0YhIEaO%2bbKLJQ&pid=ImgRaw&r=0" style="height:25px;width:25px;display: inline-block" />
+                                }
+                                else
+                                {
+                                    <img src="@artwork.creator.avatarUrl" class="avatar" />
+                                }
+                                
                                 <!--Creator avatar-->
                             </a>
                        </div>
@@ -51,12 +63,12 @@
 
                     <div class="d30Ee">
                         <div class="U2aSH" style="display: flex;align-items: baseline;">
-                            <h1 class="_33gAi_3HLSN">Wojciech Korda</h1> <!--Artwork Title-->
+                            <h1 class="_33gAi_3HLSN">@artwork.title</h1> <!--Artwork Title-->
                         </div>
                         <div class="_2_1t">
                             <div class="_31DYV" style="display: flex;align-items: center; align-content:center">
                                 <span style="margin-right:10px;text-transform: lowercase;color:white;text-align:center;">by</span>
-                                <span style="color:white;text-align:center;font-size:20px;font-weight:800">PaulWokker</span>
+                                <span style="color:white;text-align:center;font-size:20px;font-weight:800">@artwork.creator.userName</span>
                                 <!--Creator name-->
                             </div>                            
                         </div>
@@ -64,7 +76,7 @@
 
                     <div class="_1mcmq">
                         <span class="_1lf7Q">
-                            Published: Nov 28,2023
+                            Published: 
                         </span>
                         <!--Artwork create date-->
                     </div>
@@ -81,7 +93,7 @@
                 <div class="_2YlGm">
                     <div>
                         <span style="margin-right:5px; color: #f2f2f2; font-weight:800; font-size:18px">Comments</span>
-                        <span style="color: #f2f2f2; font-size:18px">15</span>
+                        <span style="color: #f2f2f2; font-size:18px">@artwork.commentCount</span>
                         <!--Artwork Comment count-->
                     </div>
                 </div>
