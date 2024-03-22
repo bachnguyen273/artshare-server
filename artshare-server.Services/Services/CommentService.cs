@@ -17,33 +17,48 @@ namespace artshare_server.Services.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<GetCommentDTO>> GetAllCommentsAsync()
+        public async Task<bool> CreateCommentAsync(CreateCommentDTO _comment)
         {
-            var commentList = await _unitOfWork.CommentRepo.GetAllAsync();
-            return _mapper.Map<IEnumerable<GetCommentDTO>>(commentList);
+            Comment comment= _mapper.Map<Comment>(_comment);
+
+            await _unitOfWork.CommentRepo.AddAsync(comment);
+            var result = await _unitOfWork.SaveAsync() > 0;
+            return result;
         }
 
-        public async Task<GetCommentDTO?> GetCommentByIdAsync(int commentId)
+        public Task<bool> DeleteCommentAsync(int commentId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<GetCommentDTO>> GetAllCommentsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<GetCommentDTO>> GetCommentByArtworkId(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<List<GetCommentDTO>> GetCommentByIdAsync(int commentId)
         {
             if (commentId > 0)
             {
-                var comment = await _unitOfWork.CommentRepo.GetByIdAsync(commentId);
-                return _mapper.Map<GetCommentDTO>(comment);
+                var cmt = await _unitOfWork.CommentRepo.GetCommentByArtworkId(commentId);
+                return _mapper.Map<List<GetCommentDTO>>(cmt);
             }
             return null;
         }
 
-        public async Task<bool> CreateCommentAsync(Comment comment)
+        public async Task<List<GetCommentDTO>> GetComments()
         {
-            throw new NotImplementedException();
+            var cmt = await _unitOfWork.CommentRepo.GetComments();
+            return _mapper.Map<List<GetCommentDTO>>(cmt);
+
         }
 
-        public async Task<bool> UpdateCommentAsync(Comment comment)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<bool> DeleteCommentAsync(int commentId)
+        public Task<bool> UpdateCommentAsync(Comment comment)
         {
             throw new NotImplementedException();
         }

@@ -20,7 +20,7 @@ namespace artshare_server.Infrastructure.Repositories
             _dbContext = new AppDbContext();
             _accountRepo = new AccountRepository(_dbContext, _mapper);
             _artworkRepo = new ArtworkRepository(_dbContext, _mapper);
-            _commentRepo = new CommentRepository(_dbContext);
+            _commentRepo = new CommentRepository(_dbContext, _mapper);
             _genreRepo = new GenreRepository(_dbContext, _mapper);
             _likeRepo = new LikeRepository(_dbContext);
             _orderRepo = new OrderRepository(_dbContext,_mapper);

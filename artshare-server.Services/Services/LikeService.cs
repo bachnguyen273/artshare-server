@@ -1,51 +1,96 @@
-﻿using artshare_server.ApiModels.DTOs;
-using artshare_server.Core.Interfaces;
+﻿using artshare_server.Core.Interfaces;
 using artshare_server.Core.Models;
 using artshare_server.Services.Interfaces;
-using AutoMapper;
 
 namespace artshare_server.Services.Services
 {
     public class LikeService : ILikeService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public LikeService(IUnitOfWork unitOfWork, IMapper mapper)
+        public LikeService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<GetLikeDTO>> GetAllLikesAsync()
+        public async Task<IEnumerable<Like>> GetAllLikesAsync()
         {
             var likeList = await _unitOfWork.LikeRepo.GetAllAsync();
-            return _mapper.Map<IEnumerable<GetLikeDTO>>(likeList);
+            return likeList;
         }
 
-        public async Task<GetLikeDTO?> GetLikeByIdAsync(int likeId)
+        public async Task<Like?> GetLikeByIdAsync(int likeId)
         {
             if (likeId > 0)
             {
                 var like = await _unitOfWork.LikeRepo.GetByIdAsync(likeId);
-                return _mapper.Map<GetLikeDTO>(like);
+                return like;
             }
             return null;
         }
 
         public async Task<bool> CreateLikeAsync(Like like)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _unitOfWork.LikeRepo.AddAsync(like);
+                var result = await _unitOfWork.SaveAsync() > 0;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<bool> UpdateLikeAsync(Like like)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _unitOfWork.LikeRepo.Update(like);
+                var result = await _unitOfWork.SaveAsync() > 0;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        public async Task<bool> DeleteLikeAsync(int likeId)
+        public async Task<bool> DeleteLikeAsync(Like like)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _unitOfWork.LikeRepo.Delete(like);
+                var result = await _unitOfWork.SaveAsync() > 0;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
+
+        public async Task<IEnumerable<Like>> GetAllLikeByArtworkId(int artworkId)
+        {
+            return await _unitOfWork.LikeRepo.GetAllLikeByArtworkId(artworkId);
+        }
+
+        public async Task<Like> GetLikeByAccountIdAndArtworkId(int accountId, int artworkId)
+        {
+            return await _unitOfWork.LikeRepo.GetLikeByAccountIdAndArtworkId(accountId, artworkId);
+        }
+
+        public async Task<int> CountLikeByArtWorkId(int artworkId)
+        {
+            return await _unitOfWork.LikeRepo.CountLikeByArtWorkId(artworkId);
+        }
+
+        public async Task<int> CountDisLikeByArtWorkId(int artworkId)
+        {
+            return await _unitOfWork.LikeRepo.CountDisLikeByArtWorkId(artworkId);
+        }
+
+
     }
 }
