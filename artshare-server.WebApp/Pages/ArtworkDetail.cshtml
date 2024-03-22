@@ -5,6 +5,7 @@
     //int likeCount = artwork.likeCount;
     // DateTime dt = DateTime.Parse(artwork.createdDate);
     // string createDate = dt.ToString("MMM dd,yyyy");
+    var commnents = Model.Comments;
 }
 
 <div class="phucnvm-main">
@@ -58,7 +59,7 @@
                            <a href="./Index">
                                 @if (artwork.creator.avatarUrl == null)
                                 {
-                                    <img src="https://th.bing.com/th/id/R.ccfd669479d5d5ba603835bc82f41215?rik=c0YhIEaO%2bbKLJQ&pid=ImgRaw&r=0" style="height:25px;width:25px;display: inline-block;" />
+                                    <img src="https://th.bing.com/th/id/R.ccfd669479d5d5ba603835bc82f41215?rik=c0YhIEaO%2bbKLJQ&pid=ImgRaw&r=0" style="height:50px;width:50px;display: inline-block;" />
                                 }
                                 else
                                 {
@@ -142,8 +143,8 @@
                                         </div>
                                         <div style="display: grid; grid-auto-flow: row;grid-template-columns: minmax(0, 1fr);gap: 4px;">
                                             <div class="vwya0">
-                                                <form method="post">
-                                                    <input type="text" required="" style="color:#fafafa; background:none; outline:none; border:none;width:100%;" placeholder="Add a new comment.." />
+                                                <form method="post" asp-page-handler="Comment" asp-route-id="@artwork.artworkId">
+                                                    <input name="Content" type="text" required="" style="color:#fafafa; background:none; outline:none; border:none;width:100%;" placeholder="Add a new comment..">
                                                     <button class="phucnvm-comment">Comment</button>
                                                 </form>
                                             </div>
@@ -154,28 +155,41 @@
                         }
 
                         <!--Bắt đầu vòng for-->
-                        <div class="_1LomQ" style="margin-left: 0;position: relative;margin-bottom: 16px;">
-                            <div>
-                                <div class="_2p7n" style="margin:0;display: grid;grid-template-columns: auto minmax(0, 1fr);gap:8px;">
-                                    <div style="display: inline-flex">
-                                        <a href="./Index">
-                                            <img src="https://i.pinimg.com/originals/25/78/61/25786134576ce0344893b33a051160b1.jpg" class="avatar" />
-                                            <!--Creator avatar-->
-                                        </a>
-                                    </div>
-                                    <div style="display: grid; grid-auto-flow: row;grid-template-columns: minmax(0, 1fr);gap: 4px;">
-                                        <div class="vwya0">
-                                            <h3 style="color:white">TheFulkrum</h3>
-                                            <!--Creater username-->
-                                            <div style="margin-top:10px;">
-                                                <p style="color:white">Congratulations for your well deserved DD :clap:& thank you for sharing your talent with our sweet dA community!  </p>
-                                                <!--Comment Text-->
+                        @{
+                            foreach(var coms in commnents)
+                            {
+                                <div class="_1LomQ" style="margin-left: 0;position: relative;margin-bottom: 16px;">
+                                    <div>
+                                        <div class="_2p7n" style="margin:0;display: grid;grid-template-columns: auto minmax(0, 1fr);gap:8px;">
+                                            <div style="display: inline-flex">
+                                                <a href="./Index">
+                                                    @if (coms.commenter.avatarUrl == null)
+                                                    {
+                                                        <img src="https://th.bing.com/th/id/R.ccfd669479d5d5ba603835bc82f41215?rik=c0YhIEaO%2bbKLJQ&pid=ImgRaw&r=0" style="height:50px;width:50px;display: inline-block;" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="@coms.commenter.avatarUrl" class="avatar" />
+                                                    }
+                                                    <!--Creator avatar-->
+                                                </a>
+                                            </div>
+                                            <div style="display: grid; grid-auto-flow: row;grid-template-columns: minmax(0, 1fr);gap: 4px;">
+                                                <div class="vwya0">
+                                                    <h3 style="color:white">@coms.commenter.userName</h3>
+                                                    <!--Creater username-->
+                                                    <div style="margin-top:10px;">
+                                                        <p style="color:white">@coms.content</p>
+                                                        <!--Comment Text-->
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            }
+                        }
+                        
 
                     </div>
                 </div>
