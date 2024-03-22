@@ -2,6 +2,7 @@
 using artshare_server.Core.Enums;
 using artshare_server.Core.Models;
 using artshare_server.Services.CustomExceptions;
+using artshare_server.Services.FilterModels;
 using artshare_server.Services.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -42,12 +43,12 @@ namespace artshare_server.Services.Services
         {
             try
             {
-                var account = await _accountService.GetAccountByEmailAsync(registerData.Email);
-                if (account != null)
+                var check = await _accountService.CheckAccount(_mapper.Map<Account>(registerData));
+                if (check != null)
                 {
-                    throw new RegistrationException("Duplicate email.");
+                    throw new RegistrationException(check);
                 }
-                account = _mapper.Map<Account>(registerData);
+                var account = _mapper.Map<Account>(registerData);
                 account.PasswordHash = BCrypt.Net.BCrypt.HashPassword(registerData.Password);
                 var result = await _accountService.CreateAccountAsync(account);
                 return result;

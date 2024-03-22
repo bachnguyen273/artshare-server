@@ -8,7 +8,7 @@ namespace artshare_server.Services.Interfaces
     public interface IAccountService
     {
         Task<PagedResult<GetAccountDTO>> GetAllAccountsAsync(AccountFilter accountFilter);
-
+        Task<string> CheckAccount(Account register);
         Task<GetAccountDTO?> GetAccountByIdAsync(int accountId);
         Task<Account?> GetAccountByEmailAsync(string email);
         Task<GetAccountDTO?> GetAccountByEmailAndPasswordAsync(string email, string password);

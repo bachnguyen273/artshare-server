@@ -188,5 +188,24 @@ namespace artshare_server.Services.Services
                 return false;
             }            
         }
-    }
+
+		public async Task<string> CheckAccount(Account account)
+		{
+            try
+            {
+                var accounts = _unitOfWork.AccountRepo.GetAccounts().Result;
+                if (accounts.FirstOrDefault(x => x.UserName == account.UserName) != null)
+                    return "Username existed";
+                if (accounts.FirstOrDefault(x => x.Email == account.Email) != null)
+                    return "Email existed";
+                if (accounts.FirstOrDefault(x => x.PhoneNumber == account.PhoneNumber) != null)
+                    return "Phone existed";
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+		}
+	}
 }
