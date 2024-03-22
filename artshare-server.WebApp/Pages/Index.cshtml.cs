@@ -132,7 +132,7 @@ namespace artshare_server.WebApp.Pages
                 }
                 if (page < 1)
                 {
-                    page = 1;
+                    page = 1;   
                 }
                 int recs = listArtwork.Count();
                 Pager = new Pager(recs, page, pageSize);
