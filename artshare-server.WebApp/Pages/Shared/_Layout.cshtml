@@ -47,8 +47,17 @@
             </div>
 
             <form class="search-box" method="post">
-                <button type="submit" asp-page="/Index" asp-page-handler="Search"><span class="fa fa-search"></span></button>
-                <input type="text" name="SearchValue" placeholder="Search" id="myInput" />
+                @if (Context.Session.GetString("Role") == null || Context.Session.GetString("Role").Equals("Audience"))
+                {
+                    <button type="submit" asp-page="/Index" asp-page-handler="Search"><span class="fa fa-search"></span></button>
+                    <input type="text" name="SearchValue" placeholder="Search" id="myInput" />
+                }
+                else if (Context.Session.GetString("Role").Equals("Creator"))
+                {
+                    <button type="submit" asp-page="/Creators/Artworks/Index" asp-page-handler="Search"><span class="fa fa-search"></span></button>
+                    <input type="text" name="SearchValue" placeholder="Search" id="myInput" />
+                }
+                
             </form>
 
             <ul class="phucnvm-ul">
