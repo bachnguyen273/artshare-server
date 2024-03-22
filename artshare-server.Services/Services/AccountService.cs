@@ -2,7 +2,10 @@
 using artshare_server.Core.Enums;
 using artshare_server.Core.Interfaces;
 using artshare_server.Core.Models;
+using artshare_server.Services.FilterModels;
+using artshare_server.Services.FilterModels.Helpers;
 using artshare_server.Services.Interfaces;
+using artshare_server.Services.Utils;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -25,10 +28,49 @@ namespace artshare_server.Services.Services
             _azureBlobStorageService = azureBlobStorageService;
         }
 
-        public async Task<IEnumerable<GetAccountDTO>> GetAllAccountsAsync()
+        public async Task<PagedResult<GetAccountDTO>> GetAllAccountsAsync(AccountFilter filters)
         {
-            var accountList = await _unitOfWork.AccountRepo.GetAccounts();
-            return _mapper.Map<IEnumerable<GetAccountDTO>>(accountList);
+            // Apply filtering
+            var items = await _unitOfWork.AccountRepo.GetAccounts();
+            IQueryable<GetAccountDTO> filteredItemsQuery = items.AsQueryable();
+
+            if (!string.IsNullOrEmpty(filters.FullName))
+                filteredItemsQuery = filteredItemsQuery.Where(item => item.FullName.Contains(filters.FullName, StringComparison.OrdinalIgnoreCase));
+            if (!string.IsNullOrEmpty(filters.UserName))
+                filteredItemsQuery = filteredItemsQuery.Where(item => item.UserName.Contains(filters.UserName, StringComparison.OrdinalIgnoreCase));
+            if (!string.IsNullOrEmpty(filters.Email))
+                filteredItemsQuery = filteredItemsQuery.Where(item => item.Email.Contains(filters.Email, StringComparison.OrdinalIgnoreCase));
+            if (!string.IsNullOrEmpty(filters.PhoneNumber))
+                filteredItemsQuery = filteredItemsQuery.Where(item => item.Email.Contains(filters.PhoneNumber, StringComparison.OrdinalIgnoreCase));
+            if (!string.IsNullOrEmpty(filters.Role.ToString()))
+                filteredItemsQuery = filteredItemsQuery.Where(item => item.Role == filters.Role.ToString());
+            // Apply sorting
+            if (!string.IsNullOrEmpty(filters.SortBy))
+            {
+                switch (filters.SortBy)
+                {
+                    default:
+                        // Handle other sorting filter using Utils.GetPropertyValue
+                        filteredItemsQuery = filters.SortAscending ?
+                            filteredItemsQuery.OrderBy(item => Helpers.GetPropertyValue(item, filters.SortBy)) :
+                            filteredItemsQuery.OrderByDescending(item => Helpers.GetPropertyValue(item, filters.SortBy));
+                        break;
+                }
+            }
+
+            // Apply paging
+            var pagedItems = filteredItemsQuery
+                .Skip((filters.PageNumber - 1) * filters.PageSize)
+                .Take(filters.PageSize)
+                .ToList(); // Materialize the query
+
+            return new PagedResult<GetAccountDTO>
+            {
+                Items = pagedItems,
+                PageNumber = filters.PageNumber,
+                PageSize = filters.PageSize,
+                TotalItems = pagedItems.Count()
+            };
         }
 
         public async Task<IEnumerable<UpdateAccountDTO>> SearchAccountsAsync(string usename)
@@ -146,5 +188,24 @@ namespace artshare_server.Services.Services
                 return false;
             }            
         }
-    }
+
+		public async Task<string> CheckAccount(Account account)
+		{
+            try
+            {
+                var accounts = _unitOfWork.AccountRepo.GetAccounts().Result;
+                if (accounts.FirstOrDefault(x => x.UserName == account.UserName) != null)
+                    return "Username existed";
+                if (accounts.FirstOrDefault(x => x.Email == account.Email) != null)
+                    return "Email existed";
+                if (accounts.FirstOrDefault(x => x.PhoneNumber == account.PhoneNumber) != null)
+                    return "Phone existed";
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+		}
+	}
 }

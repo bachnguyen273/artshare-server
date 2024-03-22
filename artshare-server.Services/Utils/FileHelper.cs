@@ -41,7 +41,7 @@ public static class FileHelper
 
     }
 
-    private static bool IsImage(IFormFile file)
+    public static bool IsImage(IFormFile file)
     {
         var imageExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".tiff", ".bmp", ".svg" };
         return imageExtensions.Any(e => file.FileName.EndsWith(e, StringComparison.OrdinalIgnoreCase));

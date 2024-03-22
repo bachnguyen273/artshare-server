@@ -25,19 +25,6 @@
                     </div>
                 </div>
                 <div style="display: flex; flex-wrap: wrap; justify-content: center;">
-                    <div style="flex: 1; margin-top: 20px;">
-                        <div class="thumb watermark-list" style="display: flex; flex-wrap: wrap; justify-content: center; max-width: 1000px;">
-                            @foreach (var watermark in Model.Watermarks)
-                            {
-                                <div style="margin: 10px;">
-                                    <input type="radio" id="watermark_@(watermark.watermarkId)" asp-for="@Model.SelectedWatermarkId" value="@watermark.watermarkId" style="transform: scale(2);" />
-                                    <label for="watermark_@(watermark.watermarkId)">
-                                        <img src="@watermark.watermarkUrl" alt="Watermark" style="max-width: 200px; max-height: 200px;" />
-                                    </label>
-                                </div>
-                            }
-                        </div>
-                    </div>
                     <div class="container">
                         <div class="row text-white" style="display: flex; flex-wrap: wrap; justify-content: center">
                             You are updating artworkId : @Model.Artwork.artworkId
@@ -59,7 +46,7 @@
                 </div>
                 <div class="input-container mt-10">
                     <!-- Use ASP.NET Core Tag Helper for file input -->
-                    <input type="file" asp-for="@Model.UpdateArtworkViewModel.OrginalArtworkFile" required class="single-input">
+                    <input type="file" accept=".png,.jpg,.jpeg" asp-for="@Model.UpdateArtworkViewModel.OrginalArtworkFile" class="single-input">
                 </div>
                 <div class="input-container mt-10">
                     <!-- Combo box for selecting public/private -->
@@ -72,6 +59,12 @@
                 <div style="display: flex; flex-wrap: wrap; justify-content: center">
                     <div asp-validation-summary="All" class="text-danger"></div>
                 </div>
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        @TempData["ErrorMessage"]
+                    </div>
+                }
                 <button type="submit" style="margin: auto" class="primary-btn text-uppercase d-flex justify-content-center">Submit</button>
             </form>
         </section>
@@ -96,9 +89,6 @@
     function tickCheckboxes() {
         // Get the selected genre id
         var selectedGenreId = document.querySelector('input[name="selectedGenreId"]:checked');
-
-        // Get the selected watermark id
-        var selectedWatermarkId = document.querySelector('input[name="@Model.SelectedWatermarkId"]:checked');
     }
 
     document.addEventListener('DOMContentLoaded', function () {

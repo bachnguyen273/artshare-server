@@ -2,6 +2,7 @@ using artshare_server.WebApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Text;
 
 namespace artshare_server.WebApp.Pages
@@ -50,7 +51,16 @@ namespace artshare_server.WebApp.Pages
 				var responseContent = await response.Content.ReadAsStringAsync();
 				return RedirectToPage("./Login");
 			}
-			
+			else
+			{
+				string responseContent = await response.Content.ReadAsStringAsync();
+				dynamic responseObject = JObject.Parse(responseContent);
+				if (responseObject != null && responseObject.ContainsKey("message"))
+				{
+					TempData["ErrorMessage"] = responseObject["message"];
+				}
+			}
+
 			return Page();
 		}
 	}

@@ -70,6 +70,7 @@
                 {
                     <li><a asp-page="/Audiences/Cart"><span class="phucnvm-a"> Cart</span></a></li>
                     <li><a asp-page="/Audiences/Orders/Index"><span class="phucnvm-a"> Orders</span></a></li>
+                    <li><a asp-page="/Audiences/Artworks/Index"><span class="phucnvm-a"> Artworks</span></a></li>
                     <li><a asp-page="/Profile/Detail"><span class="phucnvm-a"> @Context.Session.GetString("Username")</span></a></li>
                     <li><a asp-page="/Logout"><span class="phucnvm-a"> Logout</span></a></li>
                 }
@@ -78,9 +79,8 @@
                     <li><a asp-page="/Creators/Artworks/Index"><span class="phucnvm-a"> Artwork</span></a></li>
                     <li><a asp-page="/Creators/Orders/AllOrdersOfCreator"><span class="phucnvm-a">Orders</span></a></li>
                     <li><a asp-page="/Profile/Detail"><span class="phucnvm-a"> @Context.Session.GetString("Username")</span></a></li>
-                    
                     <li><a asp-page="/Logout"><span class="phucnvm-a"> Logout</span></a></li>
-                    <li><a><span class="phucnvm-btn"> Submit </span></a></li>
+                    <li><a asp-page="/Creators/Artworks/Create"><span class="phucnvm-btn"> Submit </span></a></li>
                 }else{
                     <li><a asp-page="/Profile/Detail"><span class="phucnvm-a"> @Context.Session.GetString("Username")</span></a></li>
                     <li><a asp-page="/Logout"><span class="phucnvm-a"> Logout</span></a></li>

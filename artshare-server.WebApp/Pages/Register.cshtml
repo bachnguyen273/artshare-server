@@ -27,6 +27,15 @@
 							<option value="Creator">Creator</option>
 						</select>
 					</div>
+					<div style="display: flex; flex-wrap: wrap; justify-content: center">
+						<div asp-validation-summary="All" class="text-danger"></div>
+					</div>
+					@if (TempData["ErrorMessage"] != null)
+					{
+						<div class="alert alert-danger" role="alert">
+							@TempData["ErrorMessage"]
+						</div>
+					}
 					<button class="primary-btn text-uppercase">Register</button>
 				</form>
 
