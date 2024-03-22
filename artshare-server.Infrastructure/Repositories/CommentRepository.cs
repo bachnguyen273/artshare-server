@@ -17,6 +17,7 @@ namespace artshare_server.Infrastructure.Repositories
         {
             var comment = await _dbContext.Comments
                             .Include(x => x.Commenter)
+                            .OrderByDescending(x => x.PostDate)
                             .ToListAsync();
             return _mapper.Map<List<GetCommentDTO>>(comment);
         }
@@ -25,6 +26,7 @@ namespace artshare_server.Infrastructure.Repositories
             var comment = await _dbContext.Comments
                             .Include(x => x.Commenter)
                             .Where(x => x.ArtworkId == id)
+                            .OrderByDescending(x => x.PostDate)
                             .ToListAsync();
             return _mapper.Map<List<GetCommentDTO>>(comment);
         }

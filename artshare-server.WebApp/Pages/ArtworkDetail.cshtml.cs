@@ -1,3 +1,4 @@
+using artshare_server.WebApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
@@ -44,6 +45,40 @@ namespace artshare_server.WebApp.Pages
 
 
             return Page();
+        }
+
+        public async Task<IActionResult> OnPostComment(int id)
+        {
+            //Create Comment
+            IConfiguration config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", true, true)
+                .Build();
+            string apiUrl = config["API_URL"];
+            var request = new CommentViewModel
+            {
+                CommenterId = (int)HttpContext.Session.GetInt32("AccountId"),
+                ArtworkId = id,
+                Content = Request.Form["Content"],
+                PostDate = DateTime.Now
+            };
+            using (var httpClient = new HttpClient())
+            {
+                var createUrl = $"{apiUrl}/Comment/CreateComment";
+                var jsonBody = JsonConvert.SerializeObject(request);
+                var content = new StringContent(jsonBody, System.Text.Encoding.UTF8, "application/json");
+                var response = await httpClient.PostAsync(createUrl, content);
+                if (response.IsSuccessStatusCode)
+                {
+                    await LoadData(id);
+                    return Page();
+                }
+                else
+                {
+                    var errorMessage = await response.Content.ReadAsStringAsync();
+                    return BadRequest(errorMessage);
+                }
+            }
         }
     }
 

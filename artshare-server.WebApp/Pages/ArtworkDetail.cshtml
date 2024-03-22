@@ -137,7 +137,14 @@
                                     <div class="_2p7n" style="margin:0;display: grid;grid-template-columns: auto minmax(0, 1fr);gap:8px;">
                                         <div style="display: inline-flex">
                                             <a href="./Index">
-                                                <img src="https://i.pinimg.com/originals/25/78/61/25786134576ce0344893b33a051160b1.jpg" class="avatar" />
+                                                @if (artwork.creator.avatarUrl == null)
+                                                {
+                                                    <img src="https://th.bing.com/th/id/R.ccfd669479d5d5ba603835bc82f41215?rik=c0YhIEaO%2bbKLJQ&pid=ImgRaw&r=0" style="height:50px;width:50px;display: inline-block;" />
+                                                }
+                                                else
+                                                {
+                                                    <img src="@artwork.creator.avatarUrl" class="avatar" />
+                                                }
                                                 <!--Creator avatar-->
                                             </a>
                                         </div>
