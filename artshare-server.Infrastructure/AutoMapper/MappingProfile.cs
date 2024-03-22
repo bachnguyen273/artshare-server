@@ -49,6 +49,12 @@ namespace artshare_server.Infrastructure.AutoMapper
             CreateMap<Report, UpdateReportDTO>();
             CreateMap<Report, GetReportDTO>();
 
+            //COMMENT
+            CreateMap<Comment, CommentDTO>().ReverseMap();
+            CreateMap<Comment, GetCommentDTO>().ReverseMap();
+            CreateMap<Comment, CreateCommentDTO>().ReverseMap();
+            CreateMap<Comment, UpdateCommentDTO>().ReverseMap();
+
             // Order_OrderDetails
         }
     }

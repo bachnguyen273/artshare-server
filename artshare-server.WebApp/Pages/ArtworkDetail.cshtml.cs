@@ -22,7 +22,7 @@ namespace artshare_server.WebApp.Pages
                 .Build();
 
             string apiUrl = config["API_URL"];
-            string artworkUrl = $"{apiUrl}/Artwork/GetArtworkById?id={id}";
+			string artworkUrl = $"{apiUrl}/Artwork/GetArtworkById?id={id}";
             using (var httpClient = new HttpClient())
             {
 
