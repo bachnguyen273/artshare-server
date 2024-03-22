@@ -87,8 +87,6 @@ public class OrderController : ControllerBase
             Status = Ok().StatusCode,
             Message = "Success",
             Data = result
-        });
-
-
+        });    
     }
 }

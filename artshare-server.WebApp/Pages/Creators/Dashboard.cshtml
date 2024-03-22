@@ -1,0 +1,26 @@
+﻿@page
+@model artshare_server.WebApp.Pages.Creators.DashboardModel
+@{
+}
+@{
+    //var user = Model.UserName;
+    int pageNo = 0;
+    var pager = Model.Pager;
+    if (pager != null)
+    {
+        pageNo = pager.CurrentPage;
+    }
+    var search = TempData["SearchValue"];
+}
+@if (TempData["Alert"] != null)
+{
+    <div class="alert alert-success">
+        <strong>Success !</strong>@TempData["Alert"];
+    </div>
+}
+@if (TempData["Alert1"] != null)
+{
+    <div class="alert alert-danger">
+        <strong>Fail !</strong>@TempData["Alert1"];
+    </div>
+}

@@ -45,6 +45,6 @@ namespace artshare_server.Infrastructure.Repositories
         {
             List<Order> list = await _dbContext.Orders.ToListAsync();
             return _mapper.Map<List<GetOrderDTO>>(list);
-        }
+        }      
     }
 }

@@ -9,6 +9,7 @@ using artshare_server.Services.CustomExceptions;
 using artshare_server.Services.FilterModels;
 using artshare_server.Core.Models;
 using artshare_server.Core.Enums;
+using Microsoft.Identity.Client;
 
 namespace artshare_server.Controllers
 {
@@ -56,12 +57,12 @@ namespace artshare_server.Controllers
 
         [HttpPost]
         //[Authorize(Roles = "Creator")]
-        public async Task<IActionResult> CreateArtwork([FromQuery] ArtworkStatus artworkStatus ,[FromBody] CreateArtworkDTO createArtworkDTO)
+        public async Task<IActionResult> CreateArtwork([FromQuery] ArtworkStatus artworkStatus, [FromBody] CreateArtworkDTO createArtworkDTO)
         {
             try
             {
                 createArtworkDTO.Status = artworkStatus.ToString();
-                
+
                 var requestResult = await _artworkService.CreateArtworkAsync(createArtworkDTO);
                 if (!requestResult)
                 {
@@ -145,6 +146,23 @@ namespace artshare_server.Controllers
                 }
             });
         }
-
+        [HttpGet("{creatorId}")]
+        public async Task<IActionResult> GetTopSaleArtwork(int creatorId)
+        {
+            var topSaleArtwork = await _artworkService.GetTopSaleArtwork(creatorId);
+            return Ok(new SucceededResponseModel()
+            {
+                Status = Ok().StatusCode,
+                Message = "Success",
+                Data = new
+                {
+                    TopSaleArtwork = await _artworkService.GetTopSaleArtwork(creatorId)
+                }
+            });
+        }
     }
 }
+            
+        
+    
+

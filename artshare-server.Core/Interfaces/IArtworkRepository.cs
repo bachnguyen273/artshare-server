@@ -8,5 +8,6 @@ namespace artshare_server.Core.Interfaces
         Task<List<GetArtworkDTO>> GetArtworks();
         Task<GetArtworkDTO> GetArtworkById(int id);
         Task<List<GetArtworkDTO>> GetArtworksByCreatorId(int id);
+        Task<List<TopSaleArtwork>> GetTopSaleArtwork(int creatorId);
     }
 }

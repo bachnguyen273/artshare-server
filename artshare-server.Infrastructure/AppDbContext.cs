@@ -17,8 +17,8 @@ namespace artshare_server.Infrastructure
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            string connectionString = GetConnectionString();
-            optionsBuilder.UseSqlServer(connectionString);
+            //string connectionString = GetConnectionString();
+            optionsBuilder.UseSqlServer("Initial Catalog=ArtworkSharingPlatform;Integrated Security=True;Persist Security Info=False;Pooling=False;Multiple Active Result Sets=False;Encrypt=False;Trust Server Certificate=False;Command Timeout=0");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -31,7 +31,7 @@ namespace artshare_server.Infrastructure
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", true, true)
                 .Build();
-            connectionString = config.GetConnectionString("BachDatabase");
+            connectionString = config.GetConnectionString("NamDatabase");
             return connectionString;
         }
     }

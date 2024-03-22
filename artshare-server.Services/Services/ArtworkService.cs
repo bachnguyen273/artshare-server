@@ -182,5 +182,11 @@ namespace artshare_server.Services.Services
             //return orderDetails.Select(od => od.ArtworkId).Distinct().ToList();
             throw new NotImplementedException();
         }
+
+        public async Task<List<TopSaleArtwork>> GetTopSaleArtwork(int creatorId)
+        {
+            var topSaleArtwork = await _unitOfWork.ArtworkRepo.GetTopSaleArtwork(creatorId);
+            return topSaleArtwork;
+        }
     }
 }

@@ -45,5 +45,23 @@ namespace artshare_server.Infrastructure.Repositories
             return _mapper.Map<List<GetArtworkDTO>>(artwork);
             
         }
+
+        public async Task<List<TopSaleArtwork>> GetTopSaleArtwork(int creatorId)
+        {
+            var topSaleArtworks = (from order in _dbContext.Orders
+                          join artwork in _dbContext.Artworks on order.ArtworkId equals artwork.ArtworkId
+                          join account in _dbContext.Accounts on artwork.CreatorId equals account.AccountId
+                          group artwork by new { artwork.ArtworkId, artwork.Title, artwork.CreatorId } into groupedArtworks
+                          orderby groupedArtworks.Count() descending
+                          select new TopSaleArtwork
+                          {
+                              CreatorId = groupedArtworks.Key.CreatorId,
+                              Title = groupedArtworks.Key.Title,
+                              ArtworkCount = groupedArtworks.Count()
+                          }).Take(5).ToList();
+            var topSaleArtworksOfCreator = topSaleArtworks.Where(x => x.CreatorId == creatorId).ToList();
+            return topSaleArtworksOfCreator;
+        }
     }
 }
+
