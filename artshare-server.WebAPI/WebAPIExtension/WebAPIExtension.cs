@@ -9,7 +9,12 @@ namespace artshare_server.WebAPI.WebAPIExtension
     {
         public static IServiceCollection AddDIWebAPI(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddControllers();
+            services.AddControllers()
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+    });
+
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(filter =>
             {

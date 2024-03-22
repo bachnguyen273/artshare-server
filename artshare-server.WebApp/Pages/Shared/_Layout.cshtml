@@ -47,7 +47,7 @@
             </div>
 
             <form class="search-box" method="post">
-                <button type="submit"><span class="fa fa-search"></span></button>
+                <button type="submit" asp-page="/Index" asp-page-handler="Search"><span class="fa fa-search"></span></button>
                 <input type="text" name="SearchValue" placeholder="Search" id="myInput" />
             </form>
 
@@ -60,14 +60,16 @@
                 else if (Context.Session.GetString("Role").Equals("Audience"))
                 {
                     <li><a asp-page="/Audiences/Cart"><span class="phucnvm-a"> Cart</span></a></li>
-                    <li><a asp-page="/Audiences/AudienceOrderList"><span class="phucnvm-a"> Orders</span></a></li>
+                    <li><a asp-page="/Audiences/Orders/Index"><span class="phucnvm-a"> Orders</span></a></li>
                     <li><a asp-page="/Profile/Detail"><span class="phucnvm-a"> @Context.Session.GetString("Username")</span></a></li>
                     <li><a asp-page="/Logout"><span class="phucnvm-a"> Logout</span></a></li>
                 }
                 else if (Context.Session.GetString("Role").Equals("Creator"))
                 {
                     <li><a asp-page="/Creators/Artworks/Index"><span class="phucnvm-a"> Artwork</span></a></li>
+                    <li><a asp-page="/Creators/Orders/AllOrdersOfCreator"><span class="phucnvm-a">Orders</span></a></li>
                     <li><a asp-page="/Profile/Detail"><span class="phucnvm-a"> @Context.Session.GetString("Username")</span></a></li>
+                    
                     <li><a asp-page="/Logout"><span class="phucnvm-a"> Logout</span></a></li>
                     <li><a><span class="phucnvm-btn"> Submit </span></a></li>
                 }else{

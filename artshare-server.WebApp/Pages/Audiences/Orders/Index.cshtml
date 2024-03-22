@@ -5,7 +5,10 @@
 
 @{
     var orders = Model.Orders;
+    var role = HttpContext.Session.GetString("Role");
 }
+@if (!string.IsNullOrEmpty(role) && (role.Equals("Admin") || role.Equals("Audience")))
+{
 <section class="banner-area relative" id="home">
     <div class="overlay overlay-bg"></div>
     <div class="container">
@@ -21,8 +24,8 @@
                         <tr>
                             <td></td>
                             <td>Order Id</td>
-                            <td>Customer Id</td>
-                            <td>Artwork Id</td>
+                            <td>Customer </td>
+                            <td>Artwork Title</td>
                             <td>Price</td>
                             <td>Create Date</td>
                         </tr>
@@ -36,10 +39,10 @@
                                 <tr>
                                     <td>@i</td>
                                     <td>@order.OrderId</td>
-                                    <td>@order.CustomerId</td>
-                                    <td>@order.ArtworkId</td>
+                                    <td>@order.FullName</td>
+                                    <td>@order.Title</td>
                                     <td>@order.Price</td>
-                                    <td>@order.CreateDate</td>                                   
+                                    <td>@order.CreateDate.ToShortDateString()</td>                                   
                                 </tr>
                             }
                         }
@@ -73,4 +76,9 @@
         color: deeppink;
         font-size: 20px;
     }
-</style>
+    </style>
+}
+else
+{
+    <h1>Unauthorized</h1>
+}

@@ -20,18 +20,18 @@ namespace artshare_server.Infrastructure.Repositories
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper)); ;
         }
 
-        public async Task<List<GetOrderDTO>> GetOrdersByArtIdAsync(int id)
+        public async Task<List<GetUserOrderDTO>> GetOrdersByArtIdAsync(int id)
         {
-            var list = await _dbContext.Orders.Where(x => x.ArtworkId == id).ToListAsync();
+            var list = await _dbContext.Orders.Where(x => x.ArtworkId == id).Include(x=>x.Customer).Include(x => x.Artwork).ToListAsync();
             
-            return _mapper.Map<List<GetOrderDTO>>(list);
+            return _mapper.Map<List<GetUserOrderDTO>>(list);
            
         }
 
-        public async Task<List<GetOrderDTO>> GetOrdersByCusIdAsync(int id)
+        public async Task<List<GetUserOrderDTO>> GetOrdersByCusIdAsync(int id)
         {
-            var list = await _dbContext.Orders.Where(x => x.CustomerId == id).ToListAsync();
-            return _mapper.Map<List<GetOrderDTO>>(list);
+            var list = await _dbContext.Orders.Where(x => x.CustomerId == id).Include(x => x.Customer).Include(x=>x.Artwork).ToListAsync();
+            return _mapper.Map<List<GetUserOrderDTO>>(list);
         }
 
         // OrderRepository.cs

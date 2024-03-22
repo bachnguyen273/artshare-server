@@ -25,6 +25,7 @@ namespace artshare_server.Infrastructure.Repositories
                         .Include(x => x.Comments)
                         .Include(x => x.Reports)
                         .Include(x => x.Genre)
+                        .Include(x => x.Creator)
                         .ToListAsync();
             return _mapper.Map<List<GetArtworkDTO>>(list);
         }
@@ -36,6 +37,7 @@ namespace artshare_server.Infrastructure.Repositories
                             .Include(x => x.Comments)
                             .Include(x => x.Reports)
                             .Include(x => x.Genre)
+                            .Include(x => x.Creator)
                             .FirstOrDefaultAsync(x => x.ArtworkId == id);
             return _mapper.Map<GetArtworkDTO>(artwork);
         }

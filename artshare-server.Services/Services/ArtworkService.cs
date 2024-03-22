@@ -107,7 +107,83 @@ namespace artshare_server.Services.Services
             return result;
         }
 
-        public async Task<PagedResult<GetArtworkDTO>> GetAllArtworksAsync<T>(ArtworkFilters filters)
+        //public async Task<PagedResult<GetArtworkDTO>> GetAllArtworksAsync<T>(ArtworkFilters filters)
+        //{
+        //    // Apply filtering
+        //    var items = await _unitOfWork.ArtworkRepo.GetArtworks();
+        //    IQueryable<GetArtworkDTO> filteredItemsQuery = items.AsQueryable();
+
+        //    if (!string.IsNullOrEmpty(filters.Title))
+        //        filteredItemsQuery = filteredItemsQuery.Where(item => item.Title.Contains(filters.Title, StringComparison.OrdinalIgnoreCase));
+        //    if (filters.CreatorId != null)
+        //        filteredItemsQuery = filteredItemsQuery.Where(item => item.CreatorId == filters.CreatorId);
+        //    if (filters.GenreId != null)
+        //        filteredItemsQuery = filteredItemsQuery.Where(item => item.GenreId == filters.GenreId);
+        //    if (!string.IsNullOrEmpty(filters.ArtworkStatus.ToString()))
+        //        filteredItemsQuery = filteredItemsQuery.Where(item => item.ArtworkStatus == filters.ArtworkStatus.ToString());
+        //    // Apply sorting
+        //    if (!string.IsNullOrEmpty(filters.SortBy))
+        //    {
+        //        switch (filters.SortBy)
+        //        {
+        //            case "price":
+        //                filteredItemsQuery = filters.SortAscending ?
+        //                    filteredItemsQuery.OrderBy(item => item.Price) :
+        //                    filteredItemsQuery.OrderByDescending(item => item.Price);
+        //                break;
+        //            case "likeCount":
+        //                filteredItemsQuery = filters.SortAscending ?
+        //                     filteredItemsQuery.OrderBy(item => item.LikeCount) :
+        //                     filteredItemsQuery.OrderByDescending(item => item.LikeCount);
+        //                break;
+        //            case "dislikeCount":
+        //                filteredItemsQuery = filters.SortAscending ?
+        //                     filteredItemsQuery.OrderBy(item => item.DislikeCount) :
+        //                     filteredItemsQuery.OrderByDescending(item => item.DislikeCount);
+        //                break;
+        //            case "commentCount":
+        //                filteredItemsQuery = filters.SortAscending ?
+        //                     filteredItemsQuery.OrderBy(item => item.CommentCount) :
+        //                     filteredItemsQuery.OrderByDescending(item => item.CommentCount);
+        //                break;
+        //            case "createdDate":
+        //                filteredItemsQuery = filters.SortAscending ?
+        //                    filteredItemsQuery.OrderBy(item => item.CreatedDate) :
+        //                    filteredItemsQuery.OrderByDescending(item => item.CreatedDate);
+        //                break;
+        //            default:
+        //                // Handle other sorting filter using Utils.GetPropertyValue
+        //                filteredItemsQuery = filters.SortAscending ?
+        //                    filteredItemsQuery.OrderBy(item => Helpers.GetPropertyValue(item, filters.SortBy)) :
+        //                    filteredItemsQuery.OrderByDescending(item => Helpers.GetPropertyValue(item, filters.SortBy));
+        //                break;
+        //        }
+        //    }
+
+        //    // Apply paging
+        //    var pagedItems = filteredItemsQuery
+        //        .Skip((filters.PageNumber - 1) * filters.PageSize)
+        //        .Take(filters.PageSize)
+        //        .ToList(); // Materialize the query
+
+        //    return new PagedResult<GetArtworkDTO>
+        //    {
+        //        Items = pagedItems,
+        //        PageNumber = filters.PageNumber,
+        //        PageSize = filters.PageSize,
+        //        TotalItems = pagedItems.Count()
+        //    };
+        //}
+
+        public async Task<List<int>> GetArtworkIdsByAccountIdAsync(int accountId)
+        {
+            //var orders = await _unitOfWork.OrderRepo.GetOrdersByAccountIdAsync(accountId);
+            //var orderDetails = await _unitOfWork.OrderDetailsRepo.GetOrderDetailsByOrdersAsync(_mapper.Map<List<Order>>(orders));
+            //return orderDetails.Select(od => od.ArtworkId).Distinct().ToList();
+            throw new NotImplementedException();
+        }
+
+        public async Task<List<GetArtworkDTO>> GetAllArtworksAsync<T>(ArtworkFilters filters)
         {
             // Apply filtering
             var items = await _unitOfWork.ArtworkRepo.GetArtworks();
@@ -161,26 +237,14 @@ namespace artshare_server.Services.Services
             }
 
             // Apply paging
+            /*
             var pagedItems = filteredItemsQuery
                 .Skip((filters.PageNumber - 1) * filters.PageSize)
                 .Take(filters.PageSize)
                 .ToList(); // Materialize the query
-
-            return new PagedResult<GetArtworkDTO>
-            {
-                Items = pagedItems,
-                PageNumber = filters.PageNumber,
-                PageSize = filters.PageSize,
-                TotalItems = pagedItems.Count()
-            };
+            */
+            return filteredItemsQuery.ToList();
         }
 
-        public async Task<List<int>> GetArtworkIdsByAccountIdAsync(int accountId)
-        {
-            //var orders = await _unitOfWork.OrderRepo.GetOrdersByAccountIdAsync(accountId);
-            //var orderDetails = await _unitOfWork.OrderDetailsRepo.GetOrderDetailsByOrdersAsync(_mapper.Map<List<Order>>(orders));
-            //return orderDetails.Select(od => od.ArtworkId).Distinct().ToList();
-            throw new NotImplementedException();
-        }
     }
 }

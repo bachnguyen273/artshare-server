@@ -39,6 +39,7 @@ namespace artshare_server.ApiModels.DTOs
         public IEnumerable<GetLikeDTO>? Likes { get; set; }
         public IEnumerable<GetCommentDTO> Comments { get; set; }
         public IEnumerable<GetReportDTO> Reports { get; set; }
+        public GetAccountDTO Creator { get; set; }
     }
 
     public class UpdateArtworkDTO : ArtworkDTO
