@@ -8,6 +8,7 @@ namespace artshare_server.WebApp.Pages
     {
         [BindProperty]
         public dynamic Artwork { get; set; }
+        public dynamic Comments { get; set; }
 
         public async Task<IActionResult> OnPostAsync(int id)
         {
@@ -25,14 +26,22 @@ namespace artshare_server.WebApp.Pages
 			string artworkUrl = $"{apiUrl}/Artwork/GetArtworkById?id={id}";
             using (var httpClient = new HttpClient())
             {
-
+                //GetArtWork 
                 HttpResponseMessage artworkResponseMessage = await httpClient.GetAsync(artworkUrl);
                 artworkResponseMessage.EnsureSuccessStatusCode();
                 string artworkContent = await artworkResponseMessage.Content.ReadAsStringAsync();
                 dynamic artworkObject = JsonConvert.DeserializeObject(artworkContent);
                 Artwork = artworkObject.data.artwork;
 
+                //GetComment
+                HttpResponseMessage commentResponseMessage = await httpClient.GetAsync(artworkUrl);
+                commentResponseMessage.EnsureSuccessStatusCode();
+                string commentContent = await artworkResponseMessage.Content.ReadAsStringAsync();
+                dynamic commentObject = JsonConvert.DeserializeObject(commentContent);
+                Comments = commentObject;
             }
+
+
             return Page();
         }
     }
