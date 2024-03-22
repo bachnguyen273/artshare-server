@@ -24,7 +24,8 @@ namespace artshare_server.Infrastructure.Repositories
         {
             var comment = await _dbContext.Comments
                             .Include(x => x.Commenter)
-                            .FirstOrDefaultAsync(x => x.ArtworkId == id);
+                            .Where(x => x.ArtworkId == id)
+                            .ToListAsync();
             return _mapper.Map<List<GetCommentDTO>>(comment);
         }
 
