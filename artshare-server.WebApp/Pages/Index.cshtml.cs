@@ -18,7 +18,7 @@ namespace artshare_server.WebApp.Pages
         public int? GenreID { get; set; }
         public string Search { get; set; }
 
-        private const int pageSize = 10;
+        private const int pageSize = 8;
 
         //public async Task<IActionResult> OnGetAsync() => await LoadData();
         //public async Task<IActionResult> OnPostAsync(string searchString, int pageNumber, string? selectedGenreId)
