@@ -97,7 +97,7 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
                 price = UpdateArtworkViewModel.Price,
                 genreId = SelectedGenreId,
                 originalArtUrl = await ImageHelpers.UploadOriginalArtworkFile(_apiURL, UpdateArtworkViewModel.OrginalArtworkFile),
-                watermarkedArtUrl = await ImageHelpers.UploadWatermarkArtworkFile(_apiURL, UpdateArtworkViewModel.OrginalArtworkFile, GetWatermarkUrl(SelectedWatermarkId))
+                watermarkedArtUrl = await ImageHelpers.UploadWatermarkArtworkFile(_apiURL, UpdateArtworkViewModel.OrginalArtworkFile)
             };
 
             var updateUrl = _apiURL + $"/Artwork/UpdateArtwork/{artworkId}?artworkStatus={SelectedStatus}";

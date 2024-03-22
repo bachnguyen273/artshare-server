@@ -80,7 +80,7 @@
         <form method="post">
             @foreach (var art in artworks)
             {
-                <button class="box" asp-page="/ArtworkDetail" asp-route-id="@art.">
+                <button class="box" asp-page="/ArtworkDetail" asp-route-id="@art.artworkId">
                     <img src="@art.originalArtUrl" />
                     <div class="phucnvm-img-content">
                         <h3 style="color:white;margin-top:200px">@art.title</h3>
@@ -91,8 +91,13 @@
                             </svg>
                         </div>
                         <div style="vertical-align:baseline">
-                            <img src="https://i.pinimg.com/originals/25/78/61/25786134576ce0344893b33a051160b1.jpg" style="height:25px;width:25px;display: inline-block" />
-                            <p style="color:white;display: inline-block">Hydracuts</p>
+                            @if (art.creator.avatarUrl == null)
+                            {
+                                <img src="https://th.bing.com/th/id/R.ccfd669479d5d5ba603835bc82f41215?rik=c0YhIEaO%2bbKLJQ&pid=ImgRaw&r=0" style="height:25px;width:25px;display: inline-block" />
+                            }else{
+                                <img src="@art.creator.avatarUrl" style="height:25px;width:25px;display: inline-block" />
+                            }                           
+                            <p style="color:white;display: inline-block">@art.creator.userName</p>
                         </div>
 
                         <div style="vertical-align:baseline">

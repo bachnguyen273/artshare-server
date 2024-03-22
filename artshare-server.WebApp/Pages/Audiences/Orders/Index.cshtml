@@ -5,14 +5,17 @@
 
 @{
     var orders = Model.Orders;
+    var role = HttpContext.Session.GetString("Role");
 }
+@if (!string.IsNullOrEmpty(role) && (role.Equals("Admin") || role.Equals("Audience")))
+{
 <section class="banner-area relative" id="home">
     <div class="overlay overlay-bg"></div>
     <div class="container">
         <div class="row fullscreen d-flex align-items-center justify-content-center">
             <div class="banner-content col-lg-8">
                 <h1 class="text-white">
-                    All Orders Of Customer
+                    All Orders Of Audience
                 </h1>
 
                 <br />
@@ -21,9 +24,10 @@
                         <tr>
                             <td></td>
                             <td>Order Id</td>
-                            <td>Customer Id</td>
-                            <td>Total Price</td>
-                            <td>Order Date</td>
+                            <td>Customer </td>
+                            <td>Artwork Title</td>
+                            <td>Price</td>
+                            <td>Create Date</td>
                         </tr>
                     </thead>
                     <tbody class="green-text">
@@ -35,10 +39,10 @@
                                 <tr>
                                     <td>@i</td>
                                     <td>@order.OrderId</td>
-                                    <td>@order.CustomerId</td>
-                                    <td>@order.TotalPrice</td>
-                                    <td>@order.OrderDate</td>
-                                    <td><a href="~/OrderDetail/@order.OrderId">Go to order details</a></td>
+                                    <td>@order.FullName</td>
+                                    <td>@order.Title</td>
+                                    <td>@order.Price</td>
+                                    <td>@order.CreateDate.ToShortDateString()</td>                                   
                                 </tr>
                             }
                         }
@@ -51,7 +55,7 @@
                     @for (int k = 1; k <= Math.Ceiling((double)Model.Total / Model.Size); k++)
 
                     {
-                        <a class="page-link" href="../AudienceOrdersList/@cumtomerId?page=@k">@k</a>
+                        <a class="page-link" href="./Index?page=@k">@k</a>
                     }
                 </div>
             </div>
@@ -72,4 +76,9 @@
         color: deeppink;
         font-size: 20px;
     }
-</style>
+    </style>
+}
+else
+{
+    <h1>Unauthorized</h1>
+}

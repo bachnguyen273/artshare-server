@@ -28,7 +28,7 @@ namespace artshare_server.Infrastructure.AutoMapper
             CreateMap<Artwork, GetArtworkDTO>()
                 .ForMember(x => x.Name, opt => opt.MapFrom(dest => dest.Genre.Name))
                 .ForMember(src => src.ArtworkStatus, des => des.MapFrom(des => EnumMapper<ArtworkStatus>.MapType(des.Status.ToString())))
-                .ReverseMap();
+                .ReverseMap();            
             // GENRE
             CreateMap<Genre, GenreDTO>().ReverseMap();
             CreateMap<Genre, GetGenreDTO>().ReverseMap();
@@ -39,7 +39,9 @@ namespace artshare_server.Infrastructure.AutoMapper
             CreateMap<Order, OrderDTO>().ReverseMap();
             CreateMap<Order, GetOrderDTO>().ReverseMap();
             CreateMap<Order, CreateOrderDTO>().ReverseMap();
-        
+            CreateMap<Order, GetUserOrderDTO>().ForMember(x => x.FullName, opt => opt.MapFrom(dest => dest.Customer.FullName)).
+                ForMember(x => x.Title, opt => opt.MapFrom(dest => dest.Artwork.Title)).ReverseMap();
+         
 
             // REPORT
             CreateMap<Report, ReportDTO>();

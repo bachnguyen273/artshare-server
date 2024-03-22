@@ -25,21 +25,6 @@
                         </div>
                     </div>
                 </div>
-                <div style="display: flex; flex-wrap: wrap; justify-content: center;">
-                    <div style="flex: 1; margin-top: 20px;">
-                        <div class="thumb watermark-list" style="display: flex; flex-wrap: wrap; justify-content: center; max-width: 1000px;">
-                            @foreach (var watermark in Model.Watermarks)
-                            {
-                                <div style="margin: 10px;">
-                                    <input type="radio" id="watermark_@(watermark.watermarkId)" asp-for="@Model.SelectedWatermarkId" value="@watermark.watermarkId" style="transform: scale(2);" />
-                                    <label for="watermark_@(watermark.watermarkId)">
-                                        <img src="@watermark.watermarkUrl" alt="Watermark" style="max-width: 200px; max-height: 200px;" />
-                                    </label>
-                                </div>
-                            }
-                        </div>
-                    </div>
-                </div>
                 <div class="input-container mt-10">
                     <input type="text" asp-for="@Model.CreateArtworkViewModel.Title" placeholder="Title" required class="single-input">
                 </div>
