@@ -6,8 +6,10 @@ namespace artshare_server.WebApp.Pages
 {
     public class ArtworkDetailModel : PageModel
     {
+        [BindProperty]
         public dynamic Artwork { get; set; }
-        public async Task<IActionResult> OnGetAsync(int id)
+
+        public async Task<IActionResult> OnPostAsync(int id)
         {
             await LoadData(id);
             return Page();
@@ -20,7 +22,7 @@ namespace artshare_server.WebApp.Pages
                 .Build();
 
             string apiUrl = config["API_URL"];
-            string artworkUrl = $"{apiUrl}/Artwork/GetArtworks?ArtworkId={id}";
+            string artworkUrl = $"{apiUrl}/Artwork/GetArtworkById?id={id}";
             using (var httpClient = new HttpClient())
             {
 

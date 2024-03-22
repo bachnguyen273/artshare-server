@@ -32,12 +32,27 @@
             </svg>
         </div>
         <form class="_3rhcT" method="post">
-            <button class="active1">For me</button>
-            @foreach (var genres in genre)
-            {
-                <button asp-route-id="@genres.genreId">@genres.name</button>
-            }
-            
+            @{
+                if(genreID != null)
+                {
+                    <button asp-page="/Index">All</button>
+                }else{
+                    <button class="active1" asp-page="/Index">All</button>
+                }
+                foreach (var genres in genre)
+                {
+                    if (genreID != null && genres.genreId == genreID)
+                    {
+                        <button asp-route-id="@genres.genreId" class="active1">@genres.name</button>
+
+                    }
+                    else
+                    {
+                        <button asp-route-id="@genres.genreId">@genres.name</button>
+                    }
+
+                }
+            }   
         </form>
         <div class="right-arrow active1">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -47,66 +62,50 @@
         </div>
     </div>
     <div class="phucnvm-artwork">
-        <button class="box">
-            <img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/2d97fa1e-c542-4bda-8af1-d8431d426489/dgyb5g1-6e9b702f-e9da-4ca2-aa62-e1b9c6d3afbb.png/v1/fit/w_828,h_562,q_70,strp/ko_fi_club___different_is_beautiful_by_proteidaes_dgyb5g1-414w-2x.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9ODAwIiwicGF0aCI6IlwvZlwvMmQ5N2ZhMWUtYzU0Mi00YmRhLThhZjEtZDg0MzFkNDI2NDg5XC9kZ3liNWcxLTZlOWI3MDJmLWU5ZGEtNGNhMi1hYTYyLWUxYjljNmQzYWZiYi5wbmciLCJ3aWR0aCI6Ijw9MTE3NyJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.D9-wbChhe-134H_Hazftxh4-cg82qlrw1fPm1To643Q" />           
-        </button>
-        <button class="box"><img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f0bca70d-f1dc-431f-836e-44e6c5db4d86/dgxc8xi-f55e53d7-40f9-47af-97ff-70b33fe1dc67.jpg/v1/fit/w_828,h_552,q_70,strp/imgl6195_by_hydracuts_dgxc8xi-414w-2x.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTI4MSIsInBhdGgiOiJcL2ZcL2YwYmNhNzBkLWYxZGMtNDMxZi04MzZlLTQ0ZTZjNWRiNGQ4NlwvZGd4Yzh4aS1mNTVlNTNkNy00MGY5LTQ3YWYtOTdmZi03MGIzM2ZlMWRjNjcuanBnIiwid2lkdGgiOiI8PTE5MjAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.Fbm85TVUiFi5LHtGbjA99JtITLdcEgo0fgrBLDj0XiY" /></button>
-        <button class="box"><img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/e3695c02-34fc-4632-add4-34186ee53a79/dfqs9h3-371949b8-2415-4ff4-bbac-6a6eff408728.jpg/v1/fit/w_828,h_584,q_70,strp/celtic_series__by_yuno33_dfqs9h3-414w-2x.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MjE0NiIsInBhdGgiOiJcL2ZcL2UzNjk1YzAyLTM0ZmMtNDYzMi1hZGQ0LTM0MTg2ZWU1M2E3OVwvZGZxczloMy0zNzE5NDliOC0yNDE1LTRmZjQtYmJhYy02YTZlZmY0MDg3MjguanBnIiwid2lkdGgiOiI8PTMwNDQifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.cpM293kkrcMKXoQ3JrY57bgTw6qLio1JXvTs4V683M8" /></button>
-        <button class="box"><img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/5fa8caab-1371-472e-b7d6-78ede935e831/dh0hq9q-b576c388-9efc-4265-9ae1-54ba61a2a4a0.jpg/v1/fit/w_828,h_462,q_70,strp/running_in_a_dream_by_lark_bliss_dh0hq9q-414w-2x.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MjM2NyIsInBhdGgiOiJcL2ZcLzVmYThjYWFiLTEzNzEtNDcyZS1iN2Q2LTc4ZWRlOTM1ZTgzMVwvZGgwaHE5cS1iNTc2YzM4OC05ZWZjLTQyNjUtOWFlMS01NGJhNjFhMmE0YTAuanBnIiwid2lkdGgiOiI8PTQyNDgifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.QlPxLz2vvVOGsIZevmtaN4B1wxZmTx7C5OvD3mt0FQo" /></button>
-        <button class="box">
-            <img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/62ac4153-9cd6-48e9-a0c6-993819ee2323/dgi2vov-a8728ea2-f304-4d27-b32c-1369a5e0ae27.jpg/v1/fill/w_894,h_894,q_70,strp/wojciech_korda_by_paukosowska_dgi2vov-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTAyNCIsInBhdGgiOiJcL2ZcLzYyYWM0MTUzLTljZDYtNDhlOS1hMGM2LTk5MzgxOWVlMjMyM1wvZGdpMnZvdi1hODcyOGVhMi1mMzA0LTRkMjctYjMyYy0xMzY5YTVlMGFlMjcuanBnIiwid2lkdGgiOiI8PTEwMjQifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.KaLnr42mHNFF3wabdtApjSaqV6sIO9ZQ4W6j9yJBWGk" />
-            <div class="phucnvm-img-content">
-                <h3 style="color:white;margin-top:200px">Imgl6195</h3>
-                <div style="margin-top:200px">
-                    <p style="color:white;display: inline-block">11</p>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" style="width:15px;height:15px;color:white;display: inline-block">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
-                    </svg>
-                </div>
-                <div style="vertical-align:baseline">
-                    <img src="https://i.pinimg.com/originals/25/78/61/25786134576ce0344893b33a051160b1.jpg" style="height:25px;width:25px;display: inline-block" />
-                    <p style="color:white;display: inline-block">Hydracuts</p>
-                </div>
-              
-                <div style="vertical-align:baseline">
-                    <p style="color:white;display: inline-block">132</p>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" style="width:15px;height:15px;color:white; display: inline-block">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z" />
-                    </svg>
-
-                </div>
-            </div>
-        </button>
         <form method="post">
             @foreach (var art in artworks)
             {
                 <button class="box" asp-page="/ArtworkDetail" asp-route-id="@art.artworkId">
                     <img src="@art.originalArtUrl" />
                     <div class="phucnvm-img-content">
-                        <h3 style="color:white;margin-top:200px">@art.title</h3>
-                        <div style="margin-top:200px">
-                            <p style="color:white;display: inline-block">@art.commentCount</p>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" style="width:15px;height:15px;color:white;display: inline-block">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
-                            </svg>
+                        <div style="flex:1;">
+                            <span></span>
                         </div>
-                        <div style="vertical-align:baseline">
-                            @if (art.creator.avatarUrl == null)
-                            {
-                                <img src="https://th.bing.com/th/id/R.ccfd669479d5d5ba603835bc82f41215?rik=c0YhIEaO%2bbKLJQ&pid=ImgRaw&r=0" style="height:25px;width:25px;display: inline-block" />
-                            }else{
-                                <img src="@art.creator.avatarUrl" style="height:25px;width:25px;display: inline-block" />
-                            }                           
-                            <p style="color:white;display: inline-block">@art.creator.userName</p>
-                        </div>
+                        <div style="flex:1; display:flex;flex-direction:row">
+                            <div style="flex:1;display:flex;flex-direction:column;align-content:center;justify-content:end">
+                                <h4 style="color:white;">@art.title</h4>
+                                <div style="margin-top:10px">
+                                    @if (art.creator.avatarUrl == null)
+                                    {
+                                        <img src="https://th.bing.com/th/id/R.ccfd669479d5d5ba603835bc82f41215?rik=c0YhIEaO%2bbKLJQ&pid=ImgRaw&r=0" style="height:25px;width:25px;display: inline-block" />
+                                    }
+                                    else
+                                    {
+                                        <img src="@art.creator.avatarUrl" style="height:25px;width:25px;display: inline-block" />
+                                    }
+                                    <p style="color:white;display: inline-block">@art.creator.userName</p>
+                                </div>
+                            </div>
+                            <div style="flex:1;display:flex;flex-direction:column;align-content:center;justify-content:end">
+                                <div style="">
+                                    <p style="color:white;display: inline-block">@art.commentCount</p>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" style="width:15px;height:15px;color:white;display: inline-block">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
+                                    </svg>
+                                </div>
 
-                        <div style="vertical-align:baseline">
-                            <p style="color:white;display: inline-block">@art.likeCount</p>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" style="width:15px;height:15px;color:white; display: inline-block">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z" />
-                            </svg>
 
+                                <div style="vertical-align:baseline">
+                                    <p style="color:white;display: inline-block">@art.likeCount</p>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" style="width:15px;height:15px;color:white; display: inline-block">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z" />
+                                    </svg>
+
+                                </div>
+                            </div>
                         </div>
+                       
+                       
                     </div>
                 </button>
             }
@@ -307,6 +306,7 @@
     }
     .box img{
         max-width:100%;
+        height:auto;
         border-radius:15px;
     }
 
@@ -318,11 +318,7 @@
         position:absolute;
         background: rgba(0,0,0,0.6);  
         display:flex;
-        align-items:center;
-        justify-content:center;
-        column-gap:100px;
-        row-gap: 50px;
-        flex-wrap:wrap;
+        flex-direction:column;
         opacity:0;
         transition:0.6s;
     }
