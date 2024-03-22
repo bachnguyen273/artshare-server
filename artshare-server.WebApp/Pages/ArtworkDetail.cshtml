@@ -28,6 +28,15 @@
 
     <!--Like vs Dislike-->
     <div class="post-rating-container">
+        <!--Button Price-->
+        @if (HttpContext.Session.GetString("Role") != null)
+        {
+            <form>
+                <button class="_11R5k" style="text-align:center; margin-right:6px;padding:0 24px;border-radius:28px;min-height:40px;"><span style="font-weight:600;">Download for $@artwork.price</span></button>
+            </form>
+        }
+        
+        
         <div class="post-rating">
             <span class="post-rating-button material-symbols-outlined">thumb_up</span>
             <span class="post-rating-count">@artwork.likeCount</span>
@@ -49,7 +58,7 @@
                            <a href="./Index">
                                 @if (artwork.creator.avatarUrl == null)
                                 {
-                                    <img src="https://th.bing.com/th/id/R.ccfd669479d5d5ba603835bc82f41215?rik=c0YhIEaO%2bbKLJQ&pid=ImgRaw&r=0" style="height:25px;width:25px;display: inline-block" />
+                                    <img src="https://th.bing.com/th/id/R.ccfd669479d5d5ba603835bc82f41215?rik=c0YhIEaO%2bbKLJQ&pid=ImgRaw&r=0" style="height:25px;width:25px;display: inline-block;" />
                                 }
                                 else
                                 {
@@ -76,7 +85,7 @@
 
                     <div class="_1mcmq">
                         <span class="_1lf7Q">
-                            Published: 
+                            Published: @artwork.createdDate
                         </span>
                         <!--Artwork create date-->
                     </div>
@@ -99,46 +108,50 @@
                 </div>
                 <div class="phucnvm-comment-list">
                     <div>
-
-                        <!--Chưa Login-->
-                        <div style="margin-bottom:16px">
-                            <div>
-                                <div class="_2p7n" style="margin:0;display: grid;grid-template-columns: auto minmax(0, 1fr);gap:8px;">
-                                    <div style="display: inline-flex">
-                                        <img src="https://as2.ftcdn.net/v2/jpg/03/31/69/91/1000_F_331699188_lRpvqxO5QRtwOM05gR50ImaaJgBx68vi.jpg" class="avatar" />
-                                    </div>
-                                    <div style="display: grid; grid-auto-flow: row;grid-template-columns: minmax(0, 1fr);gap: 4px;">
-                                        <div class="vwya0">
-                                            <div style="margin-top:10px;">
-                                                <p style="color:white">Join the community to add your comment. Already a deviant? <a href="./Login">Log In</a></p>
+                        @if (HttpContext.Session.GetString("Role") == null)
+                        {
+                            <!--Chưa Login-->
+                            <div style="margin-bottom:16px">
+                                <div>
+                                    <div class="_2p7n" style="margin:0;display: grid;grid-template-columns: auto minmax(0, 1fr);gap:8px;">
+                                        <div style="display: inline-flex">
+                                            <img src="https://as2.ftcdn.net/v2/jpg/03/31/69/91/1000_F_331699188_lRpvqxO5QRtwOM05gR50ImaaJgBx68vi.jpg" class="avatar" />
+                                        </div>
+                                        <div style="display: grid; grid-auto-flow: row;grid-template-columns: minmax(0, 1fr);gap: 4px;">
+                                            <div class="vwya0">
+                                                <div style="margin-top:10px;">
+                                                    <p style="color:white">Join the community to add your comment. Already a deviant? <a href="./Login">Log In</a></p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <!--Đã Login-->
-                        <div class="_1LomQ" style="margin-left: 0;position: relative;margin-bottom: 16px;">
-                            <div>
-                                <div class="_2p7n" style="margin:0;display: grid;grid-template-columns: auto minmax(0, 1fr);gap:8px;">
-                                    <div style="display: inline-flex">
-                                        <a href="./Index">
-                                            <img src="https://i.pinimg.com/originals/25/78/61/25786134576ce0344893b33a051160b1.jpg" class="avatar" />
-                                            <!--Creator avatar-->
-                                        </a>
-                                    </div>
-                                    <div style="display: grid; grid-auto-flow: row;grid-template-columns: minmax(0, 1fr);gap: 4px;">
-                                        <div class="vwya0">
-                                            <form method="post">
-                                                <input type="text" required="" style="color:#fafafa; background:none; outline:none; border:none;width:100%;" placeholder="Add a new comment.."/>
-                                                <button class="phucnvm-comment">Comment</button>
-                                            </form>
+                        }
+                        else
+                        {
+                            <!--Đã Login-->
+                            <div class="_1LomQ" style="margin-left: 0;position: relative;margin-bottom: 16px;">
+                                <div>
+                                    <div class="_2p7n" style="margin:0;display: grid;grid-template-columns: auto minmax(0, 1fr);gap:8px;">
+                                        <div style="display: inline-flex">
+                                            <a href="./Index">
+                                                <img src="https://i.pinimg.com/originals/25/78/61/25786134576ce0344893b33a051160b1.jpg" class="avatar" />
+                                                <!--Creator avatar-->
+                                            </a>
+                                        </div>
+                                        <div style="display: grid; grid-auto-flow: row;grid-template-columns: minmax(0, 1fr);gap: 4px;">
+                                            <div class="vwya0">
+                                                <form method="post">
+                                                    <input type="text" required="" style="color:#fafafa; background:none; outline:none; border:none;width:100%;" placeholder="Add a new comment.." />
+                                                    <button class="phucnvm-comment">Comment</button>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        }
 
                         <!--Bắt đầu vòng for-->
                         <div class="_1LomQ" style="margin-left: 0;position: relative;margin-bottom: 16px;">
@@ -204,6 +217,7 @@
             max-width: 100%;
             max-height: 100%;
             position: relative;
+            pointer-events: none;
     }
 
     .art-info{
@@ -376,4 +390,8 @@
         color:#fafafa;
     }
     
+    ._11R5k:hover{
+        color: #00e59b;
+        cursor:pointer;
+    }
 </style>

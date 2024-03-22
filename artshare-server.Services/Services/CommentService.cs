@@ -3,6 +3,7 @@ using artshare_server.Core.Interfaces;
 using artshare_server.Core.Models;
 using artshare_server.Services.Interfaces;
 using AutoMapper;
+using System.ComponentModel.Design;
 
 namespace artshare_server.Services.Services
 {
@@ -36,9 +37,14 @@ namespace artshare_server.Services.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<GetCommentDTO>> GetCommentByArtworkId(int id)
+        public async Task<List<GetCommentDTO>> GetCommentByArtworkId(int commentId)
         {
-            throw new NotImplementedException();
+            if (commentId > 0)
+            {
+                var cmt = await _unitOfWork.CommentRepo.GetCommentByArtworkId(commentId);
+                return cmt;
+            }
+            return null;
         }
 
         public async Task<List<GetCommentDTO>> GetCommentByIdAsync(int commentId)
