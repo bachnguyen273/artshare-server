@@ -43,9 +43,8 @@ namespace artshare_server.WebApp.ViewModels
         [Required(ErrorMessage = "Price is required")]
         [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0")]
         public decimal Price { get; set; }
-        [Required]
-        public IFormFile OrginalArtworkFile { get; set; }
-        [Required(ErrorMessage = "Title is required")]
+		public IFormFile? OrginalArtworkFile { get; set; }
+		[Required(ErrorMessage = "Title is required")]
         [StringLength(255, MinimumLength = 1, ErrorMessage = "Title must be between 1 and 255 characters")]
         public string? Description { get; set; }
         public int GenreId { get; internal set; }
