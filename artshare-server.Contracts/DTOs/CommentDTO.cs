@@ -23,6 +23,7 @@ namespace artshare_server.ApiModels.DTOs
     public class GetCommentDTO : CommentDTO
     {
         public int CommentId { get; set; }
+        public GetAccountDTO Commenter { get; set; }
     }
 
     public class UpdateCommentDTO : CommentDTO

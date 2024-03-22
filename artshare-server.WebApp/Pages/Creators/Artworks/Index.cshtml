@@ -81,15 +81,15 @@
                     <li class="page-item @(pge == pager.CurrentPage ? "active" : "")">
                         @if (!string.IsNullOrEmpty(genreID.ToString()))
                         {
-                            <a class="page-link" href="./Artworks/Index?page=@pge&genre=@genreID">@pge</a>
+                            <a class="page-link" href="/Creators/Artworks/Index?page=@pge&genre=@genreID">@pge</a>
                         }
                         else if (!string.IsNullOrEmpty(searchVal))
                         {
-                            <a class="page-link" href="./Artworks/Index?page=@pge&searchVal=@searchVal">@pge</a>
+                            <a class="page-link" href="/Creators/Artworks/Index?page=@pge&searchVal=@searchVal">@pge</a>
                         }
                         else
                         {
-                            <a class="page-link" href="./Artworks/Index?page=@pge">@pge</a>
+                            <a class="page-link" href="/Creators/Artworks/Index?page=@pge">@pge</a>
                         }
                     </li>
                 }

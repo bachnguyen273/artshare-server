@@ -1,18 +1,22 @@
-﻿using artshare_server.ApiModels.DTOs;
-using artshare_server.Core.Models;
+﻿using artshare_server.Core.Models;
 
 namespace artshare_server.Services.Interfaces
 {
     public interface ILikeService
     {
-        Task<IEnumerable<GetLikeDTO>> GetAllLikesAsync();
+        Task<IEnumerable<Like>> GetAllLikesAsync();
 
-        Task<GetLikeDTO?> GetLikeByIdAsync(int likeId);
+        Task<Like?> GetLikeByIdAsync(int likeId);
 
         Task<bool> CreateLikeAsync(Like like);
 
         Task<bool> UpdateLikeAsync(Like like);
 
-        Task<bool> DeleteLikeAsync(int likeId);
+        Task<bool> DeleteLikeAsync(Like like);
+        Task<IEnumerable<Like>> GetAllLikeByArtworkId(int artworkId);
+        Task<Like> GetLikeByAccountIdAndArtworkId(int accountId, int artworkId);
+        Task<int> CountLikeByArtWorkId(int artworkId);
+        Task<int> CountDisLikeByArtWorkId(int artworkId);
+
     }
 }
