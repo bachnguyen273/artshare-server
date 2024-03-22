@@ -24,6 +24,7 @@ namespace artshare_server.WebApp.Pages
 
             string apiUrl = config["API_URL"];
 			string artworkUrl = $"{apiUrl}/Artwork/GetArtworkById?id={id}";
+			string commentUrl = $"{apiUrl}/Comment/GetAllCommentByArtWorkId?artwordId={id}";
             using (var httpClient = new HttpClient())
             {
                 //GetArtWork 
@@ -34,7 +35,7 @@ namespace artshare_server.WebApp.Pages
                 Artwork = artworkObject.data.artwork;
 
                 //GetComment
-                HttpResponseMessage commentResponseMessage = await httpClient.GetAsync(artworkUrl);
+                HttpResponseMessage commentResponseMessage = await httpClient.GetAsync(commentUrl);
                 commentResponseMessage.EnsureSuccessStatusCode();
                 string commentContent = await artworkResponseMessage.Content.ReadAsStringAsync();
                 dynamic commentObject = JsonConvert.DeserializeObject(commentContent);
