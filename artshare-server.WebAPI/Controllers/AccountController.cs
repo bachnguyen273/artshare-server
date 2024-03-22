@@ -1,6 +1,7 @@
 ﻿using artshare_server.ApiModels.DTOs;
 using artshare_server.Core.Enums;
 using artshare_server.Core.Interfaces;
+using artshare_server.Services.FilterModels;
 using artshare_server.Services.Interfaces;
 using artshare_server.Services.Services;
 using artshare_server.WebAPI.ResponseModels;
@@ -25,11 +26,11 @@ namespace artshare_server.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllAccount()
+        public async Task<IActionResult> GetAllAccount([FromQuery] AccountFilter accountFilter)
         {
             try
             {
-                var accList = await _accountService.GetAllAccountsAsync();
+                var accList = await _accountService.GetAllAccountsAsync(accountFilter);
                 if(accList == null)
                 {
                     return BadRequest("List is null");

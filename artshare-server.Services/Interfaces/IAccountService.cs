@@ -1,11 +1,13 @@
 ﻿using artshare_server.ApiModels.DTOs;
 using artshare_server.Core.Models;
+using artshare_server.Services.FilterModels;
+using artshare_server.Services.FilterModels.Helpers;
 
 namespace artshare_server.Services.Interfaces
 {
     public interface IAccountService
     {
-        Task<IEnumerable<GetAccountDTO>> GetAllAccountsAsync();
+        Task<PagedResult<GetAccountDTO>> GetAllAccountsAsync(AccountFilter accountFilter);
 
         Task<GetAccountDTO?> GetAccountByIdAsync(int accountId);
         Task<Account?> GetAccountByEmailAsync(string email);

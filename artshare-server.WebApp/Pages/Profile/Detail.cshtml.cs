@@ -1,4 +1,4 @@
-using artshare_server.WebApp.ViewModels;
+﻿using artshare_server.WebApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
@@ -37,6 +37,17 @@ namespace artshare_server.WebApp.Pages.Profile
                 var responseContent = await response.Content.ReadAsStringAsync();
                 ProfileViewModel1 = JsonConvert.DeserializeObject<ProfileViewModel>(responseContent);
                 ProfileId = id;
+            }
+
+            var role = HttpContext.Session.GetString("Role");
+            if (role == "Creator")
+            {
+
+            }
+            else if (role == "Audience")
+            {
+                // Hiện những artwkrk đã mua
+                var artworkResponse = await _httpClient.GetAsync(apiUrl);
             }
 
             //var idsResponse = await _httpClient.GetAsync("http://localhost:5292/api/Artwork/GetArtworkIdsByAccountId?accountId=7");
