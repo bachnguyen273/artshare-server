@@ -46,7 +46,7 @@ namespace artshare_server.Infrastructure.Repositories
             
         }
 
-        public async Task<List<TopSaleArtwork>> GetTopSaleArtwork(int creatorId)
+        public async Task<IEnumerable<TopSaleArtwork>?> GetTopSaleArtwork(int creatorId)
         {
             var topSaleArtworks = (from order in _dbContext.Orders
                           join artwork in _dbContext.Artworks on order.ArtworkId equals artwork.ArtworkId
@@ -59,7 +59,7 @@ namespace artshare_server.Infrastructure.Repositories
                               Title = groupedArtworks.Key.Title,
                               ArtworkCount = groupedArtworks.Count()
                           }).Take(5).ToList();
-            var topSaleArtworksOfCreator = topSaleArtworks.Where(x => x.CreatorId == creatorId).ToList();
+            var topSaleArtworksOfCreator = topSaleArtworks.Where(x => x.CreatorId == creatorId).AsEnumerable();
             return topSaleArtworksOfCreator;
         }
     }

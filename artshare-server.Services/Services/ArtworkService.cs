@@ -183,7 +183,7 @@ namespace artshare_server.Services.Services
             throw new NotImplementedException();
         }
 
-        public async Task<List<TopSaleArtwork>> GetTopSaleArtwork(int creatorId)
+        public async Task<IEnumerable<TopSaleArtwork>> GetTopSaleArtwork(int creatorId)
         {
             var topSaleArtwork = await _unitOfWork.ArtworkRepo.GetTopSaleArtwork(creatorId);
             return topSaleArtwork;

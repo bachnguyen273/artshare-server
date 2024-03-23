@@ -11,7 +11,7 @@ public class AllOrdersOfCreatorModel : PageModel
     public IEnumerable<OrderViewModel> Orders { get; set; }
     public int Total { get; set; }
     public int Page { get; set; }
-    public int Size { get; set; } = 5;
+    public int Size { get; set; } = 7;
     public int? Id { get; set; }
 
     private HttpClient _httpClient = new();
@@ -23,7 +23,7 @@ public class AllOrdersOfCreatorModel : PageModel
         }
         else
         {
-            return NotFound("Account not found");  
+            return NotFound("Account not found");
         }
         int page;
         if (HttpContext.Request.Query["page"].IsNullOrEmpty())

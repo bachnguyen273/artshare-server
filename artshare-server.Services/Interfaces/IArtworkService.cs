@@ -18,6 +18,6 @@ namespace artshare_server.Services.Interfaces
         Task<bool> DeleteArtworkAsync(int artworkId);
         Task<List<int>> GetArtworkIdsByAccountIdAsync(int accountId);
 
-        Task<List<TopSaleArtwork>> GetTopSaleArtwork(int creatorId);
+        Task<IEnumerable<TopSaleArtwork>> GetTopSaleArtwork(int creatorId);
     }
 }

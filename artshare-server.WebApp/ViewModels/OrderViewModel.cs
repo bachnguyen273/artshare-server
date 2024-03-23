@@ -3,9 +3,9 @@
     public class OrderViewModel
     {
         public int OrderId { get; set; }
-        public int CustomerId { get; set; }
+        public string FullName { get; set; }
         public DateTime CreateDate { get; set; }
         public decimal Price { get; set; }
-        public int ArtworkId { get; set; }
+        public string Title { get; set; }
     }
 }

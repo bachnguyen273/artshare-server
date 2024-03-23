@@ -12,4 +12,8 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.35.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\artshare-server.Contracts\artshare-server.Contracts.csproj" />
+  </ItemGroup>
+
 </Project>

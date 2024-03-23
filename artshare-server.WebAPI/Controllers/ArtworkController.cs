@@ -146,7 +146,7 @@ namespace artshare_server.Controllers
                 }
             });
         }
-        [HttpGet("{creatorId}")]
+        [HttpGet]
         public async Task<IActionResult> GetTopSaleArtwork(int creatorId)
         {
             var topSaleArtwork = await _artworkService.GetTopSaleArtwork(creatorId);
@@ -154,10 +154,7 @@ namespace artshare_server.Controllers
             {
                 Status = Ok().StatusCode,
                 Message = "Success",
-                Data = new
-                {
-                    TopSaleArtwork = await _artworkService.GetTopSaleArtwork(creatorId)
-                }
+                Data = topSaleArtwork
             });
         }
     }

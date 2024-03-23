@@ -1,26 +1,102 @@
 ﻿@page
 @model artshare_server.WebApp.Pages.Creators.DashboardModel
 @{
+    var orders = Model.Orders;
+    var role = HttpContext.Session.GetString("Role");
+    var topSaleArtwork = Model.TopSaleArtworks;
 }
-@{
-    //var user = Model.UserName;
-    int pageNo = 0;
-    var pager = Model.Pager;
-    if (pager != null)
-    {
-        pageNo = pager.CurrentPage;
-    }
-    var search = TempData["SearchValue"];
-}
-@if (TempData["Alert"] != null)
+@if (!string.IsNullOrEmpty(role) && (role.Equals("Admin") || role.Equals("Creator")))
 {
-    <div class="alert alert-success">
-        <strong>Success !</strong>@TempData["Alert"];
-    </div>
+    <section class="banner-area relative" id="home">
+        <div class="overlay overlay-bg"></div>
+        <div class="container">
+            <div class="row fullscreen d-flex align-items-center justify-content-center">
+                <div class="banner-content col-lg-8">
+                    <h1 class="text-white">
+                        DASHBOARD
+                    </h1>
+
+                    <br />
+                    <table class="table table-striped table-bordered">
+                        <thead class="thead-dark, font-weight-bold, text">
+                            <tr>
+                                <td></td>
+                                <td>Order Id</td>
+                                <td>Customer </td>
+                                <td>Artwork Title</td>
+                                <td>Price</td>
+                                <td>Create Date</td>
+                            </tr>
+                        </thead>
+                        <tbody class="green-text">
+                            @{
+                                int i = 0;
+                                foreach (var order in orders)
+                                {
+                                    i++;
+                                    <tr>
+                                        <td>@i</td>
+                                        <td>@order.OrderId</td>
+                                        <td>@order.FullName</td>
+                                        <td>@order.Title</td>
+                                        <td>@order.Price</td>
+                                        <td>@order.CreateDate.ToShortDateString()</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                    <div class="pagination">                      
+                        @for (int k = 1; k <= Math.Ceiling((double)Model.Total / Model.Size); k++)
+
+                        {
+                            <a class="page-link" href="./Dashboard?page=@k">@k</a>
+                        }
+                    </div>
+                    <table class="table table-striped table-bordered">
+                        <thead class="thead-dark, font-weight-bold, text">
+                            <tr>
+                                <td></td>
+                                <td>Artwork Title</td>
+                                <td>Sales number</td>
+                            </tr>
+                        </thead>
+                        <tbody class="green-text">
+                            @{
+                                int index = 0;
+                                foreach (var artwork in topSaleArtwork)
+                                {
+                                    index++;
+                                    <tr>
+                                        <td>@i</td>
+                                        <td>@artwork.Title</td>
+                                        <td>@artwork.ArtworkCount</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+    <style>
+        .green-text {
+        color: darkseagreen;
+        font-weight: bold;
+        font-size: 15px;
+        }
+
+        .text {
+        color: deeppink;
+        font-size: 20px;
+        }
+    </style>
 }
-@if (TempData["Alert1"] != null)
+else
 {
-    <div class="alert alert-danger">
-        <strong>Fail !</strong>@TempData["Alert1"];
-    </div>
+    <h1>Unauthorized</h1>
 }
