@@ -79,26 +79,27 @@ namespace artshare_server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProfile (int id, UpdateAccountDTO updateAccountDTO)
+        public async Task<IActionResult> UpdateProfile(int id, ProfileDTO profileDTO)
         {
             try
             {
-                var check = await _accountService.GetAccountByIdAsync (updateAccountDTO.AccountId);
+                var check = await _accountService.GetAccountByIdAsync(id);
                 if (check == null)
                 {
                     return NotFound();
                 }
-                var up = await _accountService.UpdateAccountAsync(updateAccountDTO);
+                var up = await _accountService.UpdateAccountAsync(id, profileDTO);
                 if (up)
                 {
                     return Ok("Update SUCCESS!");
                 }
                 return BadRequest("Update FAIL");
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-           
+
         }
 
 

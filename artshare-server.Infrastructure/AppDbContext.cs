@@ -31,7 +31,7 @@ namespace artshare_server.Infrastructure
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", true, true)
                 .Build();
-            connectionString = config.GetConnectionString("PhucDatabase");
+            connectionString = config.GetConnectionString("BachDatabase");
             return connectionString;
         }
     }

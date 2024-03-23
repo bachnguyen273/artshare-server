@@ -43,7 +43,7 @@
                 <p style="margin-bottom: 0.2rem;margin-top: 1rem">Email</p>
                 <input asp-for="ProfileViewModel1.Email" name="Email" class="form-control1" placeholder="Enter Email " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email '" readonly="" type="email" />
                 <p style="margin-bottom: 0.1rem;margin-top: 1rem" id="oldPasswordp">Password</p>
-                <input name="PasswordHash" id="oldPassword" class="form-control1" placeholder="Enter Password " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Password '" type="password" style="width:80%; display:inline-block" value="@Model.ProfileViewModel1.Password" readonly="" />
+                <input name="PasswordHash" id="oldPassword" class="form-control1" placeholder="Enter Password " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Password '" type="password" style="width:80%; display:inline-block" value="@Model.ProfileViewModel1.PasswordHash" readonly="" />
 
                 <h2 class="phucnvm-h2">Personal information</h2>
                 <p style="margin-bottom: 0.2rem;margin-top: 1rem">Username</p>
