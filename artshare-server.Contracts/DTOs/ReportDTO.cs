@@ -12,7 +12,7 @@ namespace artshare_server.ApiModels.DTOs
         public int AccountId { get; set; }
         public int ArtworkId { get; set; }
         public string Content { get; set; }
-        public IEnumerable<string> Category { get; set; }
+        public string Category { get; set; }
         public DateTime ReportDate { get; set; }
         public string Status { get; set; }
     }
@@ -25,6 +25,8 @@ namespace artshare_server.ApiModels.DTOs
     public class GetReportDTO : ReportDTO
     {
         public int ReportId { get; set; }
+        //public GetArtworkDTO Artwork { get; set; }
+        //public GetAccountDTO Account { get; set; }
     }
 
     public class UpdateReportDTO : ReportDTO
