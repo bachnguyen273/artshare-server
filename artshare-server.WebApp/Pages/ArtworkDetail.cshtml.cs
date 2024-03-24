@@ -80,6 +80,41 @@ namespace artshare_server.WebApp.Pages
                 }
             }
         }
+
+        public async Task<IActionResult> OnPostReport(int id)
+        {
+            IConfiguration config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", true, true)
+                .Build();
+            string apiUrl = config["API_URL"];
+            var request = new ReportViewModel
+            {
+                AccountId = (int)HttpContext.Session.GetInt32("AccountId"),
+                ArtworkId = id,
+                Content = Request.Form["reportContent"],
+                Category = Request.Form["reportCate"],
+                ReportDate = DateTime.Now,
+                Status = "Processing"
+            };
+            using (var httpClient = new HttpClient())
+            {
+                var createUrl = $"{apiUrl}/Report/CreateReport";
+                var jsonBody = JsonConvert.SerializeObject(request);
+                var content = new StringContent(jsonBody, System.Text.Encoding.UTF8, "application/json");
+                var response = await httpClient.PostAsync(createUrl, content);
+                if (response.IsSuccessStatusCode)
+                {
+                    await LoadData(id);
+                    return Page();
+                }
+                else
+                {
+                    var errorMessage = await response.Content.ReadAsStringAsync();
+                    return BadRequest(errorMessage);
+                }
+            }
+        }
     }
 
 }
