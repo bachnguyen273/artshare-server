@@ -11,6 +11,8 @@ namespace artshare_server.Core.Models
         public string UserName { get; set; }
         public string FullName { get; set; }
         public string PhoneNumber { get; set; }
+        public string? PaypalClientId { get; set; }
+        public string? PaypalSercretKey { get; set; }
         public DateTime JoinDate { get; set; }
         public AccountRole Role { get; set; }
         public AccountStatus Status { get; set; }

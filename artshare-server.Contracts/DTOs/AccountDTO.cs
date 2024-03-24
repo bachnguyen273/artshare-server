@@ -25,6 +25,8 @@ namespace artshare_server.ApiModels.DTOs
         public string UserName { get; set; }
         public string? FullName { get; set; }
         public string? PhoneNumber { get; set; }
+        public string? PaypalClientId { get; set; }
+        public string? PaypalSercretKey { get; set; }
     }
 
     public class CreateAccountDTO : AccountDTO
