@@ -66,7 +66,7 @@ namespace artshare_server.WebApp.Pages.Profile
             }
             ProfileId = id;
             bool check = false;
-            string passwordHash = ProfileViewModel1.Password;
+            string passwordHash = ProfileViewModel1.PasswordHash;
             string avatarRes = null;
             if (UploadAvatar != null)
             {
@@ -98,6 +98,7 @@ namespace artshare_server.WebApp.Pages.Profile
                         }
                     }
                 }
+
             }
             if (!string.IsNullOrEmpty(Request.Form["newPassword"]) && !string.IsNullOrEmpty(Request.Form["confirmPassword"]))
             {
@@ -119,7 +120,7 @@ namespace artshare_server.WebApp.Pages.Profile
             {
                 AccountId = id,
                 Email = Request.Form["Email"],
-                Password = (check == true) ? Request.Form["confirmPassword"] : passwordHash,
+                PasswordHash = (check == true) ? Request.Form["confirmPassword"] : passwordHash,
                 AvatarUrl = (avatarRes != null) ? avatarRes : null,
                 UserName = Request.Form["UserName"],
                 FullName = Request.Form["FullName"],
@@ -140,7 +141,7 @@ namespace artshare_server.WebApp.Pages.Profile
             {
                 var responseContent = await response.Content.ReadAsStringAsync();
                 TempData["AlertMessage"] = " Update Account Successfully...!";
-                return RedirectToPage("../Profile/Detail", new { id = id });
+                return RedirectToPage("../Setting/edit-profile", new { id = id });
             }
             TempData["AlertMessage1"] = " Update Account Fail...!";
             return Page();

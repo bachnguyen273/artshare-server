@@ -9,6 +9,7 @@ using artshare_server.Services.Utils;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace artshare_server.Services.Services
 {
@@ -132,7 +133,7 @@ namespace artshare_server.Services.Services
             }
         }
 
-        public async Task<bool> UpdateAccountAsync(UpdateAccountDTO updateAccountDTO)
+        public async Task<bool> UpdateAccountAsync(int id, ProfileDTO updateAccountDTO)
         {
             try
             {
@@ -142,8 +143,7 @@ namespace artshare_server.Services.Services
                     return false;
                 }
                 account.Email = updateAccountDTO.Email;
-                updateAccountDTO.Password = "123";
-                account.PasswordHash = BCrypt.Net.BCrypt.HashPassword(updateAccountDTO.Password);          
+                account.PasswordHash = (account.PasswordHash != null) ? BCrypt.Net.BCrypt.HashPassword(account.PasswordHash) : updateAccountDTO.PasswordHash;
                 account.UserName = updateAccountDTO.UserName;
                 account.FullName = updateAccountDTO.FullName;
                 account.PhoneNumber = updateAccountDTO.PhoneNumber;
@@ -207,5 +207,5 @@ namespace artshare_server.Services.Services
                 throw new Exception(ex.Message);
             }
 		}
-	}
+    }
 }

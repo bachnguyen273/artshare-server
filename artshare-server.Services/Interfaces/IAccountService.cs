@@ -16,7 +16,7 @@ namespace artshare_server.Services.Interfaces
 
         Task<bool> CreateAccountAsync(Account account);
 
-        Task<bool> UpdateAccountAsync(UpdateAccountDTO getAccountDTO);
+        Task<bool> UpdateAccountAsync(int id, ProfileDTO profile);
 
         Task<bool> DeleteAccountAsync(int accountId);
 

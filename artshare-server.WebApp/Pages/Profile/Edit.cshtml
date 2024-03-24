@@ -1,8 +1,6 @@
 ﻿@page
 @model artshare_server.WebApp.Pages.Profile.EditModel
 @{
-}
-@{
     var role = TempData["Role"];
 }
 
@@ -57,7 +55,7 @@
                         <input asp-for="ProfileViewModel1.Email" name="Email" class="form-control1" placeholder="Enter Email " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email '" type="email" required="" />
                     </div>
                     <p style="margin-bottom: 0.1rem;margin-top: 1rem" id="oldPasswordp">Password</p>
-                    <input name="PasswordHash" id="oldPassword" class="form-control1" placeholder="Enter Password " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Password '" type="password" style="width:80%; display:inline-block" value="@Model.ProfileViewModel1.Password" />
+                    <input name="PasswordHash" id="oldPassword" class="form-control1" placeholder="Enter Password " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Password '" type="password" style="width:80%; display:inline-block" value="@Model.ProfileViewModel1.PasswordHash" />
                     <button class="primary-btn text-uppercase" id="change_password" style="padding:7px 12px; margin-left:10px;border-radius: 0.75rem; width:15%; line-height:1.5; display:inline-block" type="button">Change</button>
                     <div class="phucnvm-confirmPassword">
                         <p style="margin-bottom: 0.1rem;margin-top: 1rem">New Password</p>
