@@ -89,4 +89,15 @@ public class OrderController : ControllerBase
             Data = result
         });    
     }
+    [HttpGet]
+    public async Task<IActionResult> GetOrderDashboard([FromQuery] int id)
+    {
+        var result = await _orderService.GetOrderDashboardsAsync(id);
+        return Ok(new SucceededResponseModel()
+        {
+            Status = Ok().StatusCode,
+            Message = "Success",
+            Data = result
+        });
+    }
 }

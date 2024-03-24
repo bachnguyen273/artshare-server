@@ -9,5 +9,6 @@ namespace artshare_server.Core.Interfaces
         Task<List<GetOrderDTO>> GetOrdersByArtIdAsync(int id);
         Task<List<GetOrderDTO>> GetOrdersByAccountIdAsync(int accountId);
         Task<List<GetOrderDTO>> GetOrders();
+        Task<IEnumerable<OrderDashboard>> GetOrderDashboardsAsync(int creatorId);
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System.Drawing;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 
 namespace artshare_server.WebApp.Pages.Creators
 {
@@ -16,10 +17,14 @@ namespace artshare_server.WebApp.Pages.Creators
         public Pager Pager { get; set; }
         public int? AccountID { get; set; }
         public string Search { get; set; }
-        public IEnumerable<OrderViewModel> Orders { get; set; }
+        public IEnumerable<OrderDashBoardViewModel> Orders { get; set; }
         public int Total { get; set; }
         public int Page { get; set; }
         public int Size { get; set; } = 7;
+        public decimal EarningMonthly { get; set; }
+        public float GrowthRate { get; set; }
+        public int ProductSaleInYear { get; set; }
+        public int GrowthRateByYear { get; set; }
 
         private HttpClient _httpClient = new();
         public async Task<IActionResult> OnGet()
@@ -50,7 +55,7 @@ namespace artshare_server.WebApp.Pages.Creators
                                        .AddJsonFile("appsettings.json", true, true)
                                        .Build();
             string apiUrl = config["API_URL"];
-            var request = new HttpRequestMessage(HttpMethod.Get, $"{apiUrl}/Order/GetAllOrdersOfCreator?id={AccountID}");
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{apiUrl}/Order/GetOrderDashboard?id={AccountID}");
             var response = await _httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
             {
@@ -58,8 +63,24 @@ namespace artshare_server.WebApp.Pages.Creators
                 SuccesResponse obj = JsonConvert.DeserializeObject<SuccesResponse>(responseString);
                 if (obj != null && obj.Data != null)
                 {
-                    Total = JsonConvert.DeserializeObject<IEnumerable<OrderViewModel>>(obj.Data.ToString()).Count();
-                    Orders = JsonConvert.DeserializeObject<IEnumerable<OrderViewModel>>(obj.Data.ToString()).Take(Size).Skip((Page - 1) * Size);
+                    Total = JsonConvert.DeserializeObject<IEnumerable<OrderDashBoardViewModel>>(obj.Data.ToString()).Count();
+                    Orders = JsonConvert.DeserializeObject<IEnumerable<OrderDashBoardViewModel>>(obj.Data.ToString()); ;
+                    var currentMonthOrders = Orders.Where(order => order.CreateDate.Year == DateTime.Now.Year
+                                      && order.CreateDate.Month == DateTime.Now.Month);
+
+                    // Calculate earnings for the current month
+                    EarningMonthly = currentMonthOrders.Sum(order => order.Price);
+
+                    // Filter orders for the previous month
+                    var previousMonthOrders = Orders.Where(order => order.CreateDate.Year == DateTime.Now.Year
+                                                       && order.CreateDate.Month == DateTime.Now.Month - 1);
+
+                    // Calculate earnings for the previous month
+                    var previousMonthRevenue = previousMonthOrders.Sum(order => order.Price);
+
+                    // Calculate growth rate
+                    GrowthRate = (float)Math.Round((previousMonthRevenue != 0 ? ((EarningMonthly - previousMonthRevenue) / previousMonthRevenue) * 100 : 0),1);
+                    ProductSaleInYear = Orders.Where(order => order.CreateDate.Year == DateTime.Now.Year).Count();
                 }
                 else
                 {

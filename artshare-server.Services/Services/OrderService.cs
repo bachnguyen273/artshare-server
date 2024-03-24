@@ -146,7 +146,11 @@ public class OrderService : IOrderService
             var orderList = await _unitOfWork.OrderRepo.GetOrdersByArtIdAsync(art.ArtworkId);
             orders.AddRange(orderList);
         }
-        return orders;
-
+        return orders;    
+    }
+    public async Task<IEnumerable<OrderDashboard>> GetOrderDashboardsAsync(int creatorId)
+    {
+        var orderDashboard = await _unitOfWork.OrderRepo.GetOrderDashboardsAsync(creatorId);
+        return orderDashboard;
     }
 }

@@ -8,7 +8,7 @@ namespace artshare_server.WebApp.Pages.Creators.Orders;
 
 public class AllOrdersOfCreatorModel : PageModel
 {
-    public IEnumerable<OrderViewModel> Orders { get; set; }
+    public IEnumerable<OrderDashBoardViewModel> Orders { get; set; }
     public int Total { get; set; }
     public int Page { get; set; }
     public int Size { get; set; } = 7;
@@ -51,8 +51,8 @@ public class AllOrdersOfCreatorModel : PageModel
             SuccesResponse obj = JsonConvert.DeserializeObject<SuccesResponse>(responseString);
             if (obj != null && obj.Data != null)
             {
-                Total = JsonConvert.DeserializeObject<IEnumerable<OrderViewModel>>(obj.Data.ToString()).Count();
-                Orders = JsonConvert.DeserializeObject<IEnumerable<OrderViewModel>>(obj.Data.ToString()).Take(Size).Skip((Page - 1) * Size);
+                Total = JsonConvert.DeserializeObject<IEnumerable<OrderDashBoardViewModel>>(obj.Data.ToString()).Count();
+                Orders = JsonConvert.DeserializeObject<IEnumerable<OrderDashBoardViewModel>>(obj.Data.ToString()).Take(Size).Skip((Page - 1) * Size);
             }
             else
             {

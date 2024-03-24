@@ -8,7 +8,7 @@ namespace artshare_server.WebApp.Pages.Audiences.Orders
 {
     public class IndexModel : PageModel
     {
-        public IEnumerable<OrderViewModel> Orders { get; set; }
+        public IEnumerable<OrderDashBoardViewModel> Orders { get; set; }
         public int Total { get; set; }
         public int Page { get; set; }
         public int Size { get; set; } = 5;
@@ -57,8 +57,8 @@ namespace artshare_server.WebApp.Pages.Audiences.Orders
             {
                 var responseString = await response.Content.ReadAsStringAsync();
                 SuccesResponse obj = JsonConvert.DeserializeObject<SuccesResponse>(responseString);
-                Total = JsonConvert.DeserializeObject<IEnumerable<OrderViewModel>>(obj.Data.ToString()).Count();
-                Orders = JsonConvert.DeserializeObject<IEnumerable<OrderViewModel>>(obj.Data.ToString()).Take(Size).Skip((Page - 1) * Size);
+                Total = JsonConvert.DeserializeObject<IEnumerable<OrderDashBoardViewModel>>(obj.Data.ToString()).Count();
+                Orders = JsonConvert.DeserializeObject<IEnumerable<OrderDashBoardViewModel>>(obj.Data.ToString()).Take(Size).Skip((Page - 1) * Size);
             }
 
             return Page();

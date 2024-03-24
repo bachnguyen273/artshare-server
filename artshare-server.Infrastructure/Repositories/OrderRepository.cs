@@ -45,6 +45,26 @@ namespace artshare_server.Infrastructure.Repositories
         {
             List<Order> list = await _dbContext.Orders.ToListAsync();
             return _mapper.Map<List<GetOrderDTO>>(list);
-        }      
+        }
+        
+        public async Task<IEnumerable<OrderDashboard>> GetOrderDashboardsAsync(int creatorId)
+        {
+            var listOrder = (from order in _dbContext.Orders
+                            join artwork in _dbContext.Artworks on order.ArtworkId equals artwork.ArtworkId
+                            join account in _dbContext.Accounts on artwork.CreatorId equals account.AccountId
+                            join customer in _dbContext.Accounts on order.CustomerId equals customer.AccountId
+                            orderby order.CreateDate descending
+                            select new OrderDashboard
+                            {
+                                OrderId = order.OrderId,
+                                CreatorID = artwork.CreatorId,
+                                FullName = customer.FullName,
+                                Title = artwork.Title,
+                                Price = order.Price,
+                                CreateDate = order.CreateDate
+                            }).ToList();
+            var listOrderDashboard = listOrder.Where(x => x.CreatorID == creatorId).AsEnumerable();
+            return listOrderDashboard;
+        }
     }
 }
