@@ -50,6 +50,8 @@ namespace artshare_server.Services.Services
                 }
                 var account = _mapper.Map<Account>(registerData);
                 account.PasswordHash = BCrypt.Net.BCrypt.HashPassword(registerData.Password);
+                account.PaypalSercretKey = "ECO9h4desAjKAvg38eDoBjyunXniFe4uOT9hJFR7o0v4ezlqF0Gx2tqTD4WjHLOim2e9DPY2cMIYT52R";
+                account.PaypalClientId = "AdF7Dojm2i_I9lvhhaCkegClqMVktUyxQoX7s1zYBj-2vxsoXngbYgqOHo6XkYxHsFVZYgYEkpo1f4pM";
                 var result = await _accountService.CreateAccountAsync(account);
                 return result;
             }

@@ -246,5 +246,21 @@ namespace artshare_server.Services.Services
             return filteredItemsQuery.ToList();
         }
 
+        public async Task<bool> UpdateCountOfArtwork(int artworkId, ArtworkCount artworkCount)
+        {
+            try
+            {
+                Artwork entity = await _unitOfWork.ArtworkRepo.GetByIdAsync(artworkId);
+                entity.CommentCount = artworkCount.CommentCount == 0 ? entity.CommentCount : artworkCount.CommentCount;
+                entity.DislikeCount = artworkCount.DislikeCount == 0 ? entity.DislikeCount : artworkCount.DislikeCount;
+                entity.LikeCount = artworkCount.LikeCount == 0 ? entity.LikeCount : artworkCount.LikeCount;
+                _unitOfWork.ArtworkRepo.Update(entity);
+                return await _unitOfWork.SaveAsync() > 0;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

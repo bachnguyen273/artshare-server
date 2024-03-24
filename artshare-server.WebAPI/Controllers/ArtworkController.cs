@@ -146,5 +146,27 @@ namespace artshare_server.Controllers
             });
         }
 
+        [HttpPut]
+        public async Task<IActionResult> UpdateCountByArtworkId(int artworkId, [FromBody] ArtworkCount artworkCount)
+        {
+            try
+            {
+                var check = await _artworkService.GetArtworkByIdAsync(artworkId);
+                if (check == null)
+                {
+                    return NotFound();
+                }
+                var up = await _artworkService.UpdateCountOfArtwork(artworkId, artworkCount);
+                if (up)
+                {
+                    return Ok("Update SUCCESS!");
+                }
+                return BadRequest("Update FAIL");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
