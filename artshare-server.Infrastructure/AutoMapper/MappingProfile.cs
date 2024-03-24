@@ -44,10 +44,13 @@ namespace artshare_server.Infrastructure.AutoMapper
          
 
             // REPORT
-            CreateMap<Report, ReportDTO>();
-            CreateMap<Report, CreateReportDTO>();
-            CreateMap<Report, UpdateReportDTO>();
-            CreateMap<Report, GetReportDTO>();
+            CreateMap<Report, ReportDTO>()
+                .ForMember(src => src.Category, des => des.MapFrom(des => EnumMapper<ReportCategory>.MapType(des.Category.ToString())))
+                .ForMember(src => src.Status, des => des.MapFrom(des => EnumMapper<ReportStatus>.MapType(des.Status.ToString())))
+                .ReverseMap();
+            CreateMap<Report, CreateReportDTO>().ReverseMap();
+            CreateMap<Report, UpdateReportDTO>().ReverseMap();
+            CreateMap<Report, GetReportDTO>().ReverseMap();
 
             //COMMENT
             CreateMap<Comment, CommentDTO>().ReverseMap();

@@ -24,7 +24,7 @@ namespace artshare_server.Infrastructure.Repositories
             _genreRepo = new GenreRepository(_dbContext, _mapper);
             _likeRepo = new LikeRepository(_dbContext);
             _orderRepo = new OrderRepository(_dbContext,_mapper);
-            _reportRepo = new ReportRepository(_dbContext);
+            _reportRepo = new ReportRepository(_dbContext, _mapper);
         }
 
         public IAccountRepository AccountRepo => _accountRepo;

@@ -7,12 +7,15 @@ namespace artshare_server.Services.Interfaces
     {
         Task<IEnumerable<GetReportDTO>> GetAllReportsAsync();
 
-        Task<GetReportDTO?> GetReportByIdAsync(int reportId);
+        Task<Report?> GetReportByIdAsync(int reportId);
+        Task<Report?> GetReportByAccountIdAndArtworkId(int accountId, int artworkId);
 
-        Task<bool> CreateReportAsync(Report report);
+        Task<bool> CreateReportAsync(ReportDTO reportDTO);
 
         Task<bool> UpdateReportAsync(Report report);
 
         Task<bool> DeleteReportAsync(int reportId);
+        Task<bool> DenyReport(int reportId);
+        Task<bool> AcceptReport(int reportId);
     }
 }
