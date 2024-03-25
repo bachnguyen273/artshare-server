@@ -6,35 +6,23 @@
 <script src="https://www.paypal.com/sdk/js?client-id=@(Model.PaypalClientId)&currency=USD"></script>
 
 <section class="banner-area relative" id="home">
-<<<<<<< HEAD
-    <div class="overlay overlay-bg"></div>
-    <div class="container">
-        <div class="row fullscreen d-flex align-items-center justify-content-center">
-            <div class="banner-content col-lg-8">
-                <div class="d-flex justify-content-center">
-                    <div class="whole-wrap">
-                        <div class="container">
-                            <div class="p-5" style="background-color: #08618d">
-                                <div class="mx-auto p-3 bg-light rounded border" style="max-width: 120px; max-height: 120px">
-                                    <h2 class="text-center mb-5">Checkout</h2>
-                                    <div class="row mb-3">
-                                        <div class="col-5">
-                                            <img src="@Model.Artwork.originalArtUrl" />
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-5">Total Amount</div>
-                                            <div class="col-7">$@Model.Artwork.price</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="text-center">
-                                    <div id="notification-container"></div>
-                                    <div id="paypal-button-container"></div>
-                                </div>
-                            </div>
+    <div class="whole-wrap">
+        <div class="container">
+            <div class="p-5" style="background-color: #08618d">
+                <div class="mx-auto p-3 bg-light rounded border" style="width: 420px">
+                    <h2 class="text-center mb-5">Checkout</h2>
+                    <div class="row mb-3">
+                        <div class="col-5">
+                            <img src="@Model.Artwork.originalArtUrl" />
                         </div>
+                        <div class="col-5">Total Amount</div>
+                        <div class="col-7">$@Model.Artwork.price</div>
                     </div>
                 </div>
+            </div>
+            <div id="notification-container">
+            </div>
+            <div id="paypal-button-container">
             </div>
         </div>
     </div>
