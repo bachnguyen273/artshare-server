@@ -89,7 +89,10 @@
                     <li><a asp-page="/Profile/Detail"><span class="phucnvm-a"> @Context.Session.GetString("Username")</span></a></li>
                     <li><a asp-page="/Logout"><span class="phucnvm-a"> Logout</span></a></li>
                     <li><a asp-page="/Creators/Artworks/Create"><span class="phucnvm-btn"> Submit </span></a></li>
-                }else{
+                }else
+                {
+                    <li><a href="../Admins/AllOrdersList">Order</a></li>
+                    <li><a asp-page="Admins/Index"><span class="phucnvm-a">Account</span></a></li>
                     <li><a asp-page="/Profile/Detail"><span class="phucnvm-a"> @Context.Session.GetString("Username")</span></a></li>
                     <li><a asp-page="/Logout"><span class="phucnvm-a"> Logout</span></a></li>
                 }   
