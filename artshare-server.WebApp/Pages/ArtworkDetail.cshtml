@@ -39,12 +39,12 @@
 
 
         <div class="post-rating">
-            <span class="post-rating-button material-symbols-outlined">thumb_up</span>
-            <span class="post-rating-count">@artwork.likeCount</span>
+            <i class="post-rating-button material-symbols-outlined" id="likeBtn" onclick="toggleLike()">thumb_up</i>
+            <span class="post-rating-count" id="likeCount">@artwork.likeCount</span>
         </div>
         <div class="post-rating">
-            <span class="post-rating-button material-symbols-outlined"> thumb_down </span>
-            <span class="post-rating-count">@artwork.dislikeCount</span>
+            <i class="post-rating-button material-symbols-outlined" id="dislikeBtn" onclick="toggleDisLike()"> thumb_down </i>
+            <span class="post-rating-count" id="dislikeCount">@artwork.dislikeCount</span>
         </div>
 
         @if (HttpContext.Session.GetString("Role") != null)
@@ -52,8 +52,66 @@
             <button class="_11R5k2" id="open-popup" style="text-align:center; margin-right:6px;padding:0 24px;border-radius:28px;min-height:40px;"><span style="font-weight:600;">Report</span></button>
 
         }
-     
-    
+        <script>
+            let isLiked = false;
+            let isDisliked = false;
+            let likeCountVal = @artwork.likeCount;
+            let dislikeCountVal = @artwork.dislikeCount;
+            const toggleLike = function () {
+                const likeBtn = document.getElementById("likeBtn");
+                const likeCount = document.getElementById("likeCount");
+                if (isLiked) {
+                    isLiked = false;
+                    likeCountVal = likeCountVal - 1;
+                    likeCount.textContent = likeCountVal;
+                    likeCount.classList.remove("post-rating-selected");
+                    likeBtn.classList.remove("post-rating-selected");
+                } else {
+                    isLiked = true;
+                    if (isDisliked) {
+                        // isDisliked = false;
+                        // const dislikeCount = document.getElementById("dislikeCount");
+                        // dislikeCount.textContent = dislikeCountVal - 1;
+                        // const dislikeBtn = document.getElementById("dislikeBtn");
+                        // dislikeBtn.classList.remove("post-rating-selected");
+                        // dilikeCount.classList.remove("post-rating-selected");
+                        toggleDisLike();
+                    }
+                    likeCount.textContent = likeCountVal + 1;
+                    likeCountVal = likeCountVal + 1;
+                    likeCount.classList.add("post-rating-selected");
+                    likeBtn.classList.add("post-rating-selected");
+                }
+            }
+
+            const toggleDisLike = function () {
+                const dislikeBtn = document.getElementById("dislikeBtn");
+                const dilikeCount = document.getElementById("dislikeCount");
+                if (isDisliked) {
+                    isDisliked = false;
+                    dilikeCount.textContent = dislikeCountVal - 1;
+                    dislikeCountVal = dislikeCountVal - 1;
+                    dislikeBtn.classList.remove("post-rating-selected");
+                    dilikeCount.classList.remove("post-rating-selected");
+                } else {
+                    isDisliked = true;
+                    if (isLiked) {
+                        // isLiked = false;
+                        // const likeCount = document.getElementById("likeCount");
+                        // likeCount.textContent = likeCountVal - 1;
+                        // const likeBtn = document.getElementById("likeBtn");
+                        // likeCount.classList.remove("post-rating-selected");
+                        // likeBtn.classList.remove("post-rating-selected");
+                        toggleLike();
+                    }
+                    dilikeCount.textContent = dislikeCountVal + 1;
+                    dislikeCountVal = dislikeCountVal + 1;
+                    dilikeCount.classList.add("post-rating-selected");
+                    dislikeBtn.classList.add("post-rating-selected");
+                }
+            }
+        </script>
+
     </div>
 
     <!--Art Info-->
@@ -173,35 +231,35 @@
                         @{
                             foreach (var coms in commnents)
                             {
-                                <div class="_1LomQ" style="margin-left: 0;position: relative;margin-bottom: 16px;">
-                                    <div>
-                                        <div class="_2p7n" style="margin:0;display: grid;grid-template-columns: auto minmax(0, 1fr);gap:8px;">
-                                            <div style="display: inline-flex">
-                                                <a href="./Index">
-                                                    @if (coms.commenter.avatarUrl == null)
+                                                    <div class="_1LomQ" style="margin-left: 0;position: relative;margin-bottom: 16px;">
+                                                        <div>
+                                                            <div class="_2p7n" style="margin:0;display: grid;grid-template-columns: auto minmax(0, 1fr);gap:8px;">
+                                                                <div style="display: inline-flex">
+                                                                    <a href="./Index">
+                                                                        @if (coms.commenter.avatarUrl == null)
                                                     {
-                                                        <img src="https://th.bing.com/th/id/R.ccfd669479d5d5ba603835bc82f41215?rik=c0YhIEaO%2bbKLJQ&pid=ImgRaw&r=0" style="height:50px;width:50px;display: inline-block;" />
+                                                                            <img src="https://th.bing.com/th/id/R.ccfd669479d5d5ba603835bc82f41215?rik=c0YhIEaO%2bbKLJQ&pid=ImgRaw&r=0" style="height:50px;width:50px;display: inline-block;" />
                                                     }
                                                     else
                                                     {
-                                                        <img src="@coms.commenter.avatarUrl" class="avatar" />
+                                                                            <img src="@coms.commenter.avatarUrl" class="avatar" />
                                                     }
-                                                    <!--Creator avatar-->
-                                                </a>
-                                            </div>
-                                            <div style="display: grid; grid-auto-flow: row;grid-template-columns: minmax(0, 1fr);gap: 4px;">
-                                                <div class="vwya0">
-                                                    <h3 style="color:white">@coms.commenter.userName</h3>
-                                                    <!--Creater username-->
-                                                    <div style="margin-top:10px;">
-                                                        <p style="color:white">@coms.content</p>
-                                                        <!--Comment Text-->
+                                                                        <!--Creator avatar-->
+                                                                    </a>
+                                                                </div>
+                                                                <div style="display: grid; grid-auto-flow: row;grid-template-columns: minmax(0, 1fr);gap: 4px;">
+                                                                    <div class="vwya0">
+                                                                        <h3 style="color:white">@coms.commenter.userName</h3>
+                                                                        <!--Creater username-->
+                                                                        <div style="margin-top:10px;">
+                                                                            <p style="color:white">@coms.content</p>
+                                                                            <!--Comment Text-->
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             }
                         }
 
@@ -456,8 +514,7 @@
         cursor: pointer;
     }
 
-    .post-rating-selected > .post-rating-button,
-    .post-rating-selected > .post-rating-count {
+    .post-rating-selected {
         color: #00e59b;
     }
 
@@ -578,7 +635,7 @@
                 opacity: 1;
             }
 
-    ._11R5k2:hover{
+    ._11R5k2:hover {
         color: #E72929;
         cursor: pointer;
     }
