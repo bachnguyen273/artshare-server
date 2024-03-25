@@ -25,6 +25,7 @@ namespace artshare_server.WebApp.Pages.Creators
         public float GrowthRate { get; set; }
         public int ProductSaleInYear { get; set; }
         public int GrowthRateByYear { get; set; }
+        public int NumberOfCustomer { get; set; }
 
         private HttpClient _httpClient = new();
         public async Task<IActionResult> OnGet()
@@ -81,6 +82,11 @@ namespace artshare_server.WebApp.Pages.Creators
                     // Calculate growth rate
                     GrowthRate = (float)Math.Round((previousMonthRevenue != 0 ? ((EarningMonthly - previousMonthRevenue) / previousMonthRevenue) * 100 : 0),1);
                     ProductSaleInYear = Orders.Where(order => order.CreateDate.Year == DateTime.Now.Year).Count();
+                    var productSaleLastYear = Orders.Where(order => order.CreateDate.Year == DateTime.Now.Year).Count();
+                    GrowthRateByYear = (ProductSaleInYear - productSaleLastYear) / productSaleLastYear;
+                    IEnumerable<IGrouping<string, OrderDashBoardViewModel>> numberCustomer = Orders.GroupBy(x => x.FullName);
+                    NumberOfCustomer = numberCustomer.Count();
+
                 }
                 else
                 {

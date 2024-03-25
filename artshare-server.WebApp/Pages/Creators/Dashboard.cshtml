@@ -7,6 +7,7 @@
     var earningMonthly = Model.EarningMonthly;
     var growthRate = Model.GrowthRate;
     var productSaleInYear = Model.ProductSaleInYear;
+    var numberOfCustomer = Model.NumberOfCustomer;
 }
 @if (!string.IsNullOrEmpty(role) && (role.Equals("Admin") || role.Equals("Creator")))
 {
@@ -370,8 +371,16 @@
                                                 <div class="text-xs font-weight-bold text-uppercase mb-1">Sales</div>
                                                 <div class="h5 mb-0 font-weight-bold text-gray-800">@productSaleInYear</div>
                                                 <div class="mt-2 mb-0 text-muted text-xs">
-                                                    <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 12%</span>
+                                                    @if(growthRate > 0)
+                                                    {}
+                                                    <span class="text-success mr-2"><i class="fa fa-arrow-up"></i>@productSaleInYear</span>
                                                     <span>Since last years</span>
+                                                    }
+                                                    else
+                                                    {
+                                                    <span class="text-success mr-2"><i class="fa fa-arrow-down"></i>@productSaleInYear</span>
+                                                    <span>Since last years</span>
+                                                    }
                                                 </div>
                                             </div>
                                             <div class="col-auto">
@@ -387,11 +396,10 @@
                                     <div class="card-body">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-uppercase mb-1">New User</div>
-                                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">366</div>
+                                                <div class="text-xs font-weight-bold text-uppercase mb-1">Total Customer</div>
+                                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@numberOfCustomer</div>
                                                 <div class="mt-2 mb-0 text-muted text-xs">
-                                                    <span class="text-success mr-2"><i class="fas fa-arrow-up"></i> 20.4%</span>
-                                                    <span>Since last month</span>
+                                                    
                                                 </div>
                                             </div>
                                             <div class="col-auto">
