@@ -47,5 +47,12 @@ namespace artshare_server.ApiModels.DTOs
         [JsonIgnore]
         public string? Status { get; set; }
     }
+
+    public class ArtworkCount
+    {
+        public int LikeCount { get; set; }
+        public int DislikeCount { get; set; }
+        public int CommentCount { get; set; }
+    }
 }
 

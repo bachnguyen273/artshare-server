@@ -17,5 +17,6 @@ namespace artshare_server.Services.Interfaces
 
         Task<bool> DeleteArtworkAsync(int artworkId);
         Task<List<int>> GetArtworkIdsByAccountIdAsync(int accountId);
+        Task<bool> UpdateCountOfArtwork(int artworkId, ArtworkCount artworkCount);
     }
 }
