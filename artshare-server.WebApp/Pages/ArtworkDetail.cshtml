@@ -33,7 +33,7 @@
         @if (HttpContext.Session.GetString("Role") != null)
         {
             <form method="post">
-                <button asp-page="./Audiences/Checkout" asp-route-id="@artwork.artworkId"  class="_11R5k" style="text-align:center; margin-right:6px;padding:0 24px;border-radius:28px;min-height:40px;"><span style="font-weight:600;">Download for $@artwork.price</span></button>
+                <button asp-page="./Audiences/Checkout" asp-route-id="@artwork.artworkId" class="_11R5k" style="text-align:center; margin-right:6px;padding:0 24px;border-radius:28px;min-height:40px;"><span style="font-weight:600;">Download for $@artwork.price</span></button>
             </form>
         }
 
@@ -69,12 +69,6 @@
                 } else {
                     isLiked = true;
                     if (isDisliked) {
-                        // isDisliked = false;
-                        // const dislikeCount = document.getElementById("dislikeCount");
-                        // dislikeCount.textContent = dislikeCountVal - 1;
-                        // const dislikeBtn = document.getElementById("dislikeBtn");
-                        // dislikeBtn.classList.remove("post-rating-selected");
-                        // dilikeCount.classList.remove("post-rating-selected");
                         toggleDisLike();
                     }
                     likeCount.textContent = likeCountVal + 1;
@@ -96,12 +90,6 @@
                 } else {
                     isDisliked = true;
                     if (isLiked) {
-                        // isLiked = false;
-                        // const likeCount = document.getElementById("likeCount");
-                        // likeCount.textContent = likeCountVal - 1;
-                        // const likeBtn = document.getElementById("likeBtn");
-                        // likeCount.classList.remove("post-rating-selected");
-                        // likeBtn.classList.remove("post-rating-selected");
                         toggleLike();
                     }
                     dilikeCount.textContent = dislikeCountVal + 1;
@@ -218,6 +206,7 @@
                                             <div class="vwya0">
                                                 <form method="post" asp-page-handler="Comment" asp-route-id="@artwork.artworkId">
                                                     <input name="Content" type="text" required="" style="color:#fafafa; background:none; outline:none; border:none;width:100%;" placeholder="Add a new comment..">
+                                                    <input name="CommentCount" type="hidden" value="@artwork.commentCount" />
                                                     <button class="phucnvm-comment">Comment</button>
                                                 </form>
                                             </div>
@@ -231,35 +220,35 @@
                         @{
                             foreach (var coms in commnents)
                             {
-                                                    <div class="_1LomQ" style="margin-left: 0;position: relative;margin-bottom: 16px;">
-                                                        <div>
-                                                            <div class="_2p7n" style="margin:0;display: grid;grid-template-columns: auto minmax(0, 1fr);gap:8px;">
-                                                                <div style="display: inline-flex">
-                                                                    <a href="./Index">
-                                                                        @if (coms.commenter.avatarUrl == null)
+                                <div class="_1LomQ" style="margin-left: 0;position: relative;margin-bottom: 16px;">
+                                    <div>
+                                        <div class="_2p7n" style="margin:0;display: grid;grid-template-columns: auto minmax(0, 1fr);gap:8px;">
+                                            <div style="display: inline-flex">
+                                                <a href="./Index">
+                                                    @if (coms.commenter.avatarUrl == null)
                                                     {
-                                                                            <img src="https://th.bing.com/th/id/R.ccfd669479d5d5ba603835bc82f41215?rik=c0YhIEaO%2bbKLJQ&pid=ImgRaw&r=0" style="height:50px;width:50px;display: inline-block;" />
+                                                        <img src="https://th.bing.com/th/id/R.ccfd669479d5d5ba603835bc82f41215?rik=c0YhIEaO%2bbKLJQ&pid=ImgRaw&r=0" style="height:50px;width:50px;display: inline-block;" />
                                                     }
                                                     else
                                                     {
-                                                                            <img src="@coms.commenter.avatarUrl" class="avatar" />
+                                                        <img src="@coms.commenter.avatarUrl" class="avatar" />
                                                     }
-                                                                        <!--Creator avatar-->
-                                                                    </a>
-                                                                </div>
-                                                                <div style="display: grid; grid-auto-flow: row;grid-template-columns: minmax(0, 1fr);gap: 4px;">
-                                                                    <div class="vwya0">
-                                                                        <h3 style="color:white">@coms.commenter.userName</h3>
-                                                                        <!--Creater username-->
-                                                                        <div style="margin-top:10px;">
-                                                                            <p style="color:white">@coms.content</p>
-                                                                            <!--Comment Text-->
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                    <!--Creator avatar-->
+                                                </a>
+                                            </div>
+                                            <div style="display: grid; grid-auto-flow: row;grid-template-columns: minmax(0, 1fr);gap: 4px;">
+                                                <div class="vwya0">
+                                                    <h3 style="color:white">@coms.commenter.userName</h3>
+                                                    <!--Creater username-->
+                                                    <div style="margin-top:10px;">
+                                                        <p style="color:white">@coms.content</p>
+                                                        <!--Comment Text-->
                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             }
                         }
 

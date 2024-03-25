@@ -69,6 +69,7 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
             }
             else if (!Search.IsNullOrEmpty())
             {
+                GenreID = int.Parse(HttpContext.Request.Query["genre"]);
                 artworkUrl += $"&Title={Search}";
             }
             else if (!HttpContext.Request.Query["searchVal"].IsNullOrEmpty())

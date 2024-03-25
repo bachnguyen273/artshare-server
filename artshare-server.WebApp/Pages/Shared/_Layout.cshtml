@@ -43,7 +43,15 @@
                 <button class="openbtn" onclick="openNav()">☰</button>
             </div>
             <div id="logo" style="margin-left: 50px">
-                <a asp-page="/Index"><img src="~/img/logo.png" alt="" title="" /></a>
+                @if (Context.Session.GetString("Role") == null || Context.Session.GetString("Role").Equals("Audience"))
+                {
+                    <a asp-page="/Index"><img src="~/img/logo.png" alt="" title="" /></a>
+                }
+                else if (Context.Session.GetString("Role").Equals("Creator"))
+                {
+                    <a asp-page="/Creators/Artworks/Index"><img src="~/img/logo.png" alt="" title="" /></a>
+                }
+
             </div>
 
             <form class="search-box" method="post">
