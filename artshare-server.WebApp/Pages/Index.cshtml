@@ -66,7 +66,7 @@
             @foreach (var art in artworks)
             {
                 <button class="box" asp-page="/ArtworkDetail" asp-route-id="@art.artworkId">
-                    <img src="@art.originalArtUrl" />
+                    <img src="@art.watermarkedArtUrl" />
                     <div class="phucnvm-img-content">
                         <div style="flex:1;">
                             <span></span>

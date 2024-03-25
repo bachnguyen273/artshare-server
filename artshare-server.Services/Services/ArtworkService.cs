@@ -177,10 +177,7 @@ namespace artshare_server.Services.Services
 
         public async Task<List<int>> GetArtworkIdsByAccountIdAsync(int accountId)
         {
-            //var orders = await _unitOfWork.OrderRepo.GetOrdersByAccountIdAsync(accountId);
-            //var orderDetails = await _unitOfWork.OrderDetailsRepo.GetOrderDetailsByOrdersAsync(_mapper.Map<List<Order>>(orders));
-            //return orderDetails.Select(od => od.ArtworkId).Distinct().ToList();
-            throw new NotImplementedException();
+            return await _unitOfWork.OrderRepo.GetArtworkIdsByAccountIdAsync(accountId);
         }
 
         public async Task<List<GetArtworkDTO>> GetAllArtworksAsync<T>(ArtworkFilters filters)

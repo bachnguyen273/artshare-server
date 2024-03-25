@@ -23,7 +23,7 @@
     </div>
 
     <div class="phucnvm-art">
-        <img src="@artwork.originalArtUrl" />
+        <img src="@artwork.watermarkedArtUrl" />
         <!--Art work image-->
     </div>
 
@@ -32,9 +32,21 @@
         <!--Button Price-->
         @if (HttpContext.Session.GetString("Role") != null)
         {
-            <form method="post">
-                <button asp-page="./Audiences/Checkout" asp-route-id="@artwork.artworkId"  class="_11R5k" style="text-align:center; margin-right:6px;padding:0 24px;border-radius:28px;min-height:40px;"><span style="font-weight:600;">Download for $@artwork.price</span></button>
-            </form>
+            @if (Model.IsBought)
+            {
+                <button class="_11R5k" style="text-align:center; margin-right:6px;padding:0 24px;border-radius:28px;min-height:40px;">
+                    <a asp-page-handler="DownloadImage" asp-route-imageUrl="@Model.Artwork.originalArtUrl" asp-route-title="@Model.Artwork.title">
+                        <span style="font-weight:600;">Download</span>
+                    </a>
+                </button>
+            }
+            else
+            {
+                <form method="post">
+                    <button asp-page="./Audiences/Checkout" asp-route-id="@artwork.artworkId" class="_11R5k" style="text-align:center; margin-right:6px;padding:0 24px;border-radius:28px;min-height:40px;"><span style="font-weight:600;">Download for $@artwork.price</span></button>
+                </form>
+            }
+            
         }
         
         

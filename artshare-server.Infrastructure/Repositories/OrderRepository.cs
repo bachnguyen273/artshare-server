@@ -46,5 +46,15 @@ namespace artshare_server.Infrastructure.Repositories
             List<Order> list = await _dbContext.Orders.ToListAsync();
             return _mapper.Map<List<GetOrderDTO>>(list);
         }
+
+        public async Task<List<int>> GetArtworkIdsByAccountIdAsync(int accountId)
+        {
+            return await _dbContext.Orders
+                .Where(order => order.CustomerId == accountId && order.ArtworkId.HasValue)
+                .Select(order => order.ArtworkId.Value)
+                .ToListAsync();
+        }
+
+
     }
 }
