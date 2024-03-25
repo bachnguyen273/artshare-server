@@ -43,14 +43,22 @@
                 <button class="openbtn" onclick="openNav()">☰</button>
             </div>
             <div id="logo" style="margin-left: 50px">
-                <a asp-page="/Index"><img src="~/img/logo.png" alt="" title="" /></a>
+                @if (Context.Session.GetString("Role") == null || Context.Session.GetString("Role").Equals("Audience"))
+                {
+                    <a asp-page="/Index"><img src="~/img/logo.png" alt="" title="" /></a>
+                }
+                else if (Context.Session.GetString("Role").Equals("Creator"))
+                {
+                    <a asp-page="/Creators/Artworks/Index"><img src="~/img/logo.png" alt="" title="" /></a>
+                }
+
             </div>
 
             <form class="search-box" method="post">
                 @if (Context.Session.GetString("Role") == null || Context.Session.GetString("Role").Equals("Audience"))
                 {
-                    <button type="submit" asp-page="/Index" asp-page-handler="Search"><span class="fa fa-search"></span></button>
-                    <input type="text" name="SearchValue" placeholder="Search" id="myInput" />
+                    <button type="submit" asp-page="/Index" asp-page-handler="Search"><span class="fa fa-search" ></span></button>
+                    <input type="text" name="SearchValue" placeholder="Search" id="myInput" required="" />
                 }
                 else if (Context.Session.GetString("Role").Equals("Creator"))
                 {
