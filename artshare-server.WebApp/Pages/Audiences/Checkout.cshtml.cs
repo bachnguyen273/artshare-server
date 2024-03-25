@@ -119,7 +119,6 @@ namespace artshare_server.WebApp.Pages.Audiences
                     }
                 }
             }
-            await CreateOrder();
             return new JsonResult("");
         }
 
@@ -146,6 +145,7 @@ namespace artshare_server.WebApp.Pages.Audiences
             // Send the request
             var response = await _httpClient.SendAsync(request);
         }
+
 
         public JsonResult OnPostCancelOrder([FromBody] JsonObject data)
         {
