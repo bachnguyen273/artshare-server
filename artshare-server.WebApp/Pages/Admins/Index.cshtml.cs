@@ -12,7 +12,7 @@ namespace artshare_server.WebApp.Pages.Admins
         private HttpClient _httpClient;
 
         [BindProperty]
-        public IEnumerable<ProfileViewModel> AccList { get; set; }
+        public IEnumerable<dynamic> AccList { get; set; }
 
         [BindProperty]
         public int Check { get; set; }
@@ -71,11 +71,33 @@ namespace artshare_server.WebApp.Pages.Admins
                 var response = await _httpClient.SendAsync(request);
                 if (response.IsSuccessStatusCode)
                 {
+                    //var responseContent = await response.Content.ReadAsStringAsync();
+                    // var acc = JsonConvert.DeserializeObject<IEnumerable<ProfileViewModel>>(responseContent);
+                    //int recs = acc.Count();
+                    //Pager = new Pager(recs, page, pageSize);
+                    //AccList = acc.Skip((page - 1) * pageSize).Take(Pager.PageSize);
                     var responseContent = await response.Content.ReadAsStringAsync();
-                    var acc = JsonConvert.DeserializeObject<IEnumerable<ProfileViewModel>>(responseContent);
-                    int recs = acc.Count();
+                    dynamic accs = JsonConvert.DeserializeObject<dynamic>(responseContent);
+                    List<dynamic> accList = new List<dynamic>();
+                    foreach (var acc in accs.items)
+                    {
+                        dynamic temp = new
+                        {
+                            AccountId = acc.accountId,
+                            JoinDate = acc.joinDate,
+                            AvatarUrl = acc.avatarUrl,
+                            Email = acc.email,
+                            Role = acc.role,
+                            Status = acc.status,
+                            UserName = acc.userName,
+                            FullName = acc.fullName,
+                            PhoneNumber = acc.phoneNumber
+                        };
+                        accList.Add(temp);
+                    }
+                    int recs = accList.Count();
                     Pager = new Pager(recs, page, pageSize);
-                    AccList = acc.Skip((page - 1) * pageSize).Take(Pager.PageSize);
+                    AccList = accList.Skip((page - 1) * pageSize).Take(Pager.PageSize);
                 }
             }
             else
