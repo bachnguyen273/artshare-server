@@ -49,6 +49,12 @@
                 <div style="display: flex; flex-wrap: wrap; justify-content: center">
                     <div asp-validation-summary="All" class="text-danger"></div>
                 </div>
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        @TempData["ErrorMessage"]
+                    </div>
+                }
                 <button type="submit" style="margin: auto" class="primary-btn text-uppercase d-flex justify-content-center">Submit</button>
             </form>
         </section>

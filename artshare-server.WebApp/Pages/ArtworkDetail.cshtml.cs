@@ -14,6 +14,12 @@ namespace artshare_server.WebApp.Pages
         public dynamic Comments { get; set; }
         public bool IsBought { get; set; }
 
+        public async Task<IActionResult> OnGet(int id)
+        {
+            await LoadData(id);
+            return Page();
+        }
+
         public async Task<IActionResult> OnPostAsync(int id)
         {
             await LoadData(id);

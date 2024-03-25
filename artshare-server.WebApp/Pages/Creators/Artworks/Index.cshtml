@@ -64,7 +64,7 @@
         <form method="post">
             @foreach (var art in artworks)
             {
-                <button class="box" asp-page="/Creators/Artworks/Details" asp-route-id="@art.artworkId">
+                <button class="box" asp-page="/Creators/Artworks/Detail" asp-route-id="@art.artworkId">
                     <img src="@art.originalArtUrl" />
                     <div class="phucnvm-img-content">
                         <div style="flex:1;">

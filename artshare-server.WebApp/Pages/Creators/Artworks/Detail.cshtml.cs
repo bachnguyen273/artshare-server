@@ -37,13 +37,15 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int artworkId)
+        public async Task<IActionResult> OnPostAsync(int id)
         {
-            HttpResponseMessage artworkResponseMessage = await _httpClient.DeleteAsync(_apiURL + $"/Artwork/DeleteArtwork/{artworkId}");
-            if (artworkResponseMessage.IsSuccessStatusCode)
-            {
-                return RedirectToPage("/Index");
-            }
+            _jwtToken = HttpContext.Session.GetString("JWTToken");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _jwtToken);
+            HttpResponseMessage artworkResponseMessage = await _httpClient.GetAsync(_apiURL + "/Artwork/GetArtworkById?id=" + id);
+            artworkResponseMessage.EnsureSuccessStatusCode();
+            string artworkContent = await artworkResponseMessage.Content.ReadAsStringAsync();
+            dynamic artworkObject = JsonConvert.DeserializeObject(artworkContent);
+            Artwork = artworkObject.data.artwork;
             return Page();
         }
     }

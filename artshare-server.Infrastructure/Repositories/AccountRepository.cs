@@ -1,4 +1,5 @@
 ﻿using artshare_server.ApiModels.DTOs;
+using artshare_server.Core.Enums;
 using artshare_server.Core.Interfaces;
 using artshare_server.Core.Models;
 using AutoMapper;
@@ -40,7 +41,7 @@ namespace artshare_server.Infrastructure.Repositories
 
         public async Task<Account?> GetByEmailAsync(string email)
         {
-            return await _dbContext.Accounts.Where(t => t.Email == email).FirstOrDefaultAsync();
+            return await _dbContext.Accounts.Where(t => t.Email == email && t.Status == AccountStatus.Active).FirstOrDefaultAsync();
         }
 
         public async Task<Account?> GetByUsernameAsync(string username)
