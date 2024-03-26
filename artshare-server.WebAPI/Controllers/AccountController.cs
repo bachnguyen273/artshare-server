@@ -1,11 +1,12 @@
 ﻿using artshare_server.ApiModels.DTOs;
 using artshare_server.Core.Enums;
 using artshare_server.Core.Interfaces;
+using artshare_server.Services.FilterModels;
 using artshare_server.Services.Interfaces;
+using artshare_server.Services.Services;
 using artshare_server.WebAPI.ResponseModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace artshare_server.Controllers
@@ -17,6 +18,7 @@ namespace artshare_server.Controllers
         private readonly IAccountService _accountService;
         private readonly IAzureBlobStorageService _azureBlobStorageService;
 
+
         public AccountController(IAccountService accountService, IAzureBlobStorageService azureBlobStorageService)
         {
             _accountService = accountService;
@@ -24,11 +26,11 @@ namespace artshare_server.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllAccount()
+        public async Task<IActionResult> GetAllAccount([FromQuery] AccountFilter accountFilter)
         {
             try
             {
-                var accList = await _accountService.GetAllAccountsAsync();
+                var accList = await _accountService.GetAllAccountsAsync(accountFilter);
                 if(accList == null)
                 {
                     return BadRequest("List is null");
@@ -77,26 +79,27 @@ namespace artshare_server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProfile (int id, ProfileDTO profileDTO)
+        public async Task<IActionResult> UpdateProfile(int id, ProfileDTO profileDTO)
         {
             try
             {
-                var check = await _accountService.GetAccountByIdAsync (id);
+                var check = await _accountService.GetAccountByIdAsync(id);
                 if (check == null)
                 {
                     return NotFound();
                 }
-                var up = await _accountService.UpdateAccountAsync(id,profileDTO);
+                var up = await _accountService.UpdateAccountAsync(id, profileDTO);
                 if (up)
                 {
                     return Ok("Update SUCCESS!");
                 }
                 return BadRequest("Update FAIL");
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-           
+
         }
 
 
@@ -160,15 +163,35 @@ namespace artshare_server.Controllers
             try
             {
                 var acc = await _accountService.GetAccountByUsernameAsync(username);
-                if(acc == null)
+                if (acc == null)
                 {
                     return NotFound();
                 }
                 return Ok(acc);
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
         }
+
+        [HttpGet("{username}")]
+        public async Task<IActionResult> SearchByUsernameToList(string username)
+        {
+            try
+            {
+                var acc = await _accountService.SearchAccountsAsync(username);
+                if (acc == null)
+                {
+                    return NotFound();
+                }
+                return Ok(acc);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
     }
 }

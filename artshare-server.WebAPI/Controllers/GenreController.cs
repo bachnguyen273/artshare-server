@@ -41,7 +41,6 @@ namespace artshare_server.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
         public async Task<IActionResult> GetGenreById(int id)
         {
             try
@@ -60,7 +59,6 @@ namespace artshare_server.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateGenre(int id, [FromBody] UpdateGenreDTO updateGenreDTO)
         {
             try
@@ -86,7 +84,6 @@ namespace artshare_server.Controllers
 
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteGenre(int id)
         {
             try
@@ -106,7 +103,6 @@ namespace artshare_server.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateGenre([FromBody] CreateGenreDTO createArtworkDTO)
         {
             try

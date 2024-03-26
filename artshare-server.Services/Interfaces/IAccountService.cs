@@ -1,17 +1,18 @@
 ﻿using artshare_server.ApiModels.DTOs;
 using artshare_server.Core.Models;
+using artshare_server.Services.FilterModels;
+using artshare_server.Services.FilterModels.Helpers;
 
 namespace artshare_server.Services.Interfaces
 {
     public interface IAccountService
     {
-        Task<IEnumerable<ProfileDTO>> GetAllAccountsAsync();
-        Task<IEnumerable<ProfileDTO>> SearchAccountsAsync(string username);
-
-        Task<ProfileDTO?> GetAccountByIdAsync(int accountId);
+        Task<PagedResult<GetAccountDTO>> GetAllAccountsAsync(AccountFilter accountFilter);
+        Task<string> CheckAccount(Account register);
+        Task<GetAccountDTO?> GetAccountByIdAsync(int accountId);
         Task<Account?> GetAccountByEmailAsync(string email);
-        Task<Account?> GetAccountByEmailAndPasswordAsync(string email, string password);
-        Task<ProfileDTO?> GetAccountByUsernameAsync(string username);
+        Task<GetAccountDTO?> GetAccountByEmailAndPasswordAsync(string email, string password);
+        Task<GetAccountDTO?> GetAccountByUsernameAsync(string username);
 
         Task<bool> CreateAccountAsync(Account account);
 
@@ -20,5 +21,6 @@ namespace artshare_server.Services.Interfaces
         Task<bool> DeleteAccountAsync(int accountId);
 
         Task<bool> UpdateAccountStatuslAsync(int accountId);
+        Task<IEnumerable<UpdateAccountDTO>> SearchAccountsAsync(string username);
     }
 }

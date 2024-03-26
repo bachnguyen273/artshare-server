@@ -51,7 +51,7 @@ namespace artshare_server.Services.Services
                 var result = await _unitOfWork.SaveAsync() > 0;
                 return result;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -91,6 +91,6 @@ namespace artshare_server.Services.Services
             return await _unitOfWork.LikeRepo.CountDisLikeByArtWorkId(artworkId);
         }
 
-       
+
     }
 }

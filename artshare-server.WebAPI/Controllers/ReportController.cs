@@ -1,9 +1,6 @@
 ﻿using artshare_server.ApiModels.DTOs;
 using artshare_server.Core.Enums;
 using artshare_server.Services.Interfaces;
-using artshare_server.Services.Services;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace artshare_server.Controllers
@@ -13,25 +10,25 @@ namespace artshare_server.Controllers
     public class ReportController : ControllerBase
     {
         private readonly IReportService _reportservice;
-        public ReportController (IReportService reportservice)
+        public ReportController(IReportService reportservice)
         {
             _reportservice = reportservice;
         }
         [HttpGet]
-        public async Task<IActionResult> GetAllReport() 
+        public async Task<IActionResult> GetAllReport()
         {
             var listReport = await _reportservice.GetAllReportsAsync();
             if (listReport == null)
             {
                 return NotFound();
             }
-            return Ok(listReport.OrderBy(r => r.ReportDate).Where(r => r.Status.Equals(ReportStatus.Processing)).ToList());
+            return Ok(listReport.OrderBy(r => r.ReportDate));
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> CreateReportAsync(ReportDTO reportDTO)
         {
-            var report = _reportservice.GetReportByAccountIdAndArtworkId(reportDTO.AccountId, reportDTO.ArtworkId);
+            var report = _reportservice.GetReportByAccountIdAndArtworkId(reportDTO.AccountId, reportDTO.ArtworkId).Result;
             if (report != null)
             {
                 return BadRequest("Already reported");
@@ -40,12 +37,13 @@ namespace artshare_server.Controllers
             if (result)
             {
                 return Ok();
-            }return BadRequest("Create faile");
+            }
+            return BadRequest("Create faile");
         }
         [HttpPut]
         public async Task<IActionResult> DenyReport(int id)
         {
-            
+
             bool result = await _reportservice.DenyReport(id);
             if (result)
             {

@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace artshare_server.Services.FilterModels
 {
-    public class GenreFilters : Filterfilter<Genre>
+    public class GenreFilters : FilterOptions<Genre>
     {
+        public int? GenreId { get; set; }
         public string? Name { get; set; }
     }
 }

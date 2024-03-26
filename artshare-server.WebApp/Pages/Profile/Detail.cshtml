@@ -1,0 +1,56 @@
+﻿@page
+@model artshare_server.WebApp.Pages.Profile.DetailModel
+@{
+}
+
+<section class="quote-area pt-100">
+    <div class="container">
+        <div>
+            <div>
+                <h1 class="phucnvm-h1">
+                    <span>Account management</span>
+                </h1>
+            </div>
+
+
+            <form method="post" enctype="multipart/form-data">
+                <h2 class="phucnvm-h2">Your avatar</h2>
+                <div style="margin-top:10px;">
+                    <p style="margin-bottom: 0.2rem;margin-top: 1rem">Photo</p>
+                    @if (Model.ProfileViewModel1.AvatarUrl != null)
+                    {
+                        <img style="display:inline-block;width:80px;height:80px;border-radius:100%" src="@Model.ProfileViewModel1.AvatarUrl" />
+                    }
+                    else
+                    {
+                        <img style="display:inline-block;width:80px;height:80px;border-radius:100%" src="https://i0.wp.com/thumbs.dreamstime.com/b/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-179376714.jpg" />
+                    }
+                </div>
+                <h2 class="phucnvm-h2">Your account</h2>
+                <p style="margin-bottom: 0.2rem;margin-top: 1rem">Email</p>
+                <input asp-for="ProfileViewModel1.Email" name="Email" class="form-control1" placeholder="Enter Email " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email '" readonly="" type="email" />
+                <p style="margin-bottom: 0.1rem;margin-top: 1rem" id="oldPasswordp">Password</p>
+                <input name="PasswordHash" id="oldPassword" class="form-control1" placeholder="Enter Password " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Password '" type="password" style="width:80%; display:inline-block" value="@Model.ProfileViewModel1.PasswordHash" readonly="" />
+
+                <h2 class="phucnvm-h2">Personal information</h2>
+                <p style="margin-bottom: 0.2rem;margin-top: 1rem">Username</p>
+                <input asp-for="ProfileViewModel1.UserName" name="UserName" class="form-control1" placeholder="Enter UserName " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter UserName '" readonly="" type="text" />
+                <p style="margin-bottom: 0.1rem;margin-top: 1rem">Full name</p>
+                <input asp-for="ProfileViewModel1.FullName" name="FullName" class="form-control1" placeholder="Enter FullName " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter FullName '" readonly="" type="text">
+                <p style="margin-bottom: 0.1rem;margin-top: 1rem">Phone number</p>
+                <input asp-for="ProfileViewModel1.PhoneNumber" name="PhoneNumber" class="form-control1" placeholder="Enter PhoneNumber " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter PhoneNumber '" readonly="" type="text" />
+                <p style="margin-bottom: 0.1rem;margin-top: 1rem">Join Date</p>
+                <input asp-for="ProfileViewModel1.JoinDate" name="JoinDate" class="form-control1" placeholder="Enter PhoneNumber " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter PhoneNumber '" readonly="" type="text" />
+                <p style="margin-bottom: 0.1rem;margin-top: 1rem">Role</p>
+                <input asp-for="ProfileViewModel1.Role" name="Role" class="form-control1" placeholder="Enter PhoneNumber " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter PhoneNumber '" readonly="" type="text" />
+                <p style="margin-bottom: 0.1rem;margin-top: 1rem">Status</p>
+                <input asp-for="ProfileViewModel1.Status" name="Role" class="form-control1" placeholder="Enter PhoneNumber " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter PhoneNumber '" readonly="" type="text" />
+                <a class="primary-btn text-uppercase" style="margin-top: 1rem; width:100%; text-align:center" href="../Profile/Edit?id=@Model.ProfileId">Edit</a>
+            </form>
+        </div>
+@*         @foreach (var url in Model.ArtworkUrls)
+        {
+            <img src="@url" alt="Artwork Image" style="max-width: 300px; margin-bottom: 20px;" />
+        } *@
+    </div>
+</section>

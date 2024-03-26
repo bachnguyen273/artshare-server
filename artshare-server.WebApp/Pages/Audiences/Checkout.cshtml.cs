@@ -1,6 +1,5 @@
-using artshare_server.WebApp.SessionHelper;
+using artshare_server.WebApp.SessionHelpers;
 using artshare_server.WebApp.ViewModels;
-using Azure.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
@@ -15,32 +14,29 @@ namespace artshare_server.WebApp.Pages.Audiences
         public string PaypalClientId { get; set; }
         public string PaypalSecret { get; set; }
         public string PaypalUrl { get; set; }
-        public List<dynamic> Cart { get; set; }
+        public dynamic Artwork { get; set; }
         private HttpClient _httpClient;
 
         public CheckoutModel(IConfiguration configuration)
         {
-            PaypalClientId = configuration["Paypal:ClientId"];
-            PaypalSecret = configuration["Paypal:Secret"];
-            PaypalUrl = configuration["Paypal:Url"];
             _httpClient = new HttpClient();
+            PaypalUrl = configuration["Paypal:Url"];
         }
 
-        public async Task<IActionResult> OnGetAsync()
+        public async Task OnPostAsync(int id)
         {
-            Cart = HttpContext.Session.Get<List<dynamic>>("Cart");
-            return Page();
+            await LoadData(id);
         }
 
-        public JsonResult OnPostCreateOrder()
+        public async Task<JsonResult> OnPostCreateOrder(int id)
         {
-            Cart = HttpContext.Session.Get<List<dynamic>>("Cart");
+            await LoadData(id);
             JsonObject createOrderRequest = new JsonObject();
             createOrderRequest.Add("intent", "CAPTURE");
 
             JsonObject amount = new JsonObject();
             amount.Add("currency_code", "USD");
-            amount.Add("value", Cart.Sum(item => item.price).ToString());
+            amount.Add("value", Artwork.price.ToString());
 
             JsonObject purchaseUnit1 = new JsonObject();
             purchaseUnit1.Add("amount", amount);
@@ -85,12 +81,12 @@ namespace artshare_server.WebApp.Pages.Audiences
             return new JsonResult(response);
         }
 
-        public async Task<JsonResult> OnPostCompleteOrder([FromBody] JsonObject data)
+        public async Task<JsonResult> OnPostCompleteOrder([FromBody] JsonObject data, int id)
         {
             if (data == null || data["orderID"] == null) return new JsonResult("");
             var orderID = data["orderID"]!.ToString();
-            Cart = HttpContext.Session.Get<List<dynamic>>("Cart");
 
+            await LoadData(id);
             string accessToken = GetPaypalAccessToken();
 
             string url = PaypalUrl + $"/v2/checkout/orders/{orderID}/capture";
@@ -105,19 +101,26 @@ namespace artshare_server.WebApp.Pages.Audiences
                 responseTask.Wait();
 
                 var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsStringAsync();
+                    readTask.Wait();
 
-                var readTask = result.Content.ReadAsStringAsync();
-                readTask.Wait();
-
-                var strResponse = readTask.Result;
-
-                var jsonResponse = JsonNode.Parse(strResponse);
-                await CreateOrder();
-
-                return new JsonResult("success");
+                    var strResponse = readTask.Result;
+                    var jsonResponse = JsonNode.Parse(strResponse);
+                    if (jsonResponse != null)
+                    {
+                        string paypalOrderStatus = jsonResponse["status"]?.ToString() ?? "";
+                        if (paypalOrderStatus == "COMPLETED")
+                        {
+                            await CreateOrder();
+                            return new JsonResult("success");
+                        }
+                    }
+                }
             }
+            return new JsonResult("");
         }
-
 
         private async Task CreateOrder()
         {
@@ -131,26 +134,18 @@ namespace artshare_server.WebApp.Pages.Audiences
             var requestBody = new
             {
                 CustomerId = int.Parse(userId),
-                TotalPrice = Cart.Sum(item => item.price),
-                OrderDetails = new List<object>()
+                Price = Artwork.price,
+                ArtworkId = Artwork.artworkId
             };
 
-            foreach (var item in Cart)
-            {
-                requestBody.OrderDetails.Add(new
-                {
-                    ArtworkId = item.artworkId,
-                    UnitPrice = item.price
-                });
-            }
-
             var jsonBody = JsonConvert.SerializeObject(requestBody);
-            var request = new HttpRequestMessage(HttpMethod.Post, $"{apiUrl}/Order/CreateOrderWithOrderDetails");
+            var request = new HttpRequestMessage(HttpMethod.Post, $"{apiUrl}/Order/CreateOrder");
             request.Content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
 
             // Send the request
             var response = await _httpClient.SendAsync(request);
         }
+
 
         public JsonResult OnPostCancelOrder([FromBody] JsonObject data)
         {
@@ -194,6 +189,30 @@ namespace artshare_server.WebApp.Pages.Audiences
             }
 
             return accessToken;
+        }
+
+        private async Task<IActionResult> LoadData(int id)
+        {
+            IConfiguration config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", true, true)
+                .Build();
+
+            string apiUrl = config["API_URL"];
+            string artworkUrl = $"{apiUrl}/Artwork/GetArtworkById?id={id}";
+            using (var httpClient = new HttpClient())
+            {
+                //GetArtWork
+                HttpResponseMessage artworkResponseMessage = await httpClient.GetAsync(artworkUrl);
+                artworkResponseMessage.EnsureSuccessStatusCode();
+                string artworkContent = await artworkResponseMessage.Content.ReadAsStringAsync();
+                dynamic artworkObject = JsonConvert.DeserializeObject(artworkContent);
+                Artwork = artworkObject.data.artwork;
+                PaypalClientId = Artwork.creator.paypalClientId;
+                PaypalSecret = Artwork.creator.paypalSercretKey;
+            }
+
+            return Page();
         }
     }
 }

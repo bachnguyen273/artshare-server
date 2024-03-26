@@ -9,11 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\artshare-server.Core\artshare-server.Core.csproj" />
-    <ProjectReference Include="..\artshare-server.WebAPI\artshare-server.WebAPI.csproj" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.35.0" />
   </ItemGroup>
 
 </Project>

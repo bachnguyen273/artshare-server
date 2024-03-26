@@ -8,43 +8,72 @@
 <section class="banner-area relative" id="home">
     <div class="overlay overlay-bg"></div>
     <div class="container">
-        <div class="row fullscreen d-flex align-items-center justify-content-center">
-            <div class="banner-content col-lg-8">
-                <h1 class="text-white">
-                    WELCOME TO ART SHARING
-                </h1>
-                <br />
-                <a asp-page="/Login" class="primary-btn text-uppercase">Get Start</a>
+        <div class="container d-flex justify-content-center">
+            <div class="section-top-border text-white">
+                <div class="row align-items-center">
+<<<<<<< HEAD
+                    @if (Model.IsBought)
+                    {
+                        <!-- Image Column -->
+                        <div class="col-md-4 text-center">
+                            <img src="@Model.Artwork.originalArtUrl" alt="@Model.Artwork.title" class="img-fluid rounded-lg" style="max-width: 100%; height: 100%;">
+                        </div>
+                    }
+                    else
+                    {
+                        <!-- Image Column -->
+                        <div class="col-md-4 text-center">
+                            <img src="@Model.Artwork.watermarkedArtUrl" alt="@Model.Artwork.title" class="img-fluid rounded-lg" style="max-width: 100%; height: 100%;">
+                        </div>
+                    }
+=======
+                    <!-- Image Column -->
+                    <div class="col-md-4 text-center">
+                        @* <img src="@Model.Artwork.watermarkedArtUrl" alt="@Model.Artwork.title" class="img-fluid rounded-lg" style="max-width: 100%; height: 100%;"> *@
+                    </div>
+>>>>>>> Branch_Feat/Artwork/phucnvm-bao
+                    <!-- Text Content Column -->
+                    <div class="col-md-8 text-white">
+@*                         <div class="input-container mt-10">
+                            <p>Artwork ID: <span>@Model.Artwork.artworkId</span></p>
+                            <p>Create Date: <span>@Model.Artwork.createdDate</span></p>
+                            <p>Like Count: <span>@Model.Artwork.likeCount</span></p>
+                            <p>Dislike Count: <span>@Model.Artwork.dislikeCount</span></p>
+                            <p>Comment Count: <span>@Model.Artwork.commentCount</span></p>
+                            <!-- <p>@Model.Artwork.reports</p> -->
+                            <p>Title: <span>@Model.Artwork.title</span></p>
+                            <p>Description: <span>@Model.Artwork.description</span></p>
+                            <p>Price: <span>@Model.Artwork.price</span> VND</p>
+                            <p>Genre: <span>@Model.Artwork.name</span></p>
+                        </div>
+<<<<<<< HEAD
+                        @if (Model.IsBought)
+                        {
+                            <a class="genric-btn success" href="@Model.Artwork.originalArtUrl" download />
+                        }
+                        else
+                        {
+                            @if (Model.IsProductInCart(Model.Artwork))
+                            {
+                                <form method="post" asp-page-handler="RemoveFromCart" asp-route-ItemId="@Model.Artwork.artworkId">
+                                    <button type="submit" class="genric-btn danger radius">Remove from Cart</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <form method="post" asp-page-handler="AddToCart" asp-route-ItemId="@Model.Artwork.artworkId">
+                                    <button type="submit" class="genric-btn info radius">Add to Cart</button>
+                                </form>
+                            }
+                        }
+=======
+                        <form method="post" asp-page-handler="AddToCart" asp-route-ItemId="@Model.Artwork.artworkId" >
+                            <button type="submit" class="primary-btn text-uppercase">Add to Cart</button>
+                        </form> *@
+>>>>>>> Branch_Feat/Artwork/phucnvm-bao
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
-<div class="whole-wrap">
-    <div class="container">
-        <div class="section-top-border">
-            <h3 class="mb-30">@Model.Artwork.title</h3>
-            <div class="row">
-                <div class="col-md-3">
-                    <img src="@Model.Artwork.originalArtUrl" alt="@Model.Artwork.title" class="img-fluid">
-                </div>
-                <div class="col-md-9 mt-sm-20">
-                    <p>@Model.Artwork.description</p>
-                    <p>@Model.Artwork.price</p>
-                </div>
-                @if (Model.IsProductInCart(Model.Artwork))
-                {
-                    <form method="post" asp-page-handler="RemoveFromCart" asp-route-ItemId="@Model.Artwork.artworkId">
-                        <button type="submit" class="genric-btn danger radius">Remove from Cart</button>
-                    </form>
-                }
-                else
-                {
-                    <form method="post" asp-page-handler="AddToCart" asp-route-ItemId="@Model.Artwork.artworkId">
-                        <button type="submit" class="genric-btn info radius">Add to Cart</button>
-                    </form>
-                }
-            </div>
-        </div>
-    </div>
-</div>
-

@@ -3,10 +3,11 @@
     public class Order
     {
         public int OrderId { get; set; }
-        public int CustomerId { get; set; }
-        public DateTime OrderDate { get; set; }
-        public decimal TotalPrice { get; set; }
-        public Account Customer { get; set; }
-        public ICollection<OrderDetails> OrderDetails { get; set; }
+        public int? CustomerId { get; set; }
+        public int? ArtworkId { get; set; }
+        public decimal Price { get; set; }
+        public DateTime CreateDate { get; set; }
+        public virtual Account? Customer { get; set; }
+        public virtual Artwork? Artwork { get; set; }
     }
 }

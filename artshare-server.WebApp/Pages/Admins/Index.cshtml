@@ -1,4 +1,193 @@
 ﻿@page
-@model artshare_server.WebApp.Pages.Admins.IndexModel
+@model IndexModel
 @{
+
+}
+
+
+@{
+    var user = Model.UserName;
+    int pageNo = 0;
+    var pager = Model.Pager;
+    if (pager != null)
+    {
+        pageNo = pager.CurrentPage;
+    }
+    var search = TempData["SearchValue"];
+}
+@if (TempData["Alert"] != null)
+{
+    <div class="alert alert-success">
+        <strong>Success !</strong>@TempData["Alert"];
+    </div>
+}
+@if (TempData["Alert1"] != null)
+{
+    <div class="alert alert-danger">
+        <strong>Fail !</strong>@TempData["Alert1"];
+    </div>
+}
+
+@if (Model.Check == 1)
+{
+    <section class="quote-area pt-100">
+        <div class="container">
+            <h2 style="text-align:center;">Account Management</h2>
+            <div style="margin-top:20px;">
+                <form method="post" enctype="multipart/form-data">
+                    <input class="form-control1" type="text" name="SearchValue" placeholder="Enter username" style="display:inline-block; width:40%" required="" />
+                    <button type="submit" class="primary-btn text-uppercase" asp-page-handler="Search" style="margin-left:10px; border-radius:10px"> Search </button>
+                    <a href="./Index?page=1" class="primary-btn text-uppercase" style="margin-left:20px; border-radius:10px"> ALL</a>
+                </form>
+            </div>
+            <div>
+                <table class="phucnvm-table">
+                    <thead>
+                        <tr>
+                            <td>Account Id</td>
+                            <td>Email</td>
+                            <td>User Name</td>
+                            <td>Full Name</td>
+                            <td>Phone Number</td>
+                            <td>Status</td>
+                            <td>Role</td>
+                            <td>Join Date</td>
+                            <td>isDelete</td>
+                            <td>isEdit</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (user == null)
+                        {
+                            @foreach (var account in Model.AccList)
+                            {
+                                <tr>
+                                    <td>@account.AccountId</td>
+                                    <td>@account.Email</td>
+                                    <td>@account.UserName</td>
+                                    <td>@account.FullName</td>
+                                    <td>@account.PhoneNumber</td>
+                                    <td class="phucnvm-status">
+                                        @if (account.Status == "Active")
+                                        {
+                                            <p style="text-align:center;margin-top:10px; background-color:#F2FFE9;border-radius:70px; padding:5px;color:#88d200">@account.Status</p>
+                                        }
+                                        else
+                                        {
+                                            <p style="text-align:center;margin-top:10px; background-color:#FFDEDE;border-radius:70px; padding:5px;color:#EB4747">@account.Status</p>
+                                        }
+                                    </td>
+                                    <td>@account.Role</td>
+                                    <td>@account.JoinDate</td>
+                                    <form method="post" enctype="multipart/form-data">
+                                    <td><button type="submit" class="primary-btn text-uppercase" asp-page-handler="Delete" asp-route-id="@account.AccountId">Delete</button></td>
+                                    <td><a class="primary-btn text-uppercase" href="/Admins/Edit?id=@account.AccountId">Edit</a></td>
+                                    </form>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            @foreach (var userSe in user)
+                            {
+                                <tr>
+                                    <td>@userSe.AccountId</td>
+                                    <td>@userSe.Email</td>
+                                    <td>@userSe.UserName</td>
+                                    <td>@userSe.FullName</td>
+                                    <td>@userSe.PhoneNumber</td>
+                                    <td>@userSe.Status</td>
+                                    <td>@userSe.Role</td>
+                                    <td>@userSe.JoinDate</td>
+                                    <form method="post" enctype="multipart/form-data">
+                                    <td><button type="submit" class="primary-btn text-uppercase" asp-page-handler="Delete" asp-route-id="@userSe.AccountId">Delete</button></td>
+                                    <td><a class="primary-btn text-uppercase" href="../Edit?id=@userSe.AccountId">Edit</a></td>
+                                    </form>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+                <div>
+                    @if (pager.TotalPages > 0)
+                    {
+                        <ul class="pagination justify-content-end">
+                            @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+                            {
+                                <li class="page-item @(pge == pager.CurrentPage ? "active" : "")">
+                                    @if (user == null)
+                                    {
+                                        <a class="page-link" href="/Admins/Index?page=@pge">@pge</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="page-link" href="/Admins/Index?page=@pge&searchValue=@search">@pge</a>
+                                    }
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+
+<style>
+    .phucnvm-table {
+        border-collapse: collapse;
+        margin: 25px 0;
+        font-size: 0.9rem;
+        min-width: 400px;
+        border-radius: 5px 5px 0px 0px;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(0,0,0,0.15);
+    }
+
+        .phucnvm-table thead tr {
+            background-color: #88d200;
+            color: white;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .phucnvm-table th,
+        .phucnvm-table td {
+            padding: 12px 18px;
+        }
+
+        .phucnvm-table tbody tr {
+            border-bottom: 1px solid #dddd
+        }
+
+            .phucnvm-table tbody tr:nth-of-type(even) {
+                background-color: #f3f3f3;
+            }
+
+            .phucnvm-table tbody tr:last-of-type {
+                border-bottom: 2px solid #88d200;
+            }
+
+        .phucnvm-table tbody td {
+            font-size: 0.9rem;
+        }
+
+    .primary-btn {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+</style>
+
+@section Scripts {
+    <script>
+        window.setTimeout(function () {
+            $('.alert').fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+        }, 3000);
+
+
+    </script>
 }

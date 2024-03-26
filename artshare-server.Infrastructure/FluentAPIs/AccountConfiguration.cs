@@ -37,10 +37,6 @@ namespace artshare_server.Infrastructure.Configurations
                 .IsRequired()
                 .HasColumnType("nvarchar(10)")
                 .HasDefaultValue(AccountStatus.Active);
-            builder.HasMany(t => t.Watermarks)
-                .WithOne(e => e.Creator)
-                .HasForeignKey(x => x.CreatorId)
-                .OnDelete(DeleteBehavior.NoAction);
             builder.HasMany(t => t.Artworks)
                 .WithOne(e => e.Creator)
                 .HasForeignKey(x => x.CreatorId)

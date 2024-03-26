@@ -26,5 +26,6 @@ namespace artshare_server.ApiModels.DTOs
     public class GetGenreDTO : GenreDTO
     {
         public int GenreId { get; set; }
+        public IEnumerable<GetArtworkDTO>? Artworks { get; set; }
     }
 }

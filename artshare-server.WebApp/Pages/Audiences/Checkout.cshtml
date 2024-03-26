@@ -7,47 +7,36 @@
 
 <section class="banner-area relative" id="home">
     <div class="overlay overlay-bg"></div>
-    <div class="container">
-        <div class="row d-flex align-items-center justify-content-center">
-            <div class="about-content col-lg-12">
-                <h1 class="text-white">
-                    Elements
-                </h1>
-                <p class="text-white link-nav"><a href="index.html">Home </a>  <span class="lnr lnr-arrow-right"></span>  <a href="elements.html"> Elements</a></p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<div class="whole-wrap">
-    <div class="container">
-            @if (Model.Cart != null)
-            {
-                <div class="p-5" style="background-color: #08618d">
-                    <div class="mx-auto p-3 bg-light rounded border" style="width: 420px">
-                        <h2 class="text-center mb-5">Checkout</h2>
-                        <div class="row mb-3">
-                            <div class="col-5">Total Amount</div>
-                            <div class="col-7">$@Model.Cart.Sum(item => item.price)</div>
-                            <div class="col-5">Quantity</div>
-                            <div class="col-7">@Model.Cart.Count</div>
+    <div class="d-flex justify-content-center">
+        <section class="banner-area relative text-center" id="home">
+            <div class="whole-wrap">
+                <div class="container">
+                    <div class="p-5" style="background-color: #08618d;">
+                        <div class="mx-auto p-3 bg-light rounded border" style="width: 420px;">
+                            <h2 class="mb-5">Checkout</h2>
+                            <div>
+                                <img src="@Model.Artwork.originalArtUrl" />
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-5">Total Amount</div>
+                                <div class="col-7">$@Model.Artwork.price</div>
+                            </div>
                         </div>
                     </div>
+                    <div class="text-center">
+                        <div id="notification-container"></div>
+                        <div id="paypal-button-container"></div>
+                    </div>
                 </div>
-            }
-        <div id="notification-container">
-        </div>
-        <div id="paypal-button-container">
-            
-        </div>
+            </div>
+        </section>
     </div>
-    
-</div>
+</section>
 
 <script>
     let paypal_buttons = paypal.Buttons({
         createOrder() {
-            return fetch("Checkout?handler=CreateOrder", {
+            return fetch(`Checkout?handler=CreateOrder&id=@Model.Artwork.artworkId`, {
                 method: "POST"
             })
                 .then((response) => response.json())
@@ -55,7 +44,7 @@
         },
         onApprove(data) {
             // This function captures the funds from the transaction.
-            return fetch("Checkout?handler=CompleteOrder", {
+            return fetch("Checkout?handler=CompleteOrder&id=@Model.Artwork.artworkId", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -98,3 +87,4 @@
     });
     paypal_buttons.render('#paypal-button-container');
 </script>
+

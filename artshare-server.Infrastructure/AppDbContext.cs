@@ -13,9 +13,7 @@ namespace artshare_server.Infrastructure
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Like> Likes { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderDetails> OrderDetails { get; set; }
         public DbSet<Report> Reports { get; set; }
-        public DbSet<Watermark> Watermarks { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -33,10 +31,7 @@ namespace artshare_server.Infrastructure
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", true, true)
                 .Build();
-
-            connectionString = config.GetConnectionString("PhucDatabase");
-
-
+            connectionString = config.GetConnectionString("BachDatabase");
             return connectionString;
         }
     }

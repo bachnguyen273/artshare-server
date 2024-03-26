@@ -27,6 +27,7 @@ namespace artshare_server.WebApp
                 options.Secure = CookieSecurePolicy.None; // Allow non-secure cookies
             });
 
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

@@ -5,7 +5,10 @@ namespace artshare_server.Core.Interfaces
 {
     public interface IOrderRepository : IGenericRepository<Order>
     {
-        Task<List<OrderDTO>> GetOrdersByCusIdAsync(int id);
-        Task<List<OrderDTO>> GetOrdersByArtIdAsync(int id);
+        Task<List<GetUserOrderDTO>> GetOrdersByCusIdAsync(int id);
+        Task<List<GetUserOrderDTO>> GetOrdersByArtIdAsync(int id);
+        Task<List<GetOrderDTO>> GetOrdersByAccountIdAsync(int accountId);
+        Task<List<GetOrderDTO>> GetOrders();
+        Task<List<int>> GetArtworkIdsByAccountIdAsync(int accountId);
     }
 }

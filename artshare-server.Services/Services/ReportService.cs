@@ -12,14 +12,15 @@ namespace artshare_server.Services.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public ReportService(IUnitOfWork unitOfWork)
+        public ReportService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Report>> GetAllReportsAsync()
+        public async Task<IEnumerable<GetReportDTO>> GetAllReportsAsync()
         {
-            var reportList = await _unitOfWork.ReportRepo.GetAllAsync();
+            var reportList = await _unitOfWork.ReportRepo.GetAll();
             return reportList;
         }
 
@@ -71,7 +72,7 @@ namespace artshare_server.Services.Services
                 {
                     return true;
                 }
-                
+
             }
             return false;
         }
@@ -86,7 +87,7 @@ namespace artshare_server.Services.Services
                 var result = await _unitOfWork.SaveAsync() > 0;
                 if (result)
                 {
-                    var artwork = await _unitOfWork.ArtworkRepo.GetByIdAsync(report.ArtworkId);
+                    var artwork = await _unitOfWork.ArtworkRepo.GetByIdAsync((int) report.ArtworkId);
                     artwork.Status = ArtworkStatus.Banned;
                     _unitOfWork.ArtworkRepo.Update(artwork);
                     var check = await _unitOfWork.SaveAsync() > 0;

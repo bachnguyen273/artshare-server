@@ -56,29 +56,36 @@ namespace artshare_server.WebApp.Pages
 
                 // Extract the role claim
                 var role = tokenS.Claims.First(claim => claim.Type == ClaimTypes.Role).Value;
+
+                // Redirect users based on their roles
+                // Extract the role claim
+ 
                 int id = int.Parse(tokenS.Claims.First(claim => claim.Type == "AccountId").Value);
                 HttpContext.Session.SetString("Role", role);
                 HttpContext.Session.SetInt32("AccountId", id);
 
-				var username = tokenS.Claims.First(claim => claim.Type == ClaimTypes.UserData).Value;
-				HttpContext.Session.SetString("Username", username);
+                var username = tokenS.Claims.First(claim => claim.Type == ClaimTypes.UserData).Value;
+                HttpContext.Session.SetString("Username", username);
 
 
                 var userId = tokenS.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
                 HttpContext.Session.SetString("UserId", userId);
 
-                // Redirect users based on their roles
                 switch (role)
                 {
                     case "Audience":
-                        return RedirectToPage("./Index");
+                        return RedirectToPage("/Index");
                     case "Creator":
-                        return RedirectToPage("./Creators/CreatorDashboard");
+                        return RedirectToPage("./Creators/Artworks/Index");
                     case "Admin":
-                        return RedirectToPage("./Admin/Index");
+                        return RedirectToPage("./Admins/Index");
                     default:
                         return Page();
                 }
+            }
+            else
+            {
+                TempData["Message"] = "Wrong email or password";
             }
 			return Page();
 		}

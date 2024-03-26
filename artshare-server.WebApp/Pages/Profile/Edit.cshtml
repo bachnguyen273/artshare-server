@@ -1,0 +1,106 @@
+﻿@page
+@model artshare_server.WebApp.Pages.Profile.EditModel
+@{
+    var role = TempData["Role"];
+}
+
+@if (TempData["AlertMessage"] != null)
+{
+    <div class="alert alert-success">
+        <strong>Success !</strong>@TempData["AlertMessage"];
+    </div>
+}
+@if (TempData["AlertMessage1"] != null)
+{
+    <div class="alert alert-danger">
+        <strong>Fail !</strong>@TempData["AlertMessage1"];
+    </div>
+}
+
+@if (role != null)
+{
+    <section class="quote-area pt-100">
+        <div class="container">
+            <div>
+                @if (role.Equals("Admin"))
+                {
+                    <a class="primary-btn text-uppercase" href="../Admins/AdminProfileDetail?id=@Model.ProfileId">Back</a>
+                }
+                else
+                {
+                    <a class="primary-btn text-uppercase" href="../Profile?username=@Model.ProfileViewModel1.UserName">Back</a>
+                }
+                <h1 class="phucnvm-h1">
+                    <span>Account management</span>
+                </h1>
+
+                <form method="post" enctype="multipart/form-data">
+                    <h2 class="phucnvm-h2">Your avatar</h2>
+                    <div style="margin-top:10px;">
+                        <p style="margin-bottom: 0.2rem;margin-top: 1rem">Photo</p>
+                        @if (Model.ProfileViewModel1.AvatarUrl != null)
+                        {
+                            <img style="display:inline-block;width:80px;height:80px;border-radius:100%" src="@Model.ProfileViewModel1.AvatarUrl" />
+                        }
+                        else
+                        {
+                            <img style="display:inline-block;width:80px;height:80px;border-radius:100%" src="https://i0.wp.com/thumbs.dreamstime.com/b/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-179376714.jpg" />
+                        }
+                        <input asp-for="UploadAvatar" class="form-control1" type="file" accept=".png,.jpg,.jpeg" style="display:inline-block;width:50%;margin-left:20px;" />
+                    </div>
+                    <h2 class="phucnvm-h2">Your account</h2>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div>
+                        <p style="margin-bottom: 0.2rem;margin-top: 1rem">Email</p>
+                        <input asp-for="ProfileViewModel1.Email" name="Email" class="form-control1" placeholder="Enter Email " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email '" type="email" required="" />
+                    </div>
+                    <p style="margin-bottom: 0.1rem;margin-top: 1rem" id="oldPasswordp">Password</p>
+                    <input name="PasswordHash" id="oldPassword" class="form-control1" placeholder="Enter Password " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Password '" type="password" style="width:80%; display:inline-block" value="@Model.ProfileViewModel1.PasswordHash" />
+                    <button class="primary-btn text-uppercase" id="change_password" style="padding:7px 12px; margin-left:10px;border-radius: 0.75rem; width:15%; line-height:1.5; display:inline-block" type="button">Change</button>
+                    <div class="phucnvm-confirmPassword">
+                        <p style="margin-bottom: 0.1rem;margin-top: 1rem">New Password</p>
+                        <input name="newPassword" class="form-control1" id="confirmPassword" placeholder="Enter Password " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Password '" type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number, one uppercase and lowercase letter, and at least 8 or more characters" />
+                        <p style="margin-bottom: 0.1rem;margin-top: 1rem">Confirm Password</p>
+                        <input name="confirmPassword" class="form-control1" id="confirmPassword" placeholder="Enter Password " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Password '" type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number, one uppercase and lowercase letter, and at least 8 or more characters" />
+                    </div>
+
+                    <h2 class="phucnvm-h2">Personal information</h2>
+                    <p style="margin-bottom: 0.2rem;margin-top: 1rem">Username</p>
+                    <input asp-for="ProfileViewModel1.UserName" name="UserName" class="form-control1" placeholder="Enter UserName " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter UserName '" required="" type="text" maxlength="15" />
+                    <p style="margin-bottom: 0.1rem;margin-top: 1rem">Full name</p>
+                    <input asp-for="ProfileViewModel1.FullName" name="FullName" class="form-control1" placeholder="Enter FullName " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter FullName '" required="" type="text" maxlength="20" pattern="[^0-9]*" title="Please enter only text...!">
+                    <p style="margin-bottom: 0.1rem;margin-top: 1rem">Phone number</p>
+                    <input asp-for="ProfileViewModel1.PhoneNumber" name="PhoneNumber" class="form-control1" placeholder="Enter PhoneNumber " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter PhoneNumber '" required="" type="text" maxlength="10" pattern="\d*" title="Please enter only digits...!" />
+                    <input asp-for="ProfileViewModel1.JoinDate" name="JoinDate" class="form-control1" placeholder="Enter PhoneNumber " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter PhoneNumber '" required="" type="hidden" />
+                    <input asp-for="ProfileViewModel1.Status" name="Status" class="form-control1" placeholder="Enter PhoneNumber " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter PhoneNumber '" required="" type="hidden" />
+                    <input asp-for="ProfileViewModel1.Role" name="Role" class="form-control1" placeholder="Enter PhoneNumber " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter PhoneNumber '" required="" type="hidden" />
+                    <button class="primary-btn text-uppercase" style="margin-top: 1rem; width:100%" type="submit" asp-route-id="@Model.ProfileId" asp-page-handler="ProccessRequest">Update</button>
+                </form>
+
+            </div>
+        </div>
+    </section>
+
+}
+
+
+@section Scripts {
+    <script>
+        $('.phucnvm-confirmPassword').hide();
+        $('#oldPassword').prop('readonly', true);
+        $('#change_password').click(function () {
+            $('#oldPasswordp').hide();
+            $('#oldPassword').hide();
+            $('.phucnvm-confirmPassword').show();
+            $('#confirmPassword').prop('required', true);
+            $('#change_password').hide();
+        });
+        window.setTimeout(function () {
+            $('.alert').fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+        }, 3000);
+
+
+    </script>
+}

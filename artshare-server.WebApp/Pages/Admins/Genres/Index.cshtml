@@ -1,0 +1,28 @@
+﻿@page
+@model artshare_server.WebApp.Pages.Admins.Genres.IndexModel
+@{
+}
+
+<div class="section-top-border">
+    <h3 class="mb-30">Table</h3>
+    <div class="progress-table-wrap">
+        <div class="progress-table">
+            <div class="table-head">
+                <div>ID</div>
+                <div>Genre</div>
+                <div>Actions</div> <!-- New column for actions -->
+            </div>
+            @foreach (var genre in Model.Genres)
+            {
+                <div class="table-row">
+                    <div>@genre.genreId</div>
+                    <div>@genre.name</div>
+                    <div>
+                        <button type="button" class="btn btn-primary" asp-route-genreId="@genre.genreId">Edit</button>
+                        <button type="button" class="btn btn-danger" asp-route-genreId="@genre.genreId">Remove</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

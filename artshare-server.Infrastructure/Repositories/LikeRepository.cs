@@ -12,12 +12,12 @@ namespace artshare_server.Infrastructure.Repositories
 
         public async Task<int> CountDisLikeByArtWorkId(int artworkId)
         {
-            return _dbContext.Likes.Where(l => l.ArtworkId.Equals(artworkId) && l.IsLike==false).Count();
+            return _dbContext.Likes.Where(l => l.ArtworkId.Equals(artworkId) && l.IsLike == false).Count();
         }
 
         public async Task<int> CountLikeByArtWorkId(int artworkId)
         {
-            return _dbContext.Likes.Where(l => l.ArtworkId.Equals(artworkId) && l.IsLike==true).Count();
+            return _dbContext.Likes.Where(l => l.ArtworkId.Equals(artworkId) && l.IsLike == true).Count();
         }
 
         public async Task<IEnumerable<Like>> GetAllLikeByArtworkId(int artworkId)

@@ -17,6 +17,6 @@ namespace artshare_server.Services.Interfaces
         Task<Like> GetLikeByAccountIdAndArtworkId(int accountId, int artworkId);
         Task<int> CountLikeByArtWorkId(int artworkId);
         Task<int> CountDisLikeByArtWorkId(int artworkId);
-        
+
     }
 }

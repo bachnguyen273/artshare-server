@@ -1,7 +1,4 @@
-﻿using artshare_server.Contracts.DTOs;
-using artshare_server.Services.Interfaces;
-using artshare_server.Services.Services;
-using artshare_server.Services.Interfaces;
+﻿using artshare_server.Services.Interfaces;
 using artshare_server.Services.Services;
 using artshare_server.WebAPI.ResponseModels;
 using Microsoft.AspNetCore.Mvc;
@@ -58,12 +55,13 @@ namespace artshare_server.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Creator")]
+        //[Authorize(Roles = "Creator")]
         public async Task<IActionResult> CreateArtwork([FromQuery] ArtworkStatus artworkStatus ,[FromBody] CreateArtworkDTO createArtworkDTO)
         {
             try
             {
                 createArtworkDTO.Status = artworkStatus.ToString();
+                
                 var requestResult = await _artworkService.CreateArtworkAsync(createArtworkDTO);
                 if (!requestResult)
                 {
@@ -87,6 +85,87 @@ namespace artshare_server.Controllers
                     Status = Conflict().StatusCode,
                     Message = ex.Message
                 });
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateArtwork(int id, ArtworkStatus artworkStatus, UpdateArtworkDTO updateArtworkDTO)
+        {
+            try
+            {
+                updateArtworkDTO.Status = artworkStatus.ToString();
+                var check = await _artworkService.GetArtworkByIdAsync(id);
+                if (check == null)
+                {
+                    return NotFound();
+                }
+                var up = await _artworkService.UpdateArtworkAsync(id, updateArtworkDTO);
+                if (up)
+                {
+                    return Ok("Update SUCCESS!");
+                }
+                return BadRequest("Update FAIL");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteArtwork(int id)
+        {
+            try
+            {
+                var check = await _artworkService.DeleteArtworkAsync(id);
+                if (!check)
+                {
+                    return BadRequest("Delete Fail");
+                }
+                return Ok("Delete Success");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetArtworkIdsByAccountId(int accountId)
+        {
+            return Ok(new SucceededResponseModel()
+            {
+                Status = Ok().StatusCode,
+                Message = "Success",
+                Data = new
+                {
+                    ArtworkIds = await _artworkService.GetArtworkIdsByAccountIdAsync(accountId)
+                }
+            });
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateCountByArtworkId(int artworkId, [FromBody] ArtworkCount artworkCount)
+        {
+            try
+            {
+                var check = await _artworkService.GetArtworkByIdAsync(artworkId);
+                if (check == null)
+                {
+                    return NotFound();
+                }
+                var up = await _artworkService.UpdateCountOfArtwork(artworkId, artworkCount);
+                if (up)
+                {
+                    return Ok("Update SUCCESS!");
+                }
+                return BadRequest("Update FAIL");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }

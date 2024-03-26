@@ -5,7 +5,7 @@ namespace artshare_server.Services.Interfaces
 {
     public interface IReportService
     {
-        Task<IEnumerable<Report>> GetAllReportsAsync();
+        Task<IEnumerable<GetReportDTO>> GetAllReportsAsync();
 
         Task<Report?> GetReportByIdAsync(int reportId);
         Task<Report?> GetReportByAccountIdAndArtworkId(int accountId, int artworkId);

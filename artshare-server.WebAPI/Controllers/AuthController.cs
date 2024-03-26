@@ -1,10 +1,11 @@
-﻿using artshare_server.Contracts.DTOs;
-using artshare_server.WebAPI.ResponseModels;
+﻿using artshare_server.WebAPI.ResponseModels;
 using artshare_server.Services.CustomExceptions;
 using artshare_server.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using artshare_server.Core.Enums;
+using artshare_server.ApiModels.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace artshare_server.WebAPI.Controllers
 {
@@ -28,16 +29,10 @@ namespace artshare_server.WebAPI.Controllers
             try
             {
                 var loginRequest = await _authService.LoginAsync(loginData);
-                //return Ok(new SucceededResponseModel()
-                //{
-                //    Status = Ok().StatusCode,
-                //    Message = "Success",
-                //    Data = new
-                //    {
-                //        Token = loginRequest,
-                //        Account = await _accountService.GetAccountByEmailAsync(loginData.Email)
-                //    }
-                //});
+                if (loginRequest == null)
+                {
+                    return NotFound();
+                }
                 return Ok(loginRequest);
             }
             catch (NullReferenceException ex)
@@ -51,11 +46,11 @@ namespace artshare_server.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register([FromQuery] AccountRole accounrRole, [FromBody] RegisterDTO registerRequest)
+        public async Task<IActionResult> Register([FromBody] RegisterDTO registerRequest)
         {
             try
             {
-                var requestResult = await _authService.RegisterAsync(accounrRole, registerRequest);
+                var requestResult = await _authService.RegisterAsync(registerRequest);
                 if (!requestResult)
                 {
                     return StatusCode(500, new FailedResponseModel
@@ -84,71 +79,5 @@ namespace artshare_server.WebAPI.Controllers
                 });
             }
         }
-
-        [HttpPost]
-        public async Task<IActionResult> UploadFile(IFormFile file, ContainerEnum containerName)
-        {
-            try
-            {
-                if (file == null || file.Length == 0)
-                    return BadRequest(new FailedResponseModel()
-                    {
-                        Status = BadRequest().StatusCode,
-                        Message = "File is not selected or empty."
-                    });
-
-                //var containerName = "apifile"; // replace with your container name
-                var uri = await _azureBlobStorageService.UploadFileAsync(containerName.ToString(), file);
-
-                return Ok(new SucceededResponseModel()
-                {
-                    Status = Ok().StatusCode,
-                    Message = "File uploaded successfully",
-                    Data = new
-                    {
-                        FileName = file.FileName,
-                        FileUri = uri
-                    }
-                });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new FailedResponseModel
-                {
-                    Status = 500,
-                    Message = $"An error occurred while uploading the file: {ex.Message}"
-                });
-            }
-        }
-        [HttpPost]
-        public async Task<IActionResult> UploadArtAndWatermark(IFormFile artwork, IFormFile watermark)
-        {
-            var combinedImage = await FileHelper.CombineImages(artwork, watermark);
-            try
-            {
-                var containerName = "apifile"; // replace with your container name
-                var uri = await _azureBlobStorageService.UploadFileAsync(containerName, combinedImage);
-
-                return Ok(new SucceededResponseModel()
-                {
-                    Status = Ok().StatusCode,
-                    Message = "File uploaded successfully",
-                    Data = new
-                    {
-                        FileName = combinedImage.FileName,
-                        FileUri = uri
-                    }
-                });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new FailedResponseModel
-                {
-                    Status = 500,
-                    Message = $"An error occurred while uploading the file: {ex.Message}"
-                });
-            }
-        }
-
     }
 }

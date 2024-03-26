@@ -22,9 +22,7 @@ namespace artshare_server.Services.ServiceExtension
             services.AddScoped<IGenreService, GenreService>();
             services.AddScoped<ILikeService, LikeService>();
             services.AddScoped<IOrderService, OrderService>();
-            services.AddScoped<IOrderDetailsService, OrderDetailsService>();
             services.AddScoped<IReportService, ReportService>();
-            services.AddScoped<IWatermarkService, WatermarkService>();
             services.AddScoped<IAzureBlobStorageService, AzureBlobStorageService>();
 
             services.AddScoped(x => new BlobServiceClient(configuration.GetConnectionString("AzureBlobStorage")));

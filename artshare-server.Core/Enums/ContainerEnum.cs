@@ -8,9 +8,9 @@ namespace artshare_server.Core.Enums
 {
     public enum ContainerEnum
     {
-        artwork,
-        avatar,
-        watermark,
-        watermarkartwork
-    }
+		avatar,
+		artwork,
+		watermark,
+		watermarkartwork
+	}
 }

@@ -9,16 +9,12 @@ namespace artshare_server.Infrastructure.FluentAPIs
         public void Configure(EntityTypeBuilder<Order> builder)
         {
             builder.HasKey(t => t.OrderId);
-            builder.Property(t => t.OrderDate)
+            builder.Property(t => t.CreateDate)
                 .IsRequired()
                 .HasDefaultValueSql("getutcdate()");
-            builder.Property(t => t.TotalPrice)
+            builder.Property(t => t.Price)
                 .IsRequired()
                 .HasPrecision(19, 4);
-            builder.HasMany(t => t.OrderDetails)
-                .WithOne(e => e.Order)
-                .HasForeignKey(x => x.OrderId)
-                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

@@ -28,7 +28,7 @@ public static class FileHelper
                     img1.SaveAsPng(outputStream);
                     outputStream.Seek(0, SeekOrigin.Begin);
 
-                    var combinedImage = new FormFile(outputStream, 0, outputStream.Length, null, "combined.png")
+                    var combinedImage = new FormFile(outputStream, 0, outputStream.Length, null, null)
                     {
                         Headers = new HeaderDictionary(),
                         ContentType = "image/png"
@@ -41,7 +41,7 @@ public static class FileHelper
 
     }
 
-    private static bool IsImage(IFormFile file)
+    public static bool IsImage(IFormFile file)
     {
         var imageExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".tiff", ".bmp", ".svg" };
         return imageExtensions.Any(e => file.FileName.EndsWith(e, StringComparison.OrdinalIgnoreCase));

@@ -11,11 +11,11 @@ namespace artshare_server.Controllers
     [ApiController]
     public class LikeController : ControllerBase
     {
-        private readonly ILikeService _likeService            ;
+        private readonly ILikeService _likeService;
 
         public LikeController(ILikeService likeService)
         {
-            _likeService= likeService;
+            _likeService = likeService;
         }
         [HttpGet]
         public async Task<IActionResult> GetAllLikeByArtworkId(int artworkId)
@@ -61,14 +61,15 @@ namespace artshare_server.Controllers
         public async Task<IActionResult> Like(int accountId, int artworkId)
         {
             var like = await _likeService.GetLikeByAccountIdAndArtworkId(accountId, artworkId);
-            bool result = false; 
+            bool result = false;
             if (like == null)
             {
-                result = await _likeService.CreateLikeAsync(new Like() { AccountId = accountId, ArtworkId = artworkId,IsLike = true });
+                result = await _likeService.CreateLikeAsync(new Like() { AccountId = accountId, ArtworkId = artworkId, IsLike = true });
+
             }
             else
             {
-                if(like.IsLike==true)
+                if (like.IsLike == true)
                 {
                     result = await _likeService.DeleteLikeAsync(like);
                 }
@@ -78,7 +79,7 @@ namespace artshare_server.Controllers
                     result = await _likeService.UpdateLikeAsync(like);
                 }
             }
-            if (result == false) 
+            if (result == false)
                 return BadRequest();
             return Ok();
         }

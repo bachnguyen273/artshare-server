@@ -21,7 +21,12 @@
 					</div>
 					<button class="primary-btn text-uppercase">Login</button>
 				</form>
-
+				@if (TempData["Message"] != null)
+				{
+					<div class="alert alert-danger" role="alert">
+						@TempData["Message"]
+					</div>
+				}
 			</div>
 		</div>
 	</div>

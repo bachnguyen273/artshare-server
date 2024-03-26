@@ -2,3 +2,76 @@
 @model artshare_server.WebApp.Pages.Creators.Artworks.CreateModel
 @{
 }
+
+<!-- start banner Area -->
+<section class="banner-area relative" id="home">
+    <div class="container">
+        <section class="gallery-area section-gap" id="gallery">
+            <form id="searchForm" method="post" enctype="multipart/form-data" style="margin:auto;max-width:1000px">
+                <div style="display: flex; flex-wrap: wrap; justify-content: center;">
+                    <div style="flex: 1; margin-right: 20px;">
+                        <div class="single-blog" style="display: flex; justify-content: center;">
+                            <ul>
+                                @foreach (var genre in Model.Genres)
+                                {
+                                    <li style="display: inline-block; margin-right: 10px;">
+                                        <input type="radio" asp-for="@Model.CreateArtworkViewModel.GenreId" id="genre_@(genre.genreId)" value="@genre.genreId" />
+                                        <label for="genre_@(genre.genreId)">
+                                            @genre.name
+                                        </label>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-container mt-10">
+                    <input type="text" asp-for="@Model.CreateArtworkViewModel.Title" placeholder="Title" required class="single-input">
+                </div>
+                <div class="input-container mt-10">
+                    <input type="text" asp-for="@Model.CreateArtworkViewModel.Description" placeholder="Description" required class="single-input">
+                </div>
+                <div class="input-container mt-10">
+                    <input type="number" asp-for="@Model.CreateArtworkViewModel.Price" placeholder="Price" required class="single-input">
+                </div>
+                <div class="input-container mt-10">
+                    <!-- Use ASP.NET Core Tag Helper for file input -->
+                    <input type="file" asp-for="@Model.CreateArtworkViewModel.OrginalArtworkFile" required class="single-input">
+                </div>
+                <div class="input-container mt-10">
+                    <!-- Combo box for selecting public/private -->
+                    <select asp-for="@Model.CreateArtworkViewModel.Status" class="single-input" style="height: 40px" required>
+                        <option value="">Select Status</option>
+                        <option value="0">Public</option>
+                        <option value="1">Private</option>
+                    </select>
+                </div>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                </div>
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        @TempData["ErrorMessage"]
+                    </div>
+                }
+                <button type="submit" style="margin: auto" class="primary-btn text-uppercase d-flex justify-content-center">Submit</button>
+            </form>
+        </section>
+    </div>
+</section>
+
+<style>
+    .input-container {
+        max-width: 600px; /* Adjust width as needed */
+        margin: auto; /* Center horizontally */
+        display: flex; /* Use flexbox */
+        justify-content: center; /* Center children horizontally */
+        padding: 5px;
+    }
+
+    .single-input {
+        width: 100%;
+    }
+</style>
+
