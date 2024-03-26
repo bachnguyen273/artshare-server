@@ -58,6 +58,13 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
             // Load data
             await LoadGenresAsync();
 
+
+            if (!ImageHelpers.IsImage(CreateArtworkViewModel.OrginalArtworkFile))
+            {
+                TempData["ErrorMessage"] = "This should be image";
+                return Page();
+            }
+
             if (!ModelState.IsValid)
             {
                 return Page();

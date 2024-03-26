@@ -141,7 +141,7 @@ namespace artshare_server.WebApp.Pages.Profile
             {
                 var responseContent = await response.Content.ReadAsStringAsync();
                 TempData["AlertMessage"] = " Update Account Successfully...!";
-                return RedirectToPage("../Setting/edit-profile", new { id = id });
+                return RedirectToPage("../Profile/Detail", new { id = id });
             }
             TempData["AlertMessage1"] = " Update Account Fail...!";
             return Page();

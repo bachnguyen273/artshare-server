@@ -83,11 +83,16 @@ namespace artshare_server.WebApp.Pages.Creators.Artworks
                 _jwtToken = HttpContext.Session.GetString("JWTToken");
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _jwtToken);
 
-                if (!ImageHelpers.IsImage(UpdateArtworkViewModel.OrginalArtworkFile))
+                if (UpdateArtworkViewModel.OrginalArtworkFile != null)
                 {
-                    TempData["ErrorMessage"] = "This should be image";
-                    return Page();
+
+                    if (!ImageHelpers.IsImage(UpdateArtworkViewModel.OrginalArtworkFile))
+                    {
+                        TempData["ErrorMessage"] = "This should be image";
+                        return Page();
+                    }
                 }
+
 
                 // Create artwork
                 var request = new

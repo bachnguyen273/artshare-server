@@ -22,10 +22,21 @@
         </header>
     </div>
 
-    <div class="phucnvm-art">
-        <img src="@artwork.watermarkedArtUrl" />
-        <!--Art work image-->
-    </div>
+   
+    @if (!Model.IsBought)
+    {
+        <div class="phucnvm-art">
+            <img src="@artwork.watermarkedArtUrl" />
+            <!--Art work image-->
+        </div>
+    }
+    else
+    {
+        <div class="phucnvm-art">
+            <img src="@artwork.originalArtUrl" />
+            <!--Art work image-->
+        </div>
+    }
 
     <!--Like vs Dislike-->
     <div class="post-rating-container">
